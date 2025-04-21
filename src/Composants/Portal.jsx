@@ -14,8 +14,8 @@ export default function Portal({
     name,
     position,
     rotation = [0, 0, 0],
-    width = 11,
-    height = 10,
+    width = 10,
+    height = 9,
     bg = "#e4cdac",
     textureDecoration,
     onClick,
@@ -56,7 +56,7 @@ export default function Portal({
             <Text
                 font={suspend(bold).default}
                 fontSize={1.2}
-                position={[0, 5, 0]}
+                position={[0, 4, 0]}
                 color="white"
                 anchorX="center"
                 anchorY="top"

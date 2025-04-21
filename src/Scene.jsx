@@ -67,28 +67,28 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
     }, [gl, camera, scene, setSceneA, setSceneB])
 
     useFrame(() => {
-        // if (!enableOrbitControls) {
-        //     if (activePortalId) {
-        //         const portalMesh = groupRef.current.getObjectByName(activePortalId)
-        //         if (portalMesh) {
-        //             const worldPosition = new THREE.Vector3()
-        //             //portalMesh.getWorldPosition(worldPosition)
-        //             //camera.position.set(-25, -25, 5)
-        //             //camera.lookAt(worldPosition)
-        //             camera.rotateY.set(-3)
-        //             camera.position.set(0, 0, 0)
-        //         }
-        //     } else {
-        //         //console.log('else -->', activePortalId)
-        //         camera.position.set(scrollRef.current, 0, 10)
-        //         camera.lookAt(scrollRef.current, 0, 0)
-        //     }
-        // } else {
+        if (!enableOrbitControls) {
+            if (activePortalId) {
+                const portalMesh = groupRef.current.getObjectByName(activePortalId)
+                if (portalMesh) {
+                    const worldPosition = new THREE.Vector3()
+                    //portalMesh.getWorldPosition(worldPosition)
+                    //camera.position.set(-25, -25, 5)
+                    //camera.lookAt(worldPosition)
+                    camera.rotateY.set(-3)
+                    camera.position.set(0, 0, 0)
+                }
+            } else {
+                //console.log('else -->', activePortalId)
+                camera.position.set(scrollRef.current, 0, 10)
+                camera.lookAt(scrollRef.current, 0, 0)
+            }
+        } else {
             if (activePortalId) {
                 camera.position.set(scrollRef.current, 0, 10)
                 camera.lookAt(scrollRef.current, 0, 0)
             }
-        // }
+        }
     })
 
     return (
