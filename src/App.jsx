@@ -11,7 +11,6 @@ export default function App() {
         <TransitionManager textureUrl="./transition.png">
           {({ navigate, setSceneA, setSceneB }) => (
             <>
-              {/* Tu peux stocker les FBO de tes scènes ici */}
               <Scene
                 onEnterPortal={(id) => navigate(`/portal/${id}`)}
                 setSceneA={setSceneA}

@@ -6,7 +6,7 @@ import { suspend } from 'suspend-react'
 import { useLocation, useRoute } from 'wouter'
 import { easing } from 'maath'
 
-// Font chargée dynamiquement
+// font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')
 
 export default function Portal({
@@ -33,7 +33,7 @@ export default function Portal({
         if (portalRef.current) {
             easing.damp(portalRef.current, 'blend', params?.id === id ? 1 : 0, 0.2, delta)
 
-            // animation de rotation légère au hover
+            // animation de rotation legere au hover
             // if (hovered && portalRef.current.parent) {
             //     portalRef.current.parent.rotation.y += 0.005
             // }
@@ -42,7 +42,7 @@ export default function Portal({
 
     return (
         <group position={position} rotation={rotation}>
-            {/* Décoration autour du portail */}
+            {/* decoration autour du portail */}
             <mesh position={[0, 0, 0]}>
                 <planeGeometry args={[28, 20]} />
                 <meshBasicMaterial

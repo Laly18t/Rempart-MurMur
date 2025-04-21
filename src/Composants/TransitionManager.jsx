@@ -22,14 +22,14 @@ export default function TransitionManager({ children, textureUrl }) {
     const [, setLocation] = useLocation()
     const nextRouteRef = useRef(null)
 
-    // Intercepter navigation
+    // intercepter navigation
     const navigateWithTransition = (nextRoute) => {
         transitionParams.animateTransition = true
         nextRouteRef.current = nextRoute
         setShowTransition(true)
     }
 
-    // Lancer la navigation une fois la transition finie
+    // lancer la navigation
     useFrame(() => {
         if (transitionParams.transition >= 1 && transitionParams.animateTransition) {
             transitionParams.animateTransition = false
@@ -40,10 +40,10 @@ export default function TransitionManager({ children, textureUrl }) {
 
     return (
         <>
-            {/* Ton composant de scène actuel */}
+            {/* scene actuel */}
             {children({ navigate: navigateWithTransition, setSceneA, setSceneB })}
 
-            {/* Affiche la transition */}
+            {/* transition */}
             <Transition
                 sceneA={sceneA}
                 sceneB={sceneB}

@@ -7,10 +7,10 @@ const Transition = ({ sceneA, sceneB, texture, transitionParams }) => {
     const materialRef = useRef()
     const { size } = useThree()
 
-    // Charge une seule texture
+    // charge la texture
     const transitionTexture = useMemo(() => new THREE.TextureLoader().load(texture), [texture])
 
-    // Animation de mix
+    // animation de mix
     useFrame(({ clock }) => {
         if (transitionParams.animateTransition) {
             const t = (1 + Math.sin((transitionParams.transitionSpeed * clock.getElapsedTime()) / Math.PI)) / 2
@@ -22,6 +22,7 @@ const Transition = ({ sceneA, sceneB, texture, transitionParams }) => {
         }
     })
 
+    // TODO : clean
     if (!sceneA?.fbo?.texture || !sceneB?.fbo?.texture) return null
 
     return (
