@@ -1,8 +1,8 @@
+import * as THREE from 'three'
 import { useRef, useState } from 'react'
+import { suspend } from 'suspend-react'
 import { useFrame } from '@react-three/fiber'
 import { MeshPortalMaterial, useCursor, Text } from '@react-three/drei'
-import * as THREE from 'three'
-import { suspend } from 'suspend-react'
 import { useLocation, useRoute } from 'wouter'
 import { easing } from 'maath'
 
@@ -16,9 +16,8 @@ export default function Portal({
     rotation = [0, 0, 0],
     width = 10,
     height = 8,
-    bg = "#fffff",
+    bg = "#eab676",
     textureDecoration,
-    onClick,
     children
 }) {
     const portalRef = useRef()
@@ -26,17 +25,13 @@ export default function Portal({
     const [, setLocation] = useLocation()
     const [, params] = useRoute('/portal/:id')
 
+    // changement de curseur en hover
     useCursor(hovered)
 
     useFrame((state, delta) => {
         // animation d'ouverture du portail au click
         if (portalRef.current) {
             easing.damp(portalRef.current, 'blend', params?.id === id ? 1 : 0, 0.2, delta)
-
-            // animation de rotation legere au hover
-            // if (hovered && portalRef.current.parent) {
-            //     portalRef.current.parent.rotation.y += 0.005
-            // }
         }
     })
 
@@ -51,7 +46,7 @@ export default function Portal({
                 />
             </mesh>
 
-            {/* Nom du portail */}
+            {/* nom du portail */}
             <Text
                 font={suspend(bold).default}
                 fontSize={1.2}
@@ -63,7 +58,7 @@ export default function Portal({
                 {name}
             </Text>
 
-            {/* Portail cliquable */}
+            {/* portail cliquable */}
             <mesh
                 name={id}
                 onPointerOver={() => setHovered(true)}
@@ -71,12 +66,13 @@ export default function Portal({
                 onClick={(e) => {
                     e.stopPropagation()
                     setLocation('/portal/' + id)
-                    //onClick()
                 }}
             >
                 <planeGeometry args={[width, height]} />
                 <MeshPortalMaterial ref={portalRef} events={params?.id === id} side={THREE.DoubleSide}>
                     <color attach="background" args={[bg]} />
+                    <ambientLight intensity={0.6} />
+                    <spotLight position={[0, 5, 5]} intensity={0.8} />
                     {children}
                 </MeshPortalMaterial>
             </mesh>

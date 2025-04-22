@@ -1,9 +1,10 @@
-// Transition.js
+import * as THREE from 'three'
 import React, { useRef, useMemo } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
-import { Plane } from '@react-three/drei'
+import { useFrame, useThree, extend } from '@react-three/fiber'
+import { Plane, shaderMaterial } from '@react-three/drei'
 
-const Transition = ({ sceneA, sceneB, texture, transitionParams }) => {
+// composant pour faire une transition fluide
+export default function Transition ({ sceneA, sceneB, texture, transitionParams }){
     const materialRef = useRef()
     const { size } = useThree()
 
@@ -39,14 +40,8 @@ const Transition = ({ sceneA, sceneB, texture, transitionParams }) => {
     )
 }
 
-export default Transition
 
-
-// TransitionMaterial.js
-import { shaderMaterial } from '@react-three/drei'
-import * as THREE from 'three'
-import { extend } from '@react-three/fiber'
-
+// shader pour la transition
 const TransitionMaterial = shaderMaterial(
     {
         tDiffuse1: null,
@@ -89,5 +84,4 @@ const TransitionMaterial = shaderMaterial(
     }
   `
 )
-
 extend({ TransitionMaterial })

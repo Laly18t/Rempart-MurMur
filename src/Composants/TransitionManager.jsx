@@ -1,13 +1,18 @@
 // TransitionManager.js
-import { useEffect, useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useLocation } from 'wouter'
 import { useFrame } from '@react-three/fiber'
+
+// composant
 import Transition from './Transition'
 
+// gestion de la transition
 export default function TransitionManager({ children, textureUrl }) {
     const [sceneA, setSceneA] = useState(null)
     const [sceneB, setSceneB] = useState(null)
     const [showTransition, setShowTransition] = useState(false)
+    const [, setLocation] = useLocation()
+    const nextRouteRef = useRef(null)
     const [transitionParams] = useState({
         animateTransition: false,
         transitionSpeed: 2.0,
@@ -18,9 +23,6 @@ export default function TransitionManager({ children, textureUrl }) {
         loopTexture: false,
         needChange: true,
     })
-
-    const [, setLocation] = useLocation()
-    const nextRouteRef = useRef(null)
 
     // intercepter navigation
     const navigateWithTransition = (nextRoute) => {
