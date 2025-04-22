@@ -9,13 +9,12 @@ import MedievalScene from './Models/MedievalScene'
 import WarScene from './Models/WarScene'
 import VictorianScene from './Models/VictorianScene'
 
-
+// A REFAIRE pour simplifier
 const positions = {
     'monde-medieval': [35, 0, 3],
     'monde-victorien': [65, 0, 3],
-    'monde-guerre': [95, 0, 3],
+    'monde-guerre': [95, 0, 5],
 }
-
 const positionsParchemin = {
     'monde-medieval': [35, 0, 0],
     'monde-victorien': [65, 0, 0],
