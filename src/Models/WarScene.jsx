@@ -4,7 +4,7 @@ import * as THREE from 'three'
 
 export default function WarScene(props) {
     const groupRef = useRef()
-    const { scene } = useGLTF('/guerreScene.gltf')
+    const { scene } = useGLTF('/models/scene_1942.gltf')
 
     useEffect(() => {
             scene.traverse((child) => {
@@ -17,7 +17,7 @@ export default function WarScene(props) {
         }, [scene])
 
     return <>
-        <group position={[0,0,0]} rotation-y={ -3.1 } ref={groupRef} {...props} dispose={null}>
+        <group position={[0,-2,0]} rotation-y={ -3.1 } ref={groupRef} {...props} dispose={null}>
             <primitive castShadow receiveShadow object={scene} />
         </group>
         </>

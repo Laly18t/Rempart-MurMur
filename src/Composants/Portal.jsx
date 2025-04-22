@@ -15,8 +15,8 @@ export default function Portal({
     position,
     rotation = [0, 0, 0],
     width = 10,
-    height = 9,
-    bg = "#e4cdac",
+    height = 8,
+    bg = "#fffff",
     textureDecoration,
     onClick,
     children
@@ -44,11 +44,10 @@ export default function Portal({
         <group position={position} rotation={rotation}>
             {/* decoration autour du portail */}
             <mesh position={[0, 0, 0]}>
-                <planeGeometry args={[28, 20]} />
+                <planeGeometry args={[28, 18]} />
                 <meshBasicMaterial
                     map={textureDecoration}
                     transparent
-                    alphaTest={0.1}
                 />
             </mesh>
 

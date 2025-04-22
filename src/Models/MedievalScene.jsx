@@ -4,7 +4,7 @@ import * as THREE from 'three'
 
 export default function MedievalScene(props) {
     const groupRef = useRef()
-    const { scene } = useGLTF('/medievalScene.gltf')
+    const { scene } = useGLTF('/models/medievalScene.gltf')
 
     useEffect(() => {
         scene.traverse((child) => {

@@ -4,7 +4,7 @@ import * as THREE from 'three'
 
 export default function VictorianScene(props) {
     const groupRef = useRef()
-    const { scene } = useGLTF('/victorianScene.gltf')
+    const { scene } = useGLTF('/models/victorianScene.gltf')
 
     useEffect(() => {
         scene.traverse((child) => {

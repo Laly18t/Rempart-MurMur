@@ -121,7 +121,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             >
                 <ambientLight intensity={0.5} />
                 <spotLight position={[0, 5, 5]} intensity={1} />
-                <Suspense><MedievalScene position={[0,-2,0]} /></Suspense>
+                <Suspense><MedievalScene /></Suspense>
             </Portal>
 
             {/* Portail 2 - Victorien */}
@@ -135,7 +135,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             >
                 <ambientLight intensity={0.5} />
                 <spotLight position={[0, 5, 5]} intensity={1} />
-                <Suspense><VictorianScene position={[0,0,0]} /></Suspense>
+                <Suspense><VictorianScene /></Suspense>
             </Portal>
 
             {/* Portail 3 - 2nd guerre mondiale */}
@@ -150,7 +150,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             >
                 <ambientLight intensity={0.8} />
                 <spotLight position={[0, 5, 5]} intensity={1} />
-                <Suspense><WarScene position={[0,0,0]} /></Suspense>
+                <Suspense><WarScene /></Suspense>
             </Portal>
         </group>
     )
