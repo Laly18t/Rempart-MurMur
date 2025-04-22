@@ -5,18 +5,19 @@ import * as THREE from 'three'
 // Composant du lustre
 export default function Lustre(props) {
     const groupRef = useRef()
-    const { scene } = useGLTF('/models/lustre.gltf')
     const [clickedBougies, setClickedBougies] = useState({})
+    // load
+    const { scene } = useGLTF('/models/lustre.gltf')
 
-    // parcourir la scène une fois chargée
+    // parcourir la scene une fois chargee
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh && child.name.toLowerCase().includes('bougie')) {
                 child.material = new THREE.MeshStandardMaterial({
                     color: 'white', // couleur de base
-                    emissive: 'black', // couleur de lumiere emise (noire = éteinte)
-                    emissiveIntensity: 3, // intensité de l’emission
-                    toneMapped: false, // empeche le rendu HDR d’affecter la couleur émise
+                    emissive: 'black', // couleur de lumiere emise (noire = eteinte)
+                    emissiveIntensity: 3, // intensite
+                    toneMapped: false,
                 })
 
                 child.userData.clickable = true
@@ -47,4 +48,4 @@ export default function Lustre(props) {
     )
 }
 
-useGLTF.preload('/lustre.gltf')
+useGLTF.preload('/models/lustre.gltf')
