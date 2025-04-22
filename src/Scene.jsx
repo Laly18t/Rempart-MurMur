@@ -100,7 +100,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             <Portal
                 id="monde-medieval"
                 name="1317"
-                position={[35, 0, 0]}
+                position={[35, 0, 1]}
                 onClick={() => onEnterPortal('monde-medieval')}
                 textureDecoration={warFrame}
             >
@@ -111,7 +111,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             <Portal
                 id="monde-victorien"
                 name="1834"
-                position={[65, 0, 0]}
+                position={[65, 1, 0]}
                 onClick={() => onEnterPortal('monde-victorien')}
                 textureDecoration={warFrame}
             >

@@ -1,7 +1,9 @@
-import { Canvas } from '@react-three/fiber'
-import Scene from './Scene'
 import { Suspense } from 'react'
+import { Canvas } from '@react-three/fiber'
 import { Perf } from 'r3f-perf'
+
+// composant
+import Scene from './Scene'
 import TransitionManager from './Composants/TransitionManager'
 
 export default function App() {

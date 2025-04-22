@@ -4,6 +4,7 @@ import * as THREE from 'three'
 
 export default function VictorianScene(props) {
     const groupRef = useRef()
+    // load model
     const { scene } = useGLTF('/models/victorianScene.gltf')
 
     useEffect(() => {
@@ -23,4 +24,4 @@ export default function VictorianScene(props) {
         </>
 }
 
-useGLTF.preload('/victorianScene.gltf')
+useGLTF.preload('/models/victorianScene.gltf')
