@@ -47,13 +47,20 @@ export default function Lustre(props) {
         }
     }
 
+    const [ isLookingAtCandle, setLookAtCandle ] = useState(false)
+
     return (
         <group  
             ref={groupRef} 
             dispose={null} 
             onClick={() => {
-                camera.position.lerp(new THREE.Vector3(36.6, 0.2, 0), 0.05)
-                camera.lookAt(15,-15,-25)
+                if (isLookingAtCandle) {
+                    return
+                }
+
+                camera.position.lerp(new THREE.Vector3(5, 12, 5), 0.05)
+                camera.lookAt(0, 2, 0)
+                setLookAtCandle(true)
             }}
             onPointerDown={handlePointerDown} 
             position={[0, 2, 0]}
