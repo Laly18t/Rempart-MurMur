@@ -1,13 +1,19 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
+import React, { useRef, useState, useEffect, forwardRef } from 'react'
+import { useGLTF } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
 
 // Composant du lustre
 export default function Lustre(props) {
+    const { camera } = useThree()
     const groupRef = useRef()
-    const [clickedBougies, setClickedBougies] = useState({})
+    const [clickedCandles, setClickedCandles] = useState({})
     // load
     const { scene } = useGLTF('/models/lustre.gltf')
+
+    // compter le nb de bougies allumés
+    const candlesCount = Object.values(clickedCandles).filter(Boolean).length
+    const showLight = candlesCount >= 6
 
     // parcourir la scene une fois chargee
     useEffect(() => {
@@ -24,11 +30,11 @@ export default function Lustre(props) {
                 // allumer les bougies 1 fois
                 child.onClick = () => {
                     const id = child.uuid
-                    const clicked = clickedBougies[id]
+                    const clicked = clickedCandles[id]
 
                     child.material.emissive.set(clicked ? 'black' : 'orange')
                     child.material.emissiveIntensity = clicked ? 1 : 2
-                    setClickedBougies(prev => ({ ...prev, [id]: !clicked }))
+                    setClickedCandles(prev => ({ ...prev, [id]: !clicked }))
                 }
             }
         })
@@ -42,8 +48,22 @@ export default function Lustre(props) {
     }
 
     return (
-        <group ref={groupRef} {...props} dispose={null} onPointerDown={handlePointerDown}>
+        <group  
+            ref={groupRef} 
+            dispose={null} 
+            onClick={() => {
+                camera.position.lerp(new THREE.Vector3(36.6, 0.2, 0), 0.05)
+                camera.lookAt(15,-15,-25)
+            }}
+            onPointerDown={handlePointerDown} 
+            position={[0, 2, 0]}
+            rotateY={0.5}
+        >
             <primitive object={scene} />
+            {showLight && (<>
+                <ambientLight intensity={0.6} />
+                <spotLight position={[0, 5, 5]} intensity={0.8} />
+            </>)}
         </group>
     )
 }

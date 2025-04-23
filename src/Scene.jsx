@@ -5,15 +5,16 @@ import { useRoute } from 'wouter'
 
 // commposants
 import Portal from './Composants/Portal'
-import MedievalScene from './Models/MedievalScene'
-import WarScene from './Models/WarScene'
-import VictorianScene from './Models/VictorianScene'
+import MedievalScene from './Models/MedievalScene'   // 1317
+import VictorianScene from './Models/VictorianScene' // 1749
+import WarScene from './Models/WarScene'             // 1940
+
 
 // A REFAIRE pour simplifier
 const positions = {
-    'monde-medieval': [35, 0, 3],
-    'monde-victorien': [65, 0, 3],
-    'monde-guerre': [95, 0, 5],
+    'monde-medieval': [35, 0, 4],
+    'monde-victorien': [65, 0, 4],
+    'monde-guerre': [95, 0, 4],
 }
 const positionsParchemin = {
     'monde-medieval': [35, 0, 0],
@@ -21,6 +22,7 @@ const positionsParchemin = {
     'monde-guerre': [95, 0, 0],
 }
 
+// scene centrale
 export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
     const groupRef = useRef()
     const { camera, gl, scene } = useThree()
@@ -48,10 +50,8 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [activePortalId, onEnterPortal])
 
-
     // gestion des transitions
     useSceneTransition(gl, camera, scene, setSceneA, setSceneB)
-
 
     // gestion de la camera
     useCameraControl(activePortalId, scrollRef, camera)
@@ -82,13 +82,15 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 id="monde-victorien"
                 name="1834"
                 position={positionsParchemin['monde-victorien']}
-                onClick={() => 
+                onClick={() =>
                     onEnterPortal('monde-victorien')
                 }
                 textureDecoration={warFrame}
             >
                 <Suspense>
                     <VictorianScene />
+                    <ambientLight intensity={0.6} />
+                    <spotLight position={[0, 5, 5]} intensity={0.8} />
                 </Suspense>
             </Portal>
 
@@ -102,6 +104,8 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             >
                 <Suspense>
                     <WarScene />
+                    <ambientLight intensity={0.6} />
+                    <spotLight position={[0, 5, 5]} intensity={0.8} />
                 </Suspense>
             </Portal>
         </group>
@@ -146,7 +150,7 @@ const useSceneTransition = (gl, camera, scene, setSceneA, setSceneB) => {
 const useCameraControl = (activePortalId, scrollRef, camera) => {
     useFrame(() => {
         if (activePortalId && positions[activePortalId]) {
-            camera.position.set(...positions[activePortalId])
+            camera.position.lerp(new THREE.Vector3(...positions[activePortalId]), 0.05)
         } else {
             camera.position.set(scrollRef.current, 0, 10)
             camera.lookAt(scrollRef.current, 0, 0)

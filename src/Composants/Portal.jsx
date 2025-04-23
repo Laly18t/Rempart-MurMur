@@ -71,8 +71,6 @@ export default function Portal({
                 <planeGeometry args={[width, height]} />
                 <MeshPortalMaterial ref={portalRef} events={params?.id === id} side={THREE.DoubleSide}>
                     <color attach="background" args={[bg]} />
-                    <ambientLight intensity={0.6} />
-                    <spotLight position={[0, 5, 5]} intensity={0.8} />
                     {children}
                 </MeshPortalMaterial>
             </mesh>
