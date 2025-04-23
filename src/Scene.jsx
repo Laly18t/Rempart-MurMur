@@ -8,6 +8,7 @@ import Portal from './Composants/Portal'
 import MedievalScene from './Models/MedievalScene'   // 1317
 import VictorianScene from './Models/VictorianScene' // 1749
 import WarScene from './Models/WarScene'             // 1940
+import { VoiceOver } from './Composants/VoiceOver'
 
 
 // A REFAIRE pour simplifier
@@ -28,6 +29,10 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
     const { camera, gl, scene } = useThree()
     const [, params] = useRoute('/portal/:id')
     const [activePortalId, setActivePortalId] = useState(null)
+    const [canEnterPortal, setCanEnterPortal] = useState(false) // bloquer l'entree dans un portail
+
+    // voix-off
+    const [voiceStep, setVoiceStep] = useState('intro')
 
     // load des textures + cadres
     const texture = useTextureLoader('/texture_parchemin.png')
@@ -36,6 +41,11 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
     // gestion du portail actif
     useEffect(() => {
         setActivePortalId(params?.id ?? null)
+
+        // lancer la bonne voix-off
+        if (params?.id) {
+            setVoiceStep(params.id)
+        }
     }, [params])
 
     // gestion du scroll
@@ -56,7 +66,20 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
     // gestion de la camera
     useCameraControl(activePortalId, scrollRef, camera)
 
-    return (
+    return <>
+        {/* activation voix-off */}
+        <VoiceOver
+            voiceStep={voiceStep}
+            onComplete={(step) => {
+                if (step === 'intro') {
+                    setCanEnterPortal(true)
+                }
+            }}
+            onSegmentChange={(index) => {
+                console.log(`Segment ${index} joué pour ${voiceStep}`)
+            }}
+        />
+
         <group ref={groupRef}>
             {/* Parchemin */}
             <mesh position={[0, 0, -3]}>
@@ -69,7 +92,9 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 id="monde-medieval"
                 name="1317"
                 position={positionsParchemin['monde-medieval']}
-                onClick={() => onEnterPortal('monde-medieval')}
+                onClick={() => {
+                    if (canEnterPortal) onEnterPortal('monde-medieval')
+                }}
                 textureDecoration={warFrame}
             >
                 <Suspense>
@@ -82,9 +107,9 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 id="monde-victorien"
                 name="1834"
                 position={positionsParchemin['monde-victorien']}
-                onClick={() =>
-                    onEnterPortal('monde-victorien')
-                }
+                onClick={() =>{
+                    if (canEnterPortal) onEnterPortal('monde-victorien')
+                }}
                 textureDecoration={warFrame}
             >
                 <Suspense>
@@ -99,7 +124,9 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 id="monde-guerre"
                 name="1940"
                 position={positionsParchemin['monde-guerre']}
-                onClick={() => onEnterPortal('/portal/monde-guerre')}
+                onClick={() =>{
+                    if (canEnterPortal) onEnterPortal('monde-guerre')
+                }}
                 textureDecoration={warFrame}
             >
                 <Suspense>
@@ -109,7 +136,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 </Suspense>
             </Portal>
         </group>
-    )
+    </>
 }
 
 // chargement de la texture du parchemin
