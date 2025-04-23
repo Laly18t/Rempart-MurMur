@@ -12,7 +12,7 @@ const AUDIO_SEQUENCES = {
 }
 
 // gestion des voix-off
-export function VoiceOver({ voiceStep, onComplete, onSegmentChange }) {
+export default function VoiceOver({ voiceStep, onComplete, onSegmentChange }) {
     const { camera } = useThree()
     const soundRef = useRef(null)
     const listenerRef = useRef(null)
