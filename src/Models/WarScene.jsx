@@ -10,8 +10,6 @@ export default function WarScene(props) {
     const groupRef = useRef()
     const mixerRef = useRef()
 
-    console.log(scene)
-
     useEffect(() => {
         // mixer
         mixerRef.current = new THREE.AnimationMixer(scene)
