@@ -5,6 +5,7 @@ import { Perf } from 'r3f-perf'
 // composant
 import Scene from './Scene'
 import TransitionManager from './Composants/TransitionManager'
+import { SETTINGS } from './constants'
 
 export default function App() {
   return (
@@ -18,7 +19,8 @@ export default function App() {
                 setSceneA={setSceneA}
                 setSceneB={setSceneB}
               />
-              <Perf />
+            
+              {SETTINGS.DEBUG && <Perf />}
             </>
           )}
         </TransitionManager>
