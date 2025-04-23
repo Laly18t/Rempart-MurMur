@@ -1,64 +1,40 @@
-import * as THREE from 'three'
+import { TextureLoader } from 'three'
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { useFrame, useLoader, useThree } from '@react-three/fiber'
+import { useLoader, useThree } from '@react-three/fiber'
 import { useRoute } from 'wouter'
 
-// commposants
+// composants
 import Portal from './Composants/Portal'
+import VoiceOver from './Composants/VoiceOver'
 import MedievalScene from './Models/MedievalScene'   // 1317
 import VictorianScene from './Models/VictorianScene' // 1749
 import WarScene from './Models/WarScene'             // 1940
-import { VoiceOver } from './Composants/VoiceOver'
 
+// constants
+import CONSTANTS, { ASSETS, DATA } from './constants'
 
-// A REFAIRE pour simplifier
-const positions = {
-    'monde-medieval': [35, 0, 4],
-    'monde-victorien': [65, 0, 4],
-    'monde-guerre': [95, 0, 4],
-}
-const positionsParchemin = {
-    'monde-medieval': [35, 0, 0],
-    'monde-victorien': [65, 0, 0],
-    'monde-guerre': [95, 0, 0],
-}
+// hooks
+import useScrollControl from './hooks/useScrollControl'
+import useCameraControl from './hooks/useCameraControl'
+import useSceneTransition from './hooks/useSceneTransition'
+import useTextureLoader from './hooks/useTextureLoader'
+import useActivePortal from './hooks/useActivePortal'
 
 // scene centrale
 export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
     const groupRef = useRef()
     const { camera, gl, scene } = useThree()
-    const [, params] = useRoute('/portal/:id')
-    const [activePortalId, setActivePortalId] = useState(null)
     const [canEnterPortal, setCanEnterPortal] = useState(false) // bloquer l'entree dans un portail
 
-    // voix-off
-    const [voiceStep, setVoiceStep] = useState('intro')
-
     // load des textures + cadres
-    const texture = useTextureLoader('/texture_parchemin.png')
-    const warFrame = useLoader(THREE.TextureLoader, '/cadre_1942.png')
+    const textureParchemin = useTextureLoader(ASSETS.TEXTURE_PARCHEMIN)
+    const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
 
     // gestion du portail actif
-    useEffect(() => {
-        setActivePortalId(params?.id ?? null)
-
-        // lancer la bonne voix-off
-        if (params?.id) {
-            setVoiceStep(params.id)
-        }
-    }, [params])
+    const { activePortalId, voiceStep } = useActivePortal(onEnterPortal)
 
     // gestion du scroll
     const scrollRef = useScrollControl(activePortalId)
-
-    // gestion du clavier (pour sortir d'un portail)
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'Escape' && activePortalId) onEnterPortal('/')
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [activePortalId, onEnterPortal])
 
     // gestion des transitions
     useSceneTransition(gl, camera, scene, setSceneA, setSceneB)
@@ -76,7 +52,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 }
             }}
             onSegmentChange={(index) => {
-                console.log(`Segment ${index} joué pour ${voiceStep}`)
+                console.log(`Audio ${index} fini pour ${voiceStep}`)
             }}
         />
 
@@ -84,16 +60,16 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             {/* Parchemin */}
             <mesh position={[0, 0, -3]}>
                 <planeGeometry args={[370, 20]} />
-                <meshBasicMaterial map={texture} />
+                <meshBasicMaterial map={textureParchemin} />
             </mesh>
 
             {/* Portail 1 - Medieval */}
             <Portal
-                id="monde-medieval"
-                name="1317"
-                position={positionsParchemin['monde-medieval']}
+                id={DATA.medieval.name}
+                name={DATA.medieval.date}
+                position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.medieval.name]}
                 onClick={() => {
-                    if (canEnterPortal) onEnterPortal('monde-medieval')
+                    if (canEnterPortal) onEnterPortal(DATA.medieval.name)
                 }}
                 textureDecoration={warFrame}
             >
@@ -104,11 +80,11 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
 
             {/* Portail 2 - Victorien */}
             <Portal
-                id="monde-victorien"
-                name="1834"
-                position={positionsParchemin['monde-victorien']}
+                id={DATA.moderne.name}
+                name={DATA.moderne.date}
+                position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.moderne.name]}
                 onClick={() =>{
-                    if (canEnterPortal) onEnterPortal('monde-victorien')
+                    if (canEnterPortal) onEnterPortal(DATA.moderne.name)
                 }}
                 textureDecoration={warFrame}
             >
@@ -121,11 +97,11 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
 
             {/* Portail 3 - 2nd guerre mondiale */}
             <Portal
-                id="monde-guerre"
-                name="1940"
-                position={positionsParchemin['monde-guerre']}
+                id={DATA.guerre.name}
+                name={DATA.guerre.date}
+                position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.guerre.name]}
                 onClick={() =>{
-                    if (canEnterPortal) onEnterPortal('monde-guerre')
+                    if (canEnterPortal) onEnterPortal(DATA.guerre.name)
                 }}
                 textureDecoration={warFrame}
             >
@@ -137,50 +113,4 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
             </Portal>
         </group>
     </>
-}
-
-// chargement de la texture du parchemin
-const useTextureLoader = (path) => {
-    const texture = useLoader(THREE.TextureLoader, path)
-    useEffect(() => {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(10, 1)
-    }, [texture])
-    return texture
-}
-
-// gestion du scroll horizontal
-const useScrollControl = (activePortalId) => {
-    const scrollRef = useRef(0)
-    useEffect(() => {
-        const handleScroll = (event) => {
-            if (!activePortalId) {
-                scrollRef.current -= event.deltaY * 0.05
-                scrollRef.current = Math.max(0, Math.min(scrollRef.current, 120))
-            }
-        }
-        window.addEventListener('wheel', handleScroll)
-        return () => window.removeEventListener('wheel', handleScroll)
-    }, [activePortalId])
-    return scrollRef
-}
-
-// gestion des transitions de portails
-const useSceneTransition = (gl, camera, scene, setSceneA, setSceneB) => {
-    useEffect(() => {
-        if (typeof setSceneA === 'function') setSceneA({ fbo: gl.getRenderTarget(), scene, camera })
-        if (typeof setSceneB === 'function') setSceneB({ fbo: gl.getRenderTarget(), scene, camera })
-    }, [gl, camera, scene, setSceneA, setSceneB])
-}
-
-// gestion de la camera
-const useCameraControl = (activePortalId, scrollRef, camera) => {
-    useFrame(() => {
-        if (activePortalId && positions[activePortalId]) {
-            camera.position.lerp(new THREE.Vector3(...positions[activePortalId]), 0.05)
-        } else {
-            camera.position.set(scrollRef.current, 0, 10)
-            camera.lookAt(scrollRef.current, 0, 0)
-        }
-    })
 }

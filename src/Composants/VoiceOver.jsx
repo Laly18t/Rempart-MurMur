@@ -1,15 +1,7 @@
 import { useThree } from "@react-three/fiber"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Audio, AudioListener, AudioLoader } from "three"
-
-// chemin des audio
-const AUDIO_SEQUENCES = {
-    'intro': ['/audio/rempart-intro.mp3'],
-    'monde-medieval': ['/audio/rempart-1317.mp3'],
-    'monde-victorien': ['/audio/rempart-1789.mp3'],
-    'monde-guerre': ['/audio/rempart-1942.mp3'],
-    'outro': ['/audio/rempart-fin.mp3'],
-}
+import { AUDIO_SEQUENCES } from "../constants"
 
 // gestion des voix-off
 export default function VoiceOver({ voiceStep, onComplete, onSegmentChange }) {
