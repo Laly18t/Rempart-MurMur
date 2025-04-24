@@ -1,16 +1,16 @@
 import React, { useRef, useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
-import * as THREE from 'three'
+import { MeshNormalMaterial } from 'three'
 
 export default function VictorianScene(props) {
+    const { scene } = useGLTF('/models/victorianScene.gltf') // load model
     const groupRef = useRef()
-    // load model
-    const { scene } = useGLTF('/models/victorianScene.gltf')
 
+    // temporaire
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
-                child.material = new THREE.MeshNormalMaterial()
+                child.material = new MeshNormalMaterial()
                 child.castShadow = true
                 child.receiveShadow = true
             }

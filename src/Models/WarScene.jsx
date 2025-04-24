@@ -5,14 +5,12 @@ import { useGLTF } from '@react-three/drei'
 import LustreTest from './LustreTest'
 import InfoBulle from '../Composants/InfoBulle'
 
-// hooks
-import useAnimation from '../hooks/useAnimation'
+import useAnimation from '../hooks/useAnimation' // hooks
 
 export default function WarScene(props) {
-    // load model
-    const { scene, animations, cameras } = useGLTF('/models/scene_1942_v2.glb')
-
+    const { scene, animations, cameras } = useGLTF('/models/scene_1942_v2.glb') // load model
     const groupRef = useRef()
+    
     useAnimation(scene,animations, cameras) // animation hook
 
     return <>
