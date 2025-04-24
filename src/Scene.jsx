@@ -30,17 +30,11 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
     const textureParchemin = useTextureLoader(ASSETS.TEXTURE_PARCHEMIN)
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
 
-    // gestion du portail actif
-    const { activePortalId, voiceStep } = useActivePortal(onEnterPortal)
-
-    // gestion du scroll
-    const scrollRef = useScrollControl(activePortalId)
-
-    // gestion des transitions
-    useSceneTransition(gl, camera, scene, setSceneA, setSceneB)
-
-    // gestion de la camera
-    useCameraControl(activePortalId, scrollRef, camera)
+    // hooks
+    const { activePortalId, voiceStep } = useActivePortal(onEnterPortal) // gestion du portail actif
+    const scrollRef = useScrollControl(activePortalId)  // gestion du scroll
+    useSceneTransition(gl, camera, scene, setSceneA, setSceneB) // gestion des transitions
+    useCameraControl(activePortalId, scrollRef, camera) // gestion de la camera
 
     return <>
         {/* activation voix-off */}
