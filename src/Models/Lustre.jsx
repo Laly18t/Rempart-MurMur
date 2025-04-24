@@ -5,12 +5,11 @@ import { useThree } from '@react-three/fiber'
 
 // Composant du lustre
 export default function Lustre(props) {
-    const { scene } = useGLTF('/models/lustre.gltf') // load
+    const { scene } = useGLTF('/models/objects/lustre.gltf') // load
     const { camera } = useThree()
     const groupRef = useRef()
-    const [clickedCandles, setClickedCandles] = useState({})
-    
 
+    const [clickedCandles, setClickedCandles] = useState({})
     const [isLookingAtCandle, setLookAtCandle] = useState(false);
 
     // compter le nb de bougies allumés
@@ -55,7 +54,7 @@ export default function Lustre(props) {
             dispose={null} 
             onClick={() => {
                 if (isLookingAtCandle) { return }
-                camera.position.lerp(new THREE.Vector3(40, 15, 0), 0.05)
+                camera.position.lerp(new THREE.Vector3(40, 1, 0), 0.05)
                 camera.lookAt(15,-5,-25)
                 setLookAtCandle(true)
             }}
@@ -72,4 +71,4 @@ export default function Lustre(props) {
     )
 }
 
-useGLTF.preload('/models/lustre.gltf')
+useGLTF.preload('/models/objects/lustre.gltf')
