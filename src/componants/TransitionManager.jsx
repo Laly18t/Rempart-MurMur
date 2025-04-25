@@ -15,7 +15,7 @@ export default function TransitionManager({ children, textureUrl }) {
     const nextRouteRef = useRef(null)
     const [transitionParams] = useState({
         animateTransition: false,
-        transitionSpeed: 10.0,
+        transitionSpeed: 2.0,
         transition: 0.0,
         threshold: 0.1,
         useTexture: true,

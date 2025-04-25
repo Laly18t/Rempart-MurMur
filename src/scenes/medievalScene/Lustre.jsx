@@ -54,13 +54,12 @@ export default function Lustre(props) {
             dispose={null} 
             onClick={() => {
                 if (isLookingAtCandle) { return }
-                camera.position.lerp(new THREE.Vector3(40, 1, 0), 0.05)
+                camera.position.lerp(new THREE.Vector3(40, 1, 2), 0.05)
                 camera.lookAt(15,-5,-25)
                 setLookAtCandle(true)
             }}
             onPointerDown={handlePointerDown} 
             position={[0, 2, 0]}
-            rotateY={0.5}
         >
             <primitive object={scene} />
             {showLight && (<>

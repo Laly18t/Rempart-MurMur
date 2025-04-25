@@ -52,7 +52,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
         <mesh position={[0, 0, 4]} rotation={[0, Math.PI / 2, 0]}>
             <boxGeometry args={[0.1, 0.6, 2.5]} />
             <meshBasicMaterial color="red" />
-            <Text fontSize={0.3} rotation={[0, -Math.PI / 2, 0]} anchorY="top" anchorX="left" lineHeight={0.8} position={[-1, 0.1, -0.9]} material-toneMapped={false}>
+            <Text fontSize={0.3} rotation={[0, -Math.PI / 2, 0]} anchorY="top" anchorX="left" lineHeight={0.8} position={[-1, 0.1, -0.9]}>
                 Activer le son
             </Text>
         </mesh>
