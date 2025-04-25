@@ -2,7 +2,8 @@ import { useFrame } from "@react-three/fiber"
 import { useEffect, useRef } from "react"
 import { AnimationMixer, LoopRepeat } from 'three'
 
-const useAnimation = (scene,animations, cameras) => {
+// TODO : refactor pour cibler les animations 
+const useAnimation = (scene,animations) => {
     const mixerRef = useRef()
 
     // gestion de l'animation de la trappe
@@ -21,7 +22,7 @@ const useAnimation = (scene,animations, cameras) => {
             // clean
             mixerRef.current.stopAllAction()
         }
-    }, [scene, animations, cameras])
+    }, [scene, animations])
 
     // MAJ mixer a chaque frame (pour l'anim)
     useFrame((state, delta) => {
