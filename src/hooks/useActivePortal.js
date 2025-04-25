@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { useRoute } from "wouter"
 
-// gestion du portail actif 
+// gestion du portail actif et de la voix-off
+// TODO : refactor pour isoler la voix-off
 const useActivePortal = (onEnterPortal) => {
     // voix-off
     const [voiceStep, setVoiceStep] = useState('intro')

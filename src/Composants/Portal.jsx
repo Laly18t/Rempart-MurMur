@@ -28,6 +28,7 @@ export default function Portal({
     // changement de curseur en hover
     useCursor(hovered)
 
+    // TODO : composant generique 
     useFrame((state, delta) => {
         // animation d'ouverture du portail au click
         if (portalRef.current) {
