@@ -1,29 +1,32 @@
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
+import { Vector3 } from 'three'
+
+import { POSITIONS_ZOOM } from '../../constants'
+import useZoom from '../../hooks/useZoom'
 
 export default function Poison(props) {
     const { nodes, materials } = useGLTF('/models/objects/fiole-poison.gltf')
-    const { camera } = useThree()
     const groupRef = useRef()
+    const { camera } = useThree()
+    
+    // zoom
+    const CAMERA_TARGET_IN = new Vector3(35.3, -1, -0.5)
+    const CAMERA_TARGET_OUT = new Vector3(...POSITIONS_ZOOM['monde-medieval'])
+    const toggleZoom = useZoom(CAMERA_TARGET_IN, CAMERA_TARGET_OUT) // hook de zoom
 
-    const [isLookingPoison, setLookPoison] = useState(false)
-
-    // recup du clique dans la scene
-    const handlePointerDown = (event) => {
-        if (event.object?.userData?.clickable) {
-            event.object.onClick?.()
-        }
+    const handleClick = () => {
+        toggleZoom()
     }
 
     return (
-        <group ref={groupRef} {...props} dispose={null} onPointerDown={handlePointerDown} onClick={() => {
-            if (isLookingPoison) { return }
-            camera.position.lerp(new THREE.Vector3(35, 1, 3), 0.05)
-            console.log('clic')
-            setLookPoison(true)
-        }}>
+        <group 
+        ref={groupRef} 
+        onClick={handleClick}
+        {...props} 
+        >
             <mesh
                 castShadow
                 receiveShadow
