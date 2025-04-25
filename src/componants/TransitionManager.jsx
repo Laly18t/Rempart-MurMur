@@ -33,10 +33,13 @@ export default function TransitionManager({ children, textureUrl }) {
 
     // lancer la navigation
     useFrame(() => {
-        if (transitionParams.transition >= 1 && transitionParams.animateTransition) {
-            transitionParams.animateTransition = false
-            setShowTransition(false)
-            setLocation(nextRouteRef.current)
+        if (transitionParams.current.animateTransition) {
+            transitionParams.current.transition += delta * transitionParams.current.transitionSpeed
+            if (transitionParams.current.transition >= 1) {
+                transitionParams.current.transition = 1
+                transitionParams.current.animateTransition = false
+                setCurrentSceneId(nextSceneRef.current)
+            }
         }
     })
 

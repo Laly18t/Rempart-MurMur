@@ -12,16 +12,16 @@ export default function Transition ({ sceneA, sceneB, texture, transitionParams 
     const transitionTexture = useMemo(() => new THREE.TextureLoader().load(texture), [texture])
 
     // animation de mix
-    useFrame(({ clock }) => {
-        if (transitionParams.animateTransition) {
-            const t = (1 + Math.sin((transitionParams.transitionSpeed * clock.getElapsedTime()) / Math.PI)) / 2
-            transitionParams.transition = THREE.MathUtils.smoothstep(t, 0.3, 0.7)
-        }
-
-        if (materialRef.current) {
-            materialRef.current.mixRatio = transitionParams.transition
-        }
-    })
+    useFrame((_, delta) => {
+      if (transitionParams.animateTransition) {
+          transitionParams.transition += delta * transitionParams.transitionSpeed
+          transitionParams.transition = Math.min(transitionParams.transition, 1)
+      }
+  
+      if (materialRef.current) {
+          materialRef.current.mixRatio = transitionParams.transition
+      }
+  })
 
     // TODO : clean
     if (!sceneA?.fbo?.texture || !sceneB?.fbo?.texture) return null
