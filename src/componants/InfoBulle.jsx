@@ -4,44 +4,35 @@ import { Vector3 } from 'three'
 import { Text } from '@react-three/drei'
 
 import { POSITIONS_ZOOM } from '../constants'
+import useZoom from '../hooks/useZoom'
 
 export default function InfoBulle({ position = [0, 0, 0], title = "Info", content = "Ceci est une info." }) {
     const [visible, setVisible] = useState(false)
     const pointRef = useRef()
     const popUpRef = useRef()
-    const { camera } = useThree()
-    const targetPosition = useRef(null)
 
+    // zoom
     const CAMERA_TARGET_IN = new Vector3(95, 0, 1)
     const CAMERA_TARGET_OUT = new Vector3(...POSITIONS_ZOOM['monde-guerre'])
+    const toggleZoom = useZoom(CAMERA_TARGET_IN, CAMERA_TARGET_OUT) // hook de zoom
 
-    // billboard effect + zoom camera
-    useFrame(() => {
-        // le point regarde toujours la camera
+    const handleClick = () => {
+        toggleZoom()
+        setVisible(prev => !prev)
+    }
+
+    // billboard effect
+    useFrame(({ camera }) => {
         if (pointRef.current) {
             pointRef.current.lookAt(camera.position)
         }
-
-        // camera zoom
-        if (targetPosition.current) {
-            camera.position.lerp(targetPosition.current, 0.05)
-        }
     })
 
-    // position camera
-    const handleClick = () => {
-        setVisible(prev => {
-            const newVisible = !prev
-            targetPosition.current = newVisible ? CAMERA_TARGET_IN : CAMERA_TARGET_OUT
-            return newVisible
-        })
-    }
-
     return (
-        <group position={position} ref={pointRef}>
+        <group position={position} ref={pointRef} onClick={handleClick}>
 
             {/* Point cliquable */}
-            <mesh onClick={handleClick}>
+            <mesh >
                 <sphereGeometry args={[0.1, 16, 16]} />
                 <meshBasicMaterial color="hotpink" />
             </mesh>
