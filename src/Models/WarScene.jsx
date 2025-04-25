@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 // components
@@ -11,7 +11,7 @@ export default function WarScene(props) {
     const { scene, animations } = useGLTF('/models/scene_1942_v2.glb') // load model
     const groupRef = useRef()
     
-    useAnimation(scene,animations) // animation hook
+    useAnimation(scene, animations) // animation hook
 
     return <>
         <group position={[0, -2, 0]} rotation-y={-3.1} ref={groupRef} {...props} dispose={null}>
