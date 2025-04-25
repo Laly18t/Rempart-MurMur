@@ -47,6 +47,10 @@ export const ASSETS = {
     WAR_FRAME: '/cadre_1942.png' 
 }
 
+export const INTERACTION = {
+    ZOOM_SPEED: 0.03,
+}
+
 // chemin des audio
 export const AUDIO_SEQUENCES = {
     'intro': ['/audio/rempart-intro.mp3'],
@@ -56,4 +60,4 @@ export const AUDIO_SEQUENCES = {
     'outro': ['/audio/rempart-fin.mp3'],
 }
 
-export default { POSITIONS_ZOOM, POSITIONS_PARCHEMIN, SETTINGS, ASSETS, AUDIO_SEQUENCES }
+export default { POSITIONS_ZOOM, POSITIONS_PARCHEMIN, SETTINGS, ASSETS, AUDIO_SEQUENCES, INTERACTION }
