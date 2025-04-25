@@ -23,7 +23,7 @@ const useActivePortal = (onEnterPortal) => {
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape' && activePortalId){
-                onEnterPortal('/') // TODO - bug
+                onEnterPortal('') // TODO - bug
             }
         }
         window.addEventListener('keydown', handleKeyDown)
