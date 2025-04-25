@@ -19,22 +19,24 @@ import useCameraControl from './hooks/useCameraControl'
 import useSceneTransition from './hooks/useSceneTransition'
 import useTextureLoader from './hooks/useTextureLoader'
 import useActivePortal from './hooks/useActivePortal'
+import useSceneStore from './hooks/useSceneStore'
 
 // scene centrale
-export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
+export default function Scene() {
+    const { currentScene, setCurrentScene } = useSceneStore()
     const groupRef = useRef()
-    const { camera, gl, scene } = useThree()
-    const [canEnterPortal, setCanEnterPortal] = useState(false) // bloquer l'entree dans un portail
+    const { camera } = useThree()
+    const [canEnterPortal, setCanEnterPortal] = useState(true) // bloquer l'entree dans un portail
 
     // load des textures + cadres
     const textureParchemin = useTextureLoader(ASSETS.TEXTURE_PARCHEMIN)
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
 
     // hooks
-    const { activePortalId, voiceStep } = useActivePortal(onEnterPortal) // gestion du portail actif
-    const scrollRef = useScrollControl(activePortalId)  // gestion du scroll
-    useSceneTransition(gl, camera, scene, setSceneA, setSceneB) // gestion des transitions
-    useCameraControl(activePortalId, scrollRef, camera) // gestion de la camera
+    const { voiceStep } = useActivePortal() // gestion du portail actif
+    const scrollRef = useScrollControl(currentScene)  // gestion du scroll
+    // useSceneTransition(gl, camera, scene, setSceneA, setSceneB) // gestion des transitions
+    useCameraControl(currentScene, scrollRef, camera) // gestion de la camera
 
     return <>
         {/* activation voix-off */}
@@ -70,7 +72,8 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 name={DATA.medieval.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.medieval.name]}
                 onClick={() => {
-                    if (canEnterPortal) onEnterPortal(DATA.medieval.name)
+                    console.log('clic', canEnterPortal)
+                    if (canEnterPortal) setCurrentScene(DATA.medieval.name)
                 }}
                 textureDecoration={warFrame}
             >
@@ -85,7 +88,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 name={DATA.moderne.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.moderne.name]}
                 onClick={() =>{
-                    if (canEnterPortal) onEnterPortal(DATA.moderne.name)
+                    if (canEnterPortal) setCurrentScene(DATA.moderne.name)
                 }}
                 textureDecoration={warFrame}
             >
@@ -102,7 +105,7 @@ export default function Scene({ onEnterPortal, setSceneA, setSceneB }) {
                 name={DATA.guerre.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.guerre.name]}
                 onClick={() =>{
-                    if (canEnterPortal) onEnterPortal(DATA.guerre.name)
+                    if (canEnterPortal) setCurrentScene(DATA.guerre.name)
                 }}
                 textureDecoration={warFrame}
             >

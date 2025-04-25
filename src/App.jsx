@@ -11,21 +11,21 @@ import { SETTINGS } from './constants'
 export default function App() {
   return <>
     <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-      <TransitionManager textureUrl="./transition.png">
+      {/* <TransitionManager textureUrl="./transition.png">
         {({ navigate, setSceneA, setSceneB }) => (
-          <>
+          <> */}
             <Suspense fallback={null}>
               <Scene
-                onEnterPortal={(id) => navigate(`/portal/${id}`)}
-                setSceneA={setSceneA}
-                setSceneB={setSceneB}
+                // onEnterPortal={(id) => navigate(`/portal/${id}`)}
+                // setSceneA={setSceneA}
+                // setSceneB={setSceneB}
               />
 
               {SETTINGS.DEBUG && <Perf />}
             </Suspense>
-          </>
+          {/* </>
         )}
-      </TransitionManager>
+      </TransitionManager> */}
     </Canvas>
     <Loader />
   </>

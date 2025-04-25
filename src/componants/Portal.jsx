@@ -5,6 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import { MeshPortalMaterial, useCursor, Text } from '@react-three/drei'
 import { useLocation, useRoute } from 'wouter'
 import { easing } from 'maath'
+import useSceneStore from '../hooks/useSceneStore'
 
 // font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')
@@ -18,12 +19,14 @@ export default function Portal({
     height = 8,
     bg = "#eab676",
     textureDecoration,
-    children
+    children,
+    onClick
 }) {
     const portalRef = useRef()
     const [hovered, setHovered] = useState(false)
-    const [, setLocation] = useLocation()
-    const [, params] = useRoute('/portal/:id')
+    const { currentScene } = useSceneStore()
+    // const [, setLocation] = useLocation()
+    // const [, params] = useRoute('/portal/:id')
 
     // changement de curseur en hover
     useCursor(hovered)
@@ -32,7 +35,7 @@ export default function Portal({
     useFrame((state, delta) => {
         // animation d'ouverture du portail au click
         if (portalRef.current) {
-            easing.damp(portalRef.current, 'blend', params?.id === id ? 1 : 0, 0.2, delta)
+            easing.damp(portalRef.current, 'blend', currentScene === id ? 1 : 0, 0.2, delta)
         }
     })
 
@@ -64,13 +67,10 @@ export default function Portal({
                 name={id}
                 onPointerOver={() => setHovered(true)}
                 onPointerOut={() => setHovered(false)}
-                onClick={(e) => {
-                    e.stopPropagation()
-                    setLocation('/portal/' + id)
-                }}
+                onClick={onClick}
             >
                 <planeGeometry args={[width, height]} />
-                <MeshPortalMaterial ref={portalRef} events={params?.id === id} side={THREE.DoubleSide}>
+                <MeshPortalMaterial ref={portalRef} events={currentScene === id} side={THREE.DoubleSide}>
                     <color attach="background" args={[bg]} />
                     {children}
                 </MeshPortalMaterial>
