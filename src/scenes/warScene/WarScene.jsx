@@ -2,10 +2,10 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 // components
-import LustreTest from './LustreTest'
-import InfoBulle from '../Composants/InfoBulle'
+import LustreTest from '../LustreTest'
+import InfoBulle from '../../componants/InfoBulle'
 
-import useAnimation from '../hooks/useAnimation' // hooks
+import useAnimation from '../../hooks/useAnimation' // hooks
 
 export default function WarScene(props) {
     const { scene, animations } = useGLTF('/models/scene_1942_v2.glb') // load model

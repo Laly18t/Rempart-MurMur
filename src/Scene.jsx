@@ -4,11 +4,11 @@ import { useLoader, useThree } from '@react-three/fiber'
 import { Text } from '@react-three/drei'
 
 // composants
-import Portal from './Composants/Portal'
-import VoiceOver from './Composants/VoiceOver'
-import MedievalScene from './Models/MedievalScene'   // 1317
-import VictorianScene from './Models/VictorianScene' // 1749
-import WarScene from './Models/WarScene'             // 1940
+import Portal from './componants/Portal'
+import VoiceOver from './componants/VoiceOver'
+import MedievalScene from './scenes/medievalScene/MedievalScene'   // 1317
+import VictorianScene from './scenes/modernScene/VictorianScene' // 1749
+import WarScene from './scenes/warScene/WarScene'             // 1942
 
 // constants
 import CONSTANTS, { ASSETS, DATA } from './constants'
