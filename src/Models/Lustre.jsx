@@ -10,7 +10,7 @@ export default function Lustre(props) {
     const groupRef = useRef()
 
     const [clickedCandles, setClickedCandles] = useState({})
-    const [isLookingAtCandle, setLookAtCandle] = useState(false);
+    const [isLookingAtCandle, setLookAtCandle] = useState(false)
 
     // compter le nb de bougies allumés
     const candlesCount = Object.values(clickedCandles).filter(Boolean).length
