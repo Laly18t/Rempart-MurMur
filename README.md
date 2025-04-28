@@ -15,7 +15,7 @@ Une application 3D interactive construite avec **React**, **Three.js**, et **@re
 - **@react-three/fiber** – Intégration React pour Three.js
 - **@react-three/drei** – Utilitaires pour R3F
 - **postprocessing** – Effets visuels avancés
-- **wouter** – Router léger pour React
+- **zustand** – Store/state global pour React
 - **r3f-perf** – Outils de debug pour la performance
 - **Vite** – Serveur de développement et bundler ultra-rapide
 

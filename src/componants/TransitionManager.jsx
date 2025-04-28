@@ -1,6 +1,5 @@
 // TransitionManager.js
 import { useState, useRef } from 'react'
-import { useLocation } from 'wouter'
 import { useFrame } from '@react-three/fiber'
 
 // composant
@@ -11,7 +10,6 @@ export default function TransitionManager({ children, textureUrl }) {
     const [sceneA, setSceneA] = useState(null)
     const [sceneB, setSceneB] = useState(null)
     const [showTransition, setShowTransition] = useState(false)
-    const [, setLocation] = useLocation()
     const nextRouteRef = useRef(null)
     const [transitionParams] = useState({
         animateTransition: false,
