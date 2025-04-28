@@ -3,7 +3,6 @@ import { useRef, useState } from 'react'
 import { suspend } from 'suspend-react'
 import { useFrame } from '@react-three/fiber'
 import { MeshPortalMaterial, useCursor, Text } from '@react-three/drei'
-import { useLocation, useRoute } from 'wouter'
 import { easing } from 'maath'
 import useSceneStore from '../hooks/useSceneStore'
 
@@ -22,11 +21,9 @@ export default function Portal({
     children,
     onClick
 }) {
+    const { currentScene } = useSceneStore() // store
     const portalRef = useRef()
     const [hovered, setHovered] = useState(false)
-    const { currentScene } = useSceneStore()
-    // const [, setLocation] = useLocation()
-    // const [, params] = useRoute('/portal/:id')
 
     // changement de curseur en hover
     useCursor(hovered)

@@ -35,7 +35,6 @@ export default function Scene() {
     // hooks
     const { voiceStep } = useActivePortal() // gestion du portail actif
     const scrollRef = useScrollControl(currentScene)  // gestion du scroll
-    // useSceneTransition(gl, camera, scene, setSceneA, setSceneB) // gestion des transitions
     useCameraControl(currentScene, scrollRef, camera) // gestion de la camera
 
     return <>
@@ -72,7 +71,6 @@ export default function Scene() {
                 name={DATA.medieval.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.medieval.name]}
                 onClick={() => {
-                    console.log('clic', canEnterPortal)
                     if (canEnterPortal) setCurrentScene(DATA.medieval.name)
                 }}
                 textureDecoration={warFrame}
