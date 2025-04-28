@@ -8,7 +8,9 @@ import Lustre from './Lustre' // composant
 import Poison from './Poison' // composant
 
 export default function MedievalScene(props) {
-    const { scene } = useGLTF('/models/scene_1317.gltf') // load model
+    const { currentScene } = useSceneStore() // store
+    const { scene } = useGLTF('/models/scene_1317.glb') // load model
+    const { set } = useThree()
     const groupRef = useRef()
 
     // gestion du outline
@@ -41,4 +43,4 @@ export default function MedievalScene(props) {
     </>
 }
 
-useGLTF.preload('/models/scene_1317.gltf')
+useGLTF.preload('/models/scene_1317.glb')

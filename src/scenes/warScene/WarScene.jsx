@@ -8,7 +8,7 @@ import InfoBulle from '../../componants/InfoBulle'
 import useAnimation from '../../hooks/useAnimation' // hooks
 
 export default function WarScene(props) {
-    const { scene, animations } = useGLTF('/models/scene_1942_v2.glb') // load model
+    const { scene, animations } = useGLTF('/models/scene_1942.glb') // load model
     const groupRef = useRef()
     
     useAnimation(scene, animations) // animation hook
@@ -22,4 +22,4 @@ export default function WarScene(props) {
     </>
 }
 
-useGLTF.preload('/models/scene_1942_v2.glb')
+useGLTF.preload('/models/scene_1942.glb')
