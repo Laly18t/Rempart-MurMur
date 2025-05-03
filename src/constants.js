@@ -37,6 +37,8 @@ export const SETTINGS = {
     SCROLL_SPEED: 0.04, 
     MAX_TRANSLATION: 100,
     DEBUG_VOICEOVER: false,
+    SOUND_OFF: 0.0,
+    SOUND_ON: 0.8,
 }
 
 export const TEXTS = {

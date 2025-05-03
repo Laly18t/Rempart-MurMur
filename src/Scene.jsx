@@ -6,6 +6,7 @@ import { Text } from '@react-three/drei'
 // composants
 import Portal from './componants/Portal'
 import VoiceOver from './componants/VoiceOver'
+import SoundButton from './componants/SoundButton'
 import MedievalScene from './scenes/medievalScene/MedievalScene'   // 1317
 import VictorianScene from './scenes/modernScene/VictorianScene' // 1749
 import WarScene from './scenes/warScene/WarScene'             // 1942
@@ -40,7 +41,7 @@ export default function Scene() {
 
     return <>
         {/* activation voix-off */}
-        <VoiceOver 
+        <VoiceOver
             onAudioEnd={(index) => {
                 console.log("Audio terminé:", index)
                 // TODO: enable portal
@@ -48,13 +49,10 @@ export default function Scene() {
         />
 
         {/* bouton pour le son - TODO: refonte graphique */}
-        <mesh position={[0, 0, 4]} rotation={[0, Math.PI / 2, 0]}>
-            <boxGeometry args={[0.1, 0.6, 2.5]} />
-            <meshBasicMaterial color="red" />
-            <Text fontSize={0.3} rotation={[0, -Math.PI / 2, 0]} anchorY="top" anchorX="left" lineHeight={0.8} position={[-0.1, 0.1, -0.9]}>
-                Activer le son
-            </Text>
-        </mesh>
+        <Text position={[0, 0, 4]} color={'red'} fontSize={0.3} anchorY="top" anchorX="left" lineHeight={0.8} >
+            Bienvenue
+        </Text>
+        <SoundButton />
 
         <group ref={groupRef}>
             {/* Parchemin */}
@@ -69,7 +67,7 @@ export default function Scene() {
                 name={DATA.medieval.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.medieval.name]}
                 onClick={() => {
-                    if (canEnterPortal) 
+                    if (canEnterPortal)
                         setCurrentScene(DATA.medieval.name)
                 }}
                 textureDecoration={warFrame}
@@ -84,7 +82,7 @@ export default function Scene() {
                 id={DATA.moderne.name}
                 name={DATA.moderne.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.moderne.name]}
-                onClick={() =>{
+                onClick={() => {
                     if (canEnterPortal) setCurrentScene(DATA.moderne.name)
                 }}
                 textureDecoration={warFrame}
@@ -101,7 +99,7 @@ export default function Scene() {
                 id={DATA.guerre.name}
                 name={DATA.guerre.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.guerre.name]}
-                onClick={() =>{
+                onClick={() => {
                     if (canEnterPortal) setCurrentScene(DATA.guerre.name)
                 }}
                 textureDecoration={warFrame}

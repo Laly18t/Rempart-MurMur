@@ -6,8 +6,6 @@ import { AUDIO_SEQUENCES, SETTINGS } from "../constants"
 import useSceneStore from "../stores/useSceneStore"
 import useVoiceOverStore from "../stores/useVoiceOverStore"
 
-
-
 export default function VoiceOver({ onAudioEnd }) {
     const { camera } = useThree()
     const { currentScene } = useSceneStore()
@@ -22,6 +20,7 @@ export default function VoiceOver({ onAudioEnd }) {
         setIndex,
         setIsPlaying,
         setSceneFinished,
+        mute,
     } = useVoiceOverStore()
 
     const soundRef = useRef(null)
@@ -67,7 +66,7 @@ export default function VoiceOver({ onAudioEnd }) {
             SETTINGS.DEBUG_VOICEOVER && console.log('Buffer chargé', buffer)
             sound.setBuffer(buffer)
             sound.setLoop(false)
-            sound.setVolume(0.8)
+            sound.setVolume(SETTINGS.SOUND_ON)
 
             SETTINGS.DEBUG_VOICEOVER && console.log('Lecture du son', audioIdx, files[audioIdx], sound)
             sound.play()
@@ -105,6 +104,13 @@ export default function VoiceOver({ onAudioEnd }) {
 
         return () => stopAudio()
     }, [files, playAudio, currentScene, clickedOnAudio])
+
+    // useEffect mute
+    useEffect(() => {
+        if (soundRef.current) {
+            soundRef.current.setVolume(mute ? SETTINGS.SOUND_OFF : SETTINGS.SOUND_ON)
+        }
+    }, [mute])
 
     // Lancer le son de l’intro au clic
     useEffect(() => {
