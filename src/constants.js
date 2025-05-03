@@ -35,7 +35,8 @@ export const POSITIONS_PARCHEMIN = {
 export const SETTINGS = {
     DEBUG: true,
     SCROLL_SPEED: 0.04, 
-    MAX_TRANSLATION: 100
+    MAX_TRANSLATION: 100,
+    DEBUG_VOICEOVER: false,
 }
 
 export const TEXTS = {
@@ -54,7 +55,7 @@ export const INTERACTION = {
 // chemin des audio
 export const AUDIO_SEQUENCES = {
     'intro': ['/audio/rempart-intro.mp3'],
-    [EPOQUES.MEDIEVAL]: ['/audio/rempart-1317.mp3'],
+    [EPOQUES.MEDIEVAL]: ['/audio/rempart-1317.mp3', ],
     [EPOQUES.MODERN]: ['/audio/rempart-1789.mp3'],
     [EPOQUES.WAR]: ['/audio/rempart-1942.mp3'],
     'outro': ['/audio/rempart-fin.mp3'],

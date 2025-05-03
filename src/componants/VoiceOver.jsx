@@ -1,101 +1,128 @@
 import { useThree } from "@react-three/fiber"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Audio, AudioListener, AudioLoader } from "three"
-import { AUDIO_SEQUENCES } from "../constants"
 
-// gestion des voix-off
-export default function VoiceOver({ voiceStep, onComplete, onSegmentChange }) {
+import { AUDIO_SEQUENCES, SETTINGS } from "../constants"
+import useSceneStore from "../stores/useSceneStore"
+import useVoiceOverStore from "../stores/useVoiceOverStore"
+
+
+
+export default function VoiceOver({ onAudioEnd }) {
     const { camera } = useThree()
+    const { currentScene } = useSceneStore()
+
+    const [ clickedOnAudio, setClickedOnAudio ] = useState(false)
+
+    const {
+        index,
+        currentIndex,
+        setCurrentIndex,
+        isPlaying,
+        setIndex,
+        setIsPlaying,
+        setSceneFinished,
+    } = useVoiceOverStore()
+
     const soundRef = useRef(null)
     const listenerRef = useRef(null)
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [isReadyToPlay, setIsReadyToPlay] = useState(false)
-    const files = AUDIO_SEQUENCES[voiceStep] || []
 
-    // gestion du chargement et de la lecture d'un audio
-    const playAudio = useCallback((index) => {
-        if (!files[index]) return
+    const files = AUDIO_SEQUENCES[currentScene] || []
+
+    const stopAudio = () => {
+        if (!soundRef.current || !soundRef.current.isPlaying) return
+
+        soundRef.current.stop()
+
+        if (soundRef.current?.source instanceof AudioBufferSourceNode) {
+            soundRef.current.source.disconnect()
+        }
+        if (listenerRef.current) {
+            camera.remove(listenerRef.current)
+        }
+
+        soundRef.current = null
+        listenerRef.current = null
+        setIsPlaying(false)
+    }
+
+    const playAudio = useCallback((audioIdx) => {
+        if (!files[audioIdx]) return
+        if (isPlaying) return
+
+        // console.log('Lecture du son', audioIdx, files[audioIdx], isPlaying)
 
         const listener = new AudioListener()
+        const sound = new Audio(listener)
+        const loader = new AudioLoader()
+
         listenerRef.current = listener
+        soundRef.current = sound
         camera.add(listener)
 
-        const sound = new Audio(listener)
-        soundRef.current = sound
+        setIsPlaying(true)
+        setCurrentIndex(audioIdx)
 
-        const loader = new AudioLoader()
-        loader.load(files[index], (buffer) => {
+        loader.load(files[audioIdx], (buffer) => {
+            SETTINGS.DEBUG_VOICEOVER && console.log('Buffer chargé', buffer)
             sound.setBuffer(buffer)
             sound.setLoop(false)
             sound.setVolume(0.8)
 
-            const handleEnd = () => {
-                onSegmentChange?.(index)
-                const nextIndex = index + 1
-                if (nextIndex < files.length) {
-                    setCurrentIndex(nextIndex)
-                } else {
-                    onComplete?.(voiceStep)
-                }
-            }
+            SETTINGS.DEBUG_VOICEOVER && console.log('Lecture du son', audioIdx, files[audioIdx], sound)
+            sound.play()
+            
 
-            // securité
-            setTimeout(() => {
-                if (sound.source instanceof AudioBufferSourceNode) {
-                    sound.source.addEventListener('ended', handleEnd)
-                }
-            }, 50)
+            SETTINGS.DEBUG_VOICEOVER && console.log('AudioBufferSourceNode', sound)
+            if (sound.source instanceof AudioBufferSourceNode) {
+                SETTINGS.DEBUG_VOICEOVER && console.log('AudioBufferSourceNode détecté')
+                sound.source.onended = () => {
+                    console.log('Audio terminé', audioIdx)
+                    setIsPlaying(false)
+                    onAudioEnd?.(audioIdx)
 
-            // lecture auto sauf pour l'intro
-            if (voiceStep !== 'intro') {
-                sound.play()
-            } else {
-                setIsReadyToPlay(true)
+                    const nextIndex = audioIdx + 1
+                    if (nextIndex < files.length) {
+                        // setIndex(nextIndex)
+                    } else {
+                        setSceneFinished()
+                    }
+                }
             }
         })
-    }, [camera, files, onComplete, onSegmentChange, voiceStep])
+    }, [camera, files, currentScene, setIndex, setIsPlaying, setSceneFinished, onAudioEnd, isPlaying])
 
-    // gestion du chargement du son a chaque step
+    // Lancer le son automatiquement (sauf intro)
     useEffect(() => {
-        if (!files.length || currentIndex >= files.length) return
+        if (!clickedOnAudio) return // on ne lance pas le son si on n'a pas cliqué sur le son (permission de lecture)
+        if (!files.length || index >= files.length) return // on ne lance pas si il n'y a pas de son
+        if (index === currentIndex) return // on ne relance pas le son si on est sur le même index
 
+
+        SETTINGS.DEBUG_VOICEOVER && console.log('Lancement du son', index, files)
         stopAudio()
-        playAudio(currentIndex)
+        playAudio(index)
 
-        return () => {
-            stopAudio()
-        }
-    }, [currentIndex, files, playAudio])
+        return () => stopAudio()
+    }, [files, playAudio, currentScene, clickedOnAudio])
 
-    // gestion du reset quand voiceStep change
-    useEffect(() => {
-        setCurrentIndex(0)
-        setIsReadyToPlay(voiceStep === 'intro')
-    }, [voiceStep])
-
-    //gestion du clic pour jouer l'intro
+    // Lancer le son de l’intro au clic
     useEffect(() => {
         const handleClick = () => {
-            if (voiceStep === 'intro' && isReadyToPlay && soundRef.current) {
-                soundRef.current.play()
-                setIsReadyToPlay(false)
-            }
+            if (currentScene !== 'intro') return
+
+            setClickedOnAudio(true)
+            setIndex(0)
         }
 
-        if (voiceStep === 'intro') {
+        if (currentScene === 'intro') {
             window.addEventListener('click', handleClick)
         }
 
         return () => {
             window.removeEventListener('click', handleClick)
         }
-    }, [voiceStep, isReadyToPlay])
-
-    // clean
-    const stopAudio = () => {
-        if (soundRef.current?.isPlaying) soundRef.current.stop()
-        if (listenerRef.current) camera.remove(listenerRef.current)
-    }
+    }, [currentScene, isPlaying, setIsPlaying])
 
     return null
 }

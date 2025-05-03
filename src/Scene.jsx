@@ -1,5 +1,5 @@
 import { TextureLoader } from 'three'
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useLoader, useThree } from '@react-three/fiber'
 import { Text } from '@react-three/drei'
 
@@ -19,7 +19,8 @@ import useCameraControl from './hooks/useCameraControl'
 import useSceneTransition from './hooks/useSceneTransition'
 import useTextureLoader from './hooks/useTextureLoader'
 import useActivePortal from './hooks/useActivePortal'
-import useSceneStore from './hooks/useSceneStore'
+import useSceneStore from './stores/useSceneStore'
+import useVoiceOverStore from './stores/useVoiceOverStore'
 
 // scene centrale
 export default function Scene() {
@@ -39,20 +40,18 @@ export default function Scene() {
 
     return <>
         {/* activation voix-off */}
-        <VoiceOver
-            onComplete={(step) => {
-                if (step === 'intro') {
-                    setCanEnterPortal(true)
-                }
-            }}
-            onSegmentChange={(index) => {
-                console.log(`Audio ${index} fini pour ${voiceStep}`)
+        <VoiceOver 
+            onAudioEnd={(index) => {
+                console.log("Audio terminé:", index)
+                // TODO: enable portal
             }}
         />
+
+        {/* bouton pour le son - TODO: refonte graphique */}
         <mesh position={[0, 0, 4]} rotation={[0, Math.PI / 2, 0]}>
             <boxGeometry args={[0.1, 0.6, 2.5]} />
             <meshBasicMaterial color="red" />
-            <Text fontSize={0.3} rotation={[0, -Math.PI / 2, 0]} anchorY="top" anchorX="left" lineHeight={0.8} position={[-1, 0.1, -0.9]}>
+            <Text fontSize={0.3} rotation={[0, -Math.PI / 2, 0]} anchorY="top" anchorX="left" lineHeight={0.8} position={[-0.1, 0.1, -0.9]}>
                 Activer le son
             </Text>
         </mesh>
@@ -70,7 +69,8 @@ export default function Scene() {
                 name={DATA.medieval.date}
                 position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.medieval.name]}
                 onClick={() => {
-                    if (canEnterPortal) setCurrentScene(DATA.medieval.name)
+                    if (canEnterPortal) 
+                        setCurrentScene(DATA.medieval.name)
                 }}
                 textureDecoration={warFrame}
             >
