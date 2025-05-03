@@ -33,14 +33,13 @@ export default function Scene() {
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
 
     // hooks
-    const { voiceStep } = useActivePortal() // gestion du portail actif
-    const scrollRef = useScrollControl(currentScene)  // gestion du scroll
-    useCameraControl(currentScene, scrollRef, camera) // gestion de la camera
+    const scrollRef = useScrollControl()  // gestion du scroll
+    useActivePortal() // gestion du portail actif
+    useCameraControl(scrollRef, camera) // gestion de la camera
 
     return <>
         {/* activation voix-off */}
         <VoiceOver
-            voiceStep={voiceStep}
             onComplete={(step) => {
                 if (step === 'intro') {
                     setCanEnterPortal(true)
