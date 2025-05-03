@@ -2,9 +2,12 @@ import { useFrame } from "@react-three/fiber"
 import { POSITIONS_ZOOM } from "../constants"
 import { Vector3, Euler } from 'three'
 import { useEffect, useRef } from "react"
+import useSceneStore from "./useSceneStore"
 
 // gestion de la camera
-const useCameraControl = (activePortalId, scrollRef, camera) => {
+const useCameraControl = (scrollRef, camera) => {
+    const { currentScene } = useSceneStore()
+
     const mouse = useRef({ x: 0, y: 0 })
     const targetRotation = useRef(new Euler())
 
@@ -23,8 +26,8 @@ const useCameraControl = (activePortalId, scrollRef, camera) => {
 
     useFrame(() => {
         // deplacement de la camera en zoom sur la scene
-        if (activePortalId && POSITIONS_ZOOM[activePortalId]) {
-            camera.position.lerp(new Vector3(...POSITIONS_ZOOM[activePortalId]), 0.05)
+        if (currentScene && POSITIONS_ZOOM[currentScene]) {
+            camera.position.lerp(new Vector3(...POSITIONS_ZOOM[currentScene]), 0.05)
             camera.lookAt(-3, 0, 0)
 
             // rotation de la camera
