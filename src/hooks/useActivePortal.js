@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import useSceneStore from "./useSceneStore"
+import useSceneStore from "../stores/useSceneStore"
 
 
 // gestion du portail actif

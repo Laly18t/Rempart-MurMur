@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 import { SETTINGS } from '../constants'
-import useSceneStore from './useSceneStore'
+import useSceneStore from '../stores/useSceneStore'
 
 // gestion du scroll horizontal
 const useScrollControl = () => {

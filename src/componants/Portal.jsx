@@ -4,7 +4,7 @@ import { suspend } from 'suspend-react'
 import { useFrame } from '@react-three/fiber'
 import { MeshPortalMaterial, useCursor, Text } from '@react-three/drei'
 import { easing } from 'maath'
-import useSceneStore from '../hooks/useSceneStore'
+import useSceneStore from '../stores/useSceneStore'
 
 // font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')

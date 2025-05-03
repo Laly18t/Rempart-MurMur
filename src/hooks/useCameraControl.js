@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber"
 import { POSITIONS_ZOOM } from "../constants"
 import { Vector3, Euler } from 'three'
 import { useEffect, useRef } from "react"
-import useSceneStore from "./useSceneStore"
+import useSceneStore from "../stores/useSceneStore"
 
 // gestion de la camera
 const useCameraControl = (scrollRef, camera) => {
