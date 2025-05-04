@@ -50,6 +50,9 @@ export default function Scene() {
         />
 
         {/* bouton pour le son - TODO: refonte graphique */}
+        <Text position={[-2, 0, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
+            Introduction
+        </Text>
         {/* <ArrowButton /> */}
 
         <group ref={groupRef}>
