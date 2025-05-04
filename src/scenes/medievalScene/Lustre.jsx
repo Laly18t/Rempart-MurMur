@@ -63,7 +63,7 @@ export default function Lustre(props) {
         >
             <primitive object={scene} />
             {showLight && (<>
-                <ambientLight intensity={0.6} />
+                <ambientLight intensity={0.8} />
                 <spotLight position={[0, 5, 5]} intensity={0.8} />
             </>)}
         </group>
