@@ -4,8 +4,9 @@ import { Perf } from 'r3f-perf'
 
 // composant
 import Scene from './Scene'
-import Loader from './componants/Loader'
+import Loader from './componants/UI/Loader'
 import { SETTINGS } from './constants'
+import UIlayer from './componants/UI/UIlayer'
 
 export default function App() {
   return <>
@@ -17,6 +18,8 @@ export default function App() {
         {SETTINGS.DEBUG && <Perf />}
       </Suspense>
     </Canvas>
+
     <Loader />
+    <UIlayer />
   </>
 }

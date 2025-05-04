@@ -6,7 +6,7 @@ import { Text } from '@react-three/drei'
 // composants
 import Portal from './componants/Portal'
 import VoiceOver from './componants/VoiceOver'
-import SoundButton from './componants/SoundButton'
+import ArrowButton from './componants/ArrowButton'
 import MedievalScene from './scenes/medievalScene/MedievalScene'   // 1317
 import VictorianScene from './scenes/modernScene/VictorianScene' // 1749
 import WarScene from './scenes/warScene/WarScene'             // 1942
@@ -20,8 +20,8 @@ import useCameraControl from './hooks/useCameraControl'
 import useSceneTransition from './hooks/useSceneTransition'
 import useTextureLoader from './hooks/useTextureLoader'
 import useActivePortal from './hooks/useActivePortal'
+// stores
 import useSceneStore from './stores/useSceneStore'
-import useVoiceOverStore from './stores/useVoiceOverStore'
 
 // scene centrale
 export default function Scene() {
@@ -49,10 +49,10 @@ export default function Scene() {
         />
 
         {/* bouton pour le son - TODO: refonte graphique */}
-        <Text position={[0, 0, 4]} color={'red'} fontSize={0.3} anchorY="top" anchorX="left" lineHeight={0.8} >
+        <Text position={[0, 0, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
             Bienvenue
         </Text>
-        <SoundButton />
+        <ArrowButton />
 
         <group ref={groupRef}>
             {/* Parchemin */}
