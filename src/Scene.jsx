@@ -33,6 +33,7 @@ export default function Scene() {
     // load des textures + cadres
     const textureParchemin = useTextureLoader(ASSETS.TEXTURE_PARCHEMIN)
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
+    const medievalFrame = useLoader(TextureLoader, ASSETS.MEDIEVAL_FRAME)
 
     // hooks
     const scrollRef = useScrollControl()  // gestion du scroll
@@ -67,7 +68,7 @@ export default function Scene() {
                     if (canEnterPortal)
                         setCurrentScene(DATA.medieval.name)
                 }}
-                textureDecoration={warFrame}
+                textureDecoration={medievalFrame}
             >
                 <Suspense>
                     <MedievalScene />

@@ -47,7 +47,8 @@ export const TEXTS = {
 
 export const ASSETS = {
     TEXTURE_PARCHEMIN: '/texture_parchemin.png',
-    WAR_FRAME: '/cadre_1942.png' 
+    WAR_FRAME: '/cadre_1942.png',
+    MEDIEVAL_FRAME: '/cadre_1317.png'
 }
 
 export const INTERACTION = {
