@@ -39,6 +39,41 @@ body {
   width: 100%;
   height: 100%;
 
+  div.titre {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    text-align: end;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 4em;
+
+    .startButton {
+      cursor: pointer;
+      border:none;
+      background-color: transparent;
+      background-position: center;
+      background-image: url('/start_off.png');
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 64px;
+      width: 434px;
+      height: 131px;
+    }
+    .startButton:hover {
+      background-image: url('/start_on.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: white;
+    }
+
+  }
+
   div.sound {
     margin: 2%;
     position: absolute;
@@ -51,5 +86,32 @@ body {
       max-width: 50px;
       max-height: 50px;
     }
+  }
+}
+
+
+/* Apparition douce */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+/* Disparition douce */
+.fade-out {
+  opacity: 1;
+  animation: fadeOut 0.5s forwards;
+}
+
+/* Animation keyframes */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
   }
 }

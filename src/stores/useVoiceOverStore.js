@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 const useVoiceOverStore = create((set) => ({
-    mute: true,
+    mute: false,
     index: -1,
     currentIndex: -1,
     isPlaying: false,
