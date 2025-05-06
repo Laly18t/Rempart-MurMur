@@ -3,7 +3,7 @@ import { useGLTF } from '@react-three/drei'
 import { MeshNormalMaterial } from 'three'
 
 export default function VictorianScene(props) {
-    const { scene } = useGLTF('/models/victorianScene.gltf') // load model
+    const { scene } = useGLTF('/models/scene_1786.gltf') // load model
     const groupRef = useRef()
 
     // temporaire
@@ -18,10 +18,10 @@ export default function VictorianScene(props) {
     }, [scene])
 
     return <>
-        <group position={[0,0,0]} rotation-y={ -3.1 } ref={groupRef} {...props} dispose={null}>
+        <group position={[0,-2,0]} rotation-y={ -3.1 } ref={groupRef} {...props} dispose={null}>
             <primitive castShadow receiveShadow object={scene} />
         </group>
         </>
 }
 
-useGLTF.preload('/models/victorianScene.gltf')
+useGLTF.preload('/models/scene_1786.gltf')
