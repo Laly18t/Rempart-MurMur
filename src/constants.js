@@ -12,7 +12,7 @@ export const DATA = {
     },
     moderne: {
         name: EPOQUES.MODERN,
-        date: '1749'
+        date: '1786'
     },
     guerre: {
         name: EPOQUES.WAR,
@@ -35,7 +35,7 @@ export const POSITIONS_PARCHEMIN = {
 export const SETTINGS = {
     DEBUG: true,
     SCROLL_SPEED: 0.04, 
-    MAX_TRANSLATION: 100,
+    MAX_TRANSLATION: 127,
     DEBUG_VOICEOVER: false,
     SOUND_OFF: 0.0,
     SOUND_ON: 0.8,
