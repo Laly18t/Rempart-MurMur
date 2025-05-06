@@ -1,7 +1,9 @@
 import { TextureLoader } from 'three'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
 import { useLoader, useThree } from '@react-three/fiber'
-import { Text } from '@react-three/drei'
+import { Text, Html } from '@react-three/drei'
+import Lottie from 'react-lottie'
+import animationData from './lotties/test.json'
 
 // composants
 import Portal from './componants/Portal'
@@ -30,6 +32,15 @@ export default function Scene() {
     const { camera } = useThree()
     const [canEnterPortal, setCanEnterPortal] = useState(true) // bloquer l'entree dans un portail
 
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYMid slice"
+        }
+    }
+
     // load des textures + cadres
     const textureParchemin = useTextureLoader(ASSETS.TEXTURE_PARCHEMIN)
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
@@ -50,9 +61,15 @@ export default function Scene() {
         />
 
         {/* bouton pour le son - TODO: refonte graphique */}
-        <Text position={[-2, 0, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
+        <Text position={[-2, -2, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
             Introduction
         </Text>
+        <Html transform position={[0, 1, 0]} distanceFactor={2}>
+            <div style={{ width: 1000, height: 1000, background: 'transparent', }}>
+                <Lottie animationData={animationData} loop autoplay  options={defaultOptions} style={{ background: 'transparent' }} />
+            </div>
+        </Html>
+
         {/* <ArrowButton /> */}
 
         <group ref={groupRef}>
@@ -112,5 +129,15 @@ export default function Scene() {
                 </Suspense>
             </Portal>
         </group>
+
+
+        <Text position={[125, -3, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
+            Conclusion
+        </Text>
+        <Html transform position={[127, 0, 0]} distanceFactor={2}>
+            <div style={{ width: 1000, height: 1000, background: 'transparent', }}>
+                <Lottie animationData={animationData} loop autoplay  options={defaultOptions} style={{ background: 'transparent' }} />
+            </div>
+        </Html>
     </>
 }
