@@ -44,7 +44,7 @@ export default function Scene() {
     // hooks
     // const scrollRef = useRef(0)
     const scrollRef = useScrollControl()  // gestion du scroll
-    // useActivePortal() // gestion du portail actif
+    useActivePortal() // gestion du portail actif
     // useCameraControl(scrollRef, camera) // gestion de la camera
     useEasedCamera(scrollRef, camera) // gestion de la camera
 
@@ -66,14 +66,15 @@ export default function Scene() {
 
         <ParcheminBackground />
 
+        {/* Group avec chaque etape de l'XP */}
         <ScrollableScene>
-
+            {/* Partie 0 - Introduction */}
             <Intro />
+
             {/* Portail 1 - Medieval */}
             <group>
                 <Portal
                     id={DATA.medieval.name}
-                    name={DATA.medieval.date}
                     onClick={() => {
                         if (canEnterPortal)
                             setCurrentScene(DATA.medieval.name)
@@ -84,14 +85,13 @@ export default function Scene() {
                         <MedievalScene />
                     </Suspense>
                 </Portal>
-                <ArrowButton position={[13.5, 0, 0]} onClick={handleClickButton} />
+                <ArrowButton position={[3, -0.2, 0]} onClick={handleClickButton} />
             </group>
 
             {/* Portail 2 - Modern */}
             <group>
                 <Portal
                     id={DATA.moderne.name}
-                    name={DATA.moderne.date}
                     onClick={() => {
                         if (canEnterPortal) setCurrentScene(DATA.moderne.name)
                     }}
@@ -103,14 +103,13 @@ export default function Scene() {
                         <spotLight position={[0, 5, 5]} intensity={0.8} />
                     </Suspense>
                 </Portal>
-                <ArrowButton position={[12, 0, 0]} onClick={handleClickButton} />
+                <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
             </group>
 
             {/* Portail 3 - 2nd guerre mondiale */}
             <group>
                 <Portal
                     id={DATA.guerre.name}
-                    name={DATA.guerre.date}
                     onClick={() => {
                         if (canEnterPortal) setCurrentScene(DATA.guerre.name)
                     }}
@@ -122,9 +121,10 @@ export default function Scene() {
                         <spotLight position={[0, 5, 5]} intensity={0.8} />
                     </Suspense>
                 </Portal>
-                <ArrowButton position={[11, 0, 0]} onClick={handleClickButton} />
+                <ArrowButton position={[2.3, 0, 0]} onClick={handleClickButton} />
             </group>
 
+            {/* Partie 4 - Conclusion */}
             <Conclusion />
 
         </ScrollableScene>

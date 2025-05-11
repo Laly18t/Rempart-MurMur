@@ -1,27 +1,24 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
-import { MeshNormalMaterial } from 'three'
+import React, { useState, useEffect } from 'react'
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 import { Select } from "@react-three/postprocessing"
 // import { debounce } from "lodash"
 
 import Lustre from './Lustre' // composant
-import Poison from './Poison' // composant
 import useSceneStore from '../../stores/useSceneStore' // store
-import { EPOQUES, INTERACTION } from '../../constants'
 
 export default function MedievalScene(props) {
     const { currentScene } = useSceneStore() // store
-    // const { scene } = useGLTF('/models/scene_1317_v1_textures_allume.glb') // load model
+    const { scene } = useGLTF('/models/scene_1317_v1_textures_allume.glb') // load model
     const { nodes, materials, cameras } = useGLTF('/models/scene_1317_v1_textures_allume.glb')
     // const groupRef = useRef()
 
     // gestion du outline
     const [hovered, setHovered] = useState(null)
 
-    return <>
-        {/* <group position={[0, -2, 0]} rotation-y={-3.1} ref={groupRef} {...props} dispose={null}>
+    return (
+        <group position={[0, -2, 0]} rotation-y={-3.1} {...props} dispose={null}>
             <primitive castShadow receiveShadow object={scene} />
-            <Select
+            {/* <Select
                 enabled={hovered === 'lustre'}
                 onPointerOver={() => setHovered('lustre')}
                 onPointerOut={() => setHovered(null)}
@@ -29,11 +26,24 @@ export default function MedievalScene(props) {
                 <Lustre />
                 <Poison position={[0,1.5,-2]} />
                 <ambientLight intensity={0.2} />
-            </Select>
+            </Select> */}
         </group>
-        <group {...props} dispose={null}> */}
+
+    )
+
+
+    return <>
+        
         <group position={[0, -2, 0]} rotation-y={-3.1}>
-        <Lustre />
+
+        <Select
+            enabled={hovered === 'lustre'}
+            onPointerOver={() => setHovered('lustre')}
+            onPointerOut={() => setHovered(null)}
+        >
+            <Lustre />
+        </Select>
+        
         <ambientLight intensity={0.2} />
             <group name="SETUP">
                 <group name="arriere_plan" position={[-0.243, 1.627, 7.156]}>

@@ -18,7 +18,7 @@ export default function VictorianScene(props) {
     }, [scene])
 
     return <>
-        <group position={[0,-2,0]} rotation-y={ -3.1 } ref={groupRef} {...props} dispose={null}>
+        <group position={[0,-2, -7]} rotation-y={ -3.14 } ref={groupRef} {...props} dispose={null}>
             <primitive castShadow receiveShadow object={scene} />
         </group>
         </>

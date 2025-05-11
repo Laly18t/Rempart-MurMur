@@ -14,10 +14,10 @@ export default function WarScene(props) {
     useAnimation(scene, animations) // animation hook
 
     return <>
-        <group position={[0, -2, 0]} rotation-y={-3.1} ref={groupRef} {...props} dispose={null}>
+        <group position={[0,-2, -7]} rotation-y={ -3.14 } ref={groupRef} {...props} dispose={null}>
             <primitive castShadow receiveShadow object={scene} />
             {/* <LustreTest /> */}
-            <InfoBulle position={[0.5, 2, -1]} title="Test" content="Ceci est un lustre art déco" />
+            {/* <InfoBulle position={[0.5, 2, -1]} title="Test" content="Ceci est un lustre art déco" /> */}
         </group>
     </>
 }

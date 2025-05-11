@@ -4,8 +4,9 @@ import { useThree } from "@react-three/fiber"
 import { Scroll, ScrollControls } from "./controls/ScrollControls"
 import { Children, cloneElement, useEffect } from "react"
 import useAppStore from "../stores/useAppStore"
+import { SETTINGS } from "../constants"
 
-const ScrollableScene = ({ w = 28, h = 1.61803398875, gap = 10, children }) => {
+const ScrollableScene = ({w = SETTINGS.PORTAL_SIZE.WIDTH, h = SETTINGS.PORTAL_SIZE.HEIGHT, gap = 2, children }) => {
     const setMaxWidth = useAppStore((state) => state.setMaxWidth)
     const xW = w + gap
     const totalItems = Children.count(children) - 1

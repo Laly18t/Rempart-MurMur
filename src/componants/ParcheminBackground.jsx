@@ -12,7 +12,7 @@ export default function ParcheminBackground() {
     return (
         <group>
             {/* Parchemin */}
-            <mesh position={[(width / 2) - offset, 0, 0]}>
+            <mesh position={[(width / 2) - offset, 0, -2]}>
                 <planeGeometry args={[width, 20]} />
                 <meshBasicMaterial map={textureParchemin} />
             </mesh>

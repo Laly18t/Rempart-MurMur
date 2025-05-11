@@ -5,17 +5,17 @@ import { useFrame } from '@react-three/fiber'
 import { MeshPortalMaterial, useCursor, Text } from '@react-three/drei'
 import { easing } from 'maath'
 import useSceneStore from '../stores/useSceneStore'
+import { SETTINGS } from '../constants'
 
 // font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')
 
 export default function Portal({
     id,
-    name,
     position,
     rotation = [0, 0, 0],
-    width = 10,
-    height = 8,
+    width = SETTINGS.PORTAL_SIZE.WIDTH,
+    height = SETTINGS.PORTAL_SIZE.HEIGHT,
     bg = "#eab676",
     textureDecoration,
     children,
@@ -37,32 +37,25 @@ export default function Portal({
         }
     })
 
+    const portalSize = {
+        width: 2.245,
+        height: 1.56,
+    }
+
     return (
         <group position={position} rotation={rotation}>
             {/* decoration autour du portail */}
-            <mesh position={[0, 0, 0]}>
-                <planeGeometry args={[28, 18]} />
+            <mesh position={[0, 0, 0.01]}>
+                <planeGeometry args={[6, 3.375]} />
                 <meshBasicMaterial
                     map={textureDecoration}
                     transparent
                 />
             </mesh>
 
-            {/* nom du portail */}
-            <Text
-                font={suspend(bold).default}
-                fontSize={1.2}
-                position={[0, 4, 0]}
-                color="white"
-                anchorX="center"
-                anchorY="top"
-            >
-                {name}
-            </Text>
-
             {debug && (
                 <mesh position={[0, 0, 0]}>
-                    <planeGeometry args={[28, 18]} />
+                    <planeGeometry args={[width, height]} />
                     <meshBasicMaterial color={"tomato"} />
                 </mesh>
             )}
@@ -74,7 +67,7 @@ export default function Portal({
                 onPointerOut={() => setHovered(false)}
                 onClick={onClick}
             >
-                <planeGeometry args={[width, height]} />
+                <planeGeometry args={[portalSize.width, portalSize.height]} />
                 <MeshPortalMaterial ref={portalRef} events={currentScene === id} side={THREE.DoubleSide}>
                     <color attach="background" args={[bg]} />
                     {children}

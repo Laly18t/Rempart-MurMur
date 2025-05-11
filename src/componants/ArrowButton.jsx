@@ -9,7 +9,7 @@ export default function ArrowButton({ position = [1, -5, 0], onClick = () => {},
             onClick={onClick}
             {...props}
         >
-            <planeGeometry args={[1.5, 1.5]} />
+            <planeGeometry args={[0.4, 0.4]} />
             <meshBasicMaterial
                 map={texture}
                 transparent
