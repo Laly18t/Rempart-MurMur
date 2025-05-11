@@ -2,8 +2,6 @@ import { TextureLoader } from 'three'
 import { Suspense, useRef, useState } from 'react'
 import { useLoader, useThree } from '@react-three/fiber'
 import { Text, Html } from '@react-three/drei'
-import Lottie from 'react-lottie'
-// import animationData from './lotties/test.json'
 
 // composants
 import Portal from './componants/Portal'
@@ -34,15 +32,6 @@ export default function Scene() {
     const { camera } = useThree()
     const [canEnterPortal, setCanEnterPortal] = useState(true) // bloquer l'entree dans un portail
 
-    // const defaultOptions = {
-    //     loop: true,
-    //     autoplay: true,
-    //     animationData: animationData,
-    //     rendererSettings: {
-    //         preserveAspectRatio: "xMidYMid slice"
-    //     }
-    // }
-
     // load des textures + cadres
     const textureParchemin = useTextureLoader(ASSETS.TEXTURE_PARCHEMIN)
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
@@ -63,7 +52,6 @@ export default function Scene() {
         />
 
         <Intro />
-        {/* <ArrowButton /> */}
 
         <group ref={groupRef}>
             {/* Parchemin */}

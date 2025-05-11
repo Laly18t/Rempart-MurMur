@@ -5,22 +5,17 @@ import useVoiceOverStore from '../stores/useVoiceOverStore'
 import useZoom from '../hooks/useZoom'
 import { POSITIONS_PARCHEMIN } from '../constants'
 
-export default function ArrowButton() {
-    const { isPlaying } = useVoiceOverStore()
+export default function ArrowButton({ position = [1, -5, 0], onClick = () => {}, ...props }) {
+
     const texture = useTexture('./sound_off.png')
     
     const toggleZoom = useZoom(POSITIONS_PARCHEMIN[0], new Vector3(0, 0, 0)) // hook de zoom
 
     return (
         <mesh
-            position={[1, -5, 0]}
-            onClick={() => {
-                console.log('play ?', isPlaying)
-                if (isPlaying === false) {
-                    console.log('zoom')
-                    toggleZoom()
-                }
-            }}
+            position={position}
+            onClick={onClick}
+            {...props}
         >
             <planeGeometry args={[2, 2]} />
             <meshBasicMaterial

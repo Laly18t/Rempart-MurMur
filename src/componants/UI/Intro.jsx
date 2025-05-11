@@ -1,35 +1,28 @@
-import { Text, Html } from "@react-three/drei"
-import Lottie from 'react-lottie'
-import { useEffect, useState } from "react"
-import { LottieLoader } from 'three/examples/jsm/loaders/LottieLoader.js'
-import * as THREE from 'three'
-import animationData from '../../lotties/joy.json'
+import { Text } from "@react-three/drei"
 
+import ArrowButton from "../ArrowButton"
+import useAppStore from "../../stores/useAppStore"
+import IntroAnimation from "../animations/IntroAnimation"
 
 export default function Intro() {
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: animationData,
-        rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice"
-        }
+    const step = useAppStore((state) => state.step)
+    const nextStep = useAppStore((state) => state.nextStep)
+
+    const handleClickButton = () => {
+        nextStep()
     }
 
-    
-        
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
-        <group>
-          <Text position={[-2, -2, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
-              Introduction
-          </Text>
-          
-          <Html transform position={[0, 1, 0]} distanceFactor={2} zIndexRange={[100, 0]}>
-              <div style={{ width: 1000, height: 1000, background: 'transparent', zIndex: 10, }}>
-                  <Lottie animationData={animationData} loop autoplay  options={defaultOptions} style={{ background: 'transparent' }} />
-              </div>
-          </Html>
+        <group visible={step > 1}>
+            <Text position={[-2, -2, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
+                Introduction
+            </Text>
+
+            {step > 1 && <IntroAnimation />}
+
+            <ArrowButton position={[7, 0, 0]} onClick={handleClickButton} />
         </group>
+
     </>
 }
