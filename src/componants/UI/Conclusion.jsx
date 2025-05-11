@@ -2,7 +2,7 @@ import { Html, Text } from "@react-three/drei"
 import Lottie from "react-lottie"
 import animationData from '../../lotties/joy.json'
 
-export default function Conclusion({...props}) {
+export default function Conclusion({debug = false,...props}) {
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -14,10 +14,10 @@ export default function Conclusion({...props}) {
         
     return <>
         <group {...props} >
-            {/* <mesh position={[0, 0, 0]}>
+            {debug && <mesh position={[0, 0, 0]}>
                 <planeGeometry args={[28, 18]} />
-                <meshBasicMaterial color={"dodgerblue"} />
-            </mesh> */}
+                <meshBasicMaterial color={"limegreen"} />
+            </mesh>}
             <Text position={[-2, -2, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
                 Conclusion
             </Text>
