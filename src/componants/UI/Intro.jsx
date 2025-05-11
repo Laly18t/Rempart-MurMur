@@ -25,7 +25,7 @@ export default function Intro() {
               Introduction
           </Text>
           
-          <Html transform position={[0, 1, 0]} distanceFactor={2}>
+          <Html transform position={[0, 1, 0]} distanceFactor={2} zIndexRange={[100, 0]}>
               <div style={{ width: 1000, height: 1000, background: 'transparent', zIndex: 10, }}>
                   <Lottie animationData={animationData} loop autoplay  options={defaultOptions} style={{ background: 'transparent' }} />
               </div>
