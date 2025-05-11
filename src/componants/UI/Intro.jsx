@@ -19,13 +19,13 @@ export default function Intro({ debug = false, ...props }) {
                 <planeGeometry args={[28, 18]} />
                 <meshBasicMaterial color={"limegreen"} />
             </mesh>}
-            <Text position={[-2, -2, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
+            <Text position={[0, 0, 0]} color={'red'} fontSize={0.3} anchorY="center" anchorX="center" lineHeight={0.8} >
                 Introduction
             </Text>
 
             {step > 1 && <IntroAnimation />}
 
-            <ArrowButton position={[7, 0, 0]} onClick={handleClickButton} />
+            <ArrowButton position={[2, 0, 0]} onClick={handleClickButton} />
         </group>
 
     </>
