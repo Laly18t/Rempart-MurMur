@@ -24,7 +24,7 @@ const useScrollControl = () => {
             const scrollPosition = scrollRef.current
             const scrollLength = maxWidth / 4 // longueur de scroll pour chaque scene
             const index = Math.floor(scrollPosition / scrollLength) // on divise par la longueur de scroll pour avoir l'index de la scène
-            setStep(index + 2) // on set le step
+            // setStep(index + 2) // on set le step
         }
 
 
