@@ -3,16 +3,46 @@ import Loader from './Loader'
 import SoundButton from "./SoundButton"
 import SubtitleButton from "./SubtitleButton"
 import useAppStore from '../../stores/useAppStore'
+import { useControls } from 'leva';
 
 export default function UIlayer() {
     const [fadeOut, setFadeOut] = useState(false)
 
     const step = useAppStore((state) => state.step)
+    const setStep = useAppStore((state) => state.setStep)
     const nextStep = useAppStore((state) => state.nextStep)
+
+//     const [{ step }, setStep] = useControls('step', {
+//       step: {
+//         value: stateStep,
+//         min: 0,
+//         max: 7,
+//         step: 1,
+//         onChange: (value) => {
+//           setStep(value)
+//         }
+//       }
+//   }, [ stateStep, state, nextStep ]);
+
+    // useControls(
+    // () => ({
+    //     step: {
+    //         min: 0,
+    //         max: 7,
+    //         step: 1,
+    //         label: "Pet color",
+    //         value: step,
+    //         onChange: (c) => {
+    //             setStep(c);
+    //         },
+    //     },
+    // }),
+    // [setStep, step, nextStep]
+    // );
 
     // animation fade in
     const handleLoaderFinish = () => {
-        nextStep()
+        setStep(1)
     }
     // animation fade out 
     const handleStart = () => {
@@ -20,7 +50,7 @@ export default function UIlayer() {
     
         // apres l'anim (500ms), on cache titre et affiche sound
         setTimeout(() => {
-            nextStep()
+            setStep(2)
         }, 500)
     } 
 
