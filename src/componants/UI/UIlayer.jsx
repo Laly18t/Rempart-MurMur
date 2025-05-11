@@ -2,15 +2,17 @@ import { useState } from 'react';
 import Loader from './Loader'
 import SoundButton from "./SoundButton"
 import SubtitleButton from "./SubtitleButton"
+import useAppStore from '../../stores/useAppStore'
 
 export default function UIlayer() {
     const [fadeOut, setFadeOut] = useState(false)
-    const [showTitle, setShowTitle] = useState(false)
-    const [showSound, setShowSound] = useState(false)
+
+    const step = useAppStore((state) => state.step)
+    const nextStep = useAppStore((state) => state.nextStep)
 
     // animation fade in
     const handleLoaderFinish = () => {
-        setShowTitle(true)
+        nextStep()
     }
     // animation fade out 
     const handleStart = () => {
@@ -18,26 +20,28 @@ export default function UIlayer() {
     
         // apres l'anim (500ms), on cache titre et affiche sound
         setTimeout(() => {
-            setShowSound(true)
+            nextStep()
         }, 500)
     } 
 
     return <div className="uiLayer">
-        {/* UI 1 - Loader */}
-        <Loader onFinish={handleLoaderFinish} />
-
-        {/* UI 2 - Titre + button */}
-        {showTitle && (
-        <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
-            <h1>Mur - <br></br>Mur</h1>
-            <button className="startButton" onClick={handleStart}>
-                <p>Démarrer</p>
-            </button>
-        </div>
+        {/* UI 0 - Loader */}
+        {step === 0 && (
+             <Loader onFinish={handleLoaderFinish} />
         )}
 
-        {/* UI 3 - option de sons permanentes */}
-        {showSound && (
+        {/* UI 1 - Titre + button */}
+        {step === 1 && (
+            <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
+                <h1>Mur - <br></br>Mur</h1>
+                <button className="startButton" onClick={handleStart}>
+                    <p>Démarrer</p>
+                </button>
+            </div>
+        )}
+
+        {/* UI 2 - option de sons permanentes */}
+        {step > 1 && (
             <div className="sound fade-in">
                 <SubtitleButton />
                 <SoundButton />

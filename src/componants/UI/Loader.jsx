@@ -6,14 +6,14 @@ export default function Loader({ onFinish }) {
     const [visible, setVisible] = useState(true)
 
     useEffect(() => {
-        if (progress === 100) {
+        if (progress === 100 && visible) {
             const timeout = setTimeout(() => {
                 setVisible(false)
                 if (onFinish) onFinish() // indiquer la fin
             }, 200)
             return () => clearTimeout(timeout)
         }
-    }, [progress, onFinish])
+    }, [progress, onFinish, visible])
 
     if (!visible) return null
 

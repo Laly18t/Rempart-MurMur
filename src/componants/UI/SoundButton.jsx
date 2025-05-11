@@ -1,5 +1,3 @@
-import { useTexture } from '@react-three/drei'
-
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 
 export default function SoundButton() {
