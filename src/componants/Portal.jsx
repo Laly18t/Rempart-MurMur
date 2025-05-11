@@ -19,7 +19,8 @@ export default function Portal({
     bg = "#eab676",
     textureDecoration,
     children,
-    onClick
+    onClick,
+    debug = false,
 }) {
     const { currentScene } = useSceneStore() // store
     const portalRef = useRef()
@@ -58,6 +59,13 @@ export default function Portal({
             >
                 {name}
             </Text>
+
+            {debug && (
+                <mesh position={[0, 0, 0]}>
+                    <planeGeometry args={[28, 18]} />
+                    <meshBasicMaterial color={"tomato"} />
+                </mesh>
+            )}
 
             {/* portail cliquable */}
             <mesh
