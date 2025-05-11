@@ -18,6 +18,7 @@ import useCameraControl from './hooks/useCameraControl'
 import useSceneTransition from './hooks/useSceneTransition'
 import useTextureLoader from './hooks/useTextureLoader'
 import useActivePortal from './hooks/useActivePortal'
+
 // stores
 import useSceneStore from './stores/useSceneStore'
 import Intro from './componants/UI/Intro'
@@ -25,6 +26,7 @@ import Conclusion from './componants/UI/Conclusion'
 import ScrollableScene from './componants/ScrollableScene'
 import {useEasedCamera} from './hooks/useEasedCamera'
 import ParcheminBackground from './componants/ParcheminBackground'
+import ArrowButton from './componants/ArrowButton'
 
 // scene centrale
 export default function Scene() {
@@ -35,6 +37,7 @@ export default function Scene() {
 
     // load des textures + cadres
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
+    const modernFrame = useLoader(TextureLoader, ASSETS.MODERN_FRAME)
     const medievalFrame = useLoader(TextureLoader, ASSETS.MEDIEVAL_FRAME)
 
     // hooks
@@ -71,10 +74,11 @@ export default function Scene() {
                 >
                     <Suspense>
                         <MedievalScene />
+                        {/* <ArrowButton position={[7, 0, 0]} onClick={handleClickButton} /> */}
                     </Suspense>
                 </Portal>
 
-                {/* Portail 2 - Victorien */}
+                {/* Portail 2 - Modern */}
                 <Portal
                     id={DATA.moderne.name}
                     name={DATA.moderne.date}
@@ -82,7 +86,7 @@ export default function Scene() {
                     onClick={() => {
                         if (canEnterPortal) setCurrentScene(DATA.moderne.name)
                     }}
-                    textureDecoration={warFrame}
+                    textureDecoration={modernFrame}
                 >
                     <Suspense>
                         <VictorianScene />
