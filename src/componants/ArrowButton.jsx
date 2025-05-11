@@ -7,7 +7,7 @@ import { POSITIONS_PARCHEMIN } from '../constants'
 
 export default function ArrowButton({ position = [1, -5, 0], onClick = () => {}, ...props }) {
 
-    const texture = useTexture('./sound_off.png')
+    const texture = useTexture('./arrow.png')
     
     const toggleZoom = useZoom(POSITIONS_PARCHEMIN[0], new Vector3(0, 0, 0)) // hook de zoom
 
@@ -17,7 +17,7 @@ export default function ArrowButton({ position = [1, -5, 0], onClick = () => {},
             onClick={onClick}
             {...props}
         >
-            <planeGeometry args={[2, 2]} />
+            <planeGeometry args={[1.5, 1.5]} />
             <meshBasicMaterial
                 map={texture}
                 transparent
