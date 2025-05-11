@@ -1,16 +1,10 @@
-import { Html, Text } from "@react-three/drei"
-import Lottie from "react-lottie"
-import animationData from '../../lotties/joy.json'
+import { Text } from "@react-three/drei"
 
-export default function Conclusion({debug = false,...props}) {
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: animationData,
-        rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice"
-        }
-    }
+import ConclusionAnimation from "../animations/ConclusionAnimation"
+import useAppStore from "../../stores/useAppStore"
+
+export default function Conclusion({debug = false, ...props}) {
+    const step = useAppStore((state) => state.step)
         
     return <>
         <group {...props} >
@@ -21,11 +15,8 @@ export default function Conclusion({debug = false,...props}) {
             <Text position={[-2, -2, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
                 Conclusion
             </Text>
-            <Html transform position={[0, 0, 0]} distanceFactor={2} zIndexRange={[100, 0]}>
-                <div style={{ width: 100, height: 100, background: 'transparent', }}>
-                    <Lottie animationData={animationData} loop autoplay  options={defaultOptions} style={{ background: 'transparent' }} />
-                </div>
-            </Html>
+
+            {step > 1 && <ConclusionAnimation />}
         </group>
     </>
 }
