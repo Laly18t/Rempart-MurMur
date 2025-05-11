@@ -14,8 +14,8 @@ export default function IntroAnimation({ step = 0 }){
     }
 
     return (
-        <Html transform position={[0, 1, 0]} distanceFactor={2} zIndexRange={[100, 0]}>
-            <div style={{ width: 1000, height: 1000, background: 'transparent', zIndex: 10 }}>
+        <Html center position={[0, 1, 0]} zIndexRange={[100, 0]}>
+            <div style={{ width: 150, height: 150, background: 'transparent', zIndex: 10 }}>
                 <Lottie animationData={animationData} options={defaultOptions} style={{ background: 'transparent' }} />
             </div>
         </Html>
