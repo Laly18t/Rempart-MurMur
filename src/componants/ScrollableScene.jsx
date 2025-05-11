@@ -7,15 +7,12 @@ import useAppStore from "../stores/useAppStore"
 
 const ScrollableScene = ({ w = 28, h = 1.61803398875, gap = 10, children }) => {
     const setMaxWidth = useAppStore((state) => state.setMaxWidth)
-    const { width } = useThree((state) => state.viewport)
     const xW = w + gap
-
     const totalItems = Children.count(children) - 1
-    const pages = (width - xW + totalItems * xW) / width;
 
     useEffect(() => {
-      setMaxWidth((totalItems * xW) - width)
-    }, [totalItems, xW, width])
+      setMaxWidth((totalItems * xW))
+    }, [totalItems, xW])
 
     return (
         <group>

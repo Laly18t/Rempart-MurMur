@@ -18,6 +18,7 @@ const useZoom = (targetIn, targetOut) => {
     useFrame(() => {
         if (targetPosition.current) {
             camera.position.lerp(targetPosition.current, speed)
+            camera.updateMatrixWorld()
         }
     })
 
