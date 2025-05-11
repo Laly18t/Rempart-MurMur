@@ -22,7 +22,7 @@ const useEasedCamera = (
     camera,
     {
         damping = 0.15,              // Temps d'amortissement en secondes
-        zOffset = 10,                // Distance de la caméra sur l'axe Z
+        zOffset = 12,                // Distance de la caméra sur l'axe Z
         lookAtTarget = true,         // Si true, la caméra regardera la cible
         maxSpeed = Infinity,         // Vitesse maximale de déplacement
         easingMode = EASING_MODES.DAMP, // Mode d'easing
