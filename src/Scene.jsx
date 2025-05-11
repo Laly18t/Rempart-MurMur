@@ -1,12 +1,10 @@
 import { TextureLoader } from 'three'
 import { Suspense, useRef, useState } from 'react'
 import { useLoader, useThree } from '@react-three/fiber'
-import { Text, Html } from '@react-three/drei'
 
 // composants
 import Portal from './componants/Portal'
 import VoiceOver from './componants/VoiceOver'
-import ArrowButton from './componants/ArrowButton'
 import MedievalScene from './scenes/medievalScene/MedievalScene'   // 1317
 import VictorianScene from './scenes/modernScene/VictorianScene' // 1749
 import WarScene from './scenes/warScene/WarScene'             // 1942
@@ -24,6 +22,9 @@ import useActivePortal from './hooks/useActivePortal'
 import useSceneStore from './stores/useSceneStore'
 import Intro from './componants/UI/Intro'
 import Conclusion from './componants/UI/Conclusion'
+import ScrollableScene from './componants/ScrollableScene'
+import {useEasedCamera} from './hooks/useEasedCamera'
+import ParcheminBackground from './componants/ParcheminBackground'
 
 // scene centrale
 export default function Scene() {
@@ -33,14 +34,15 @@ export default function Scene() {
     const [canEnterPortal, setCanEnterPortal] = useState(true) // bloquer l'entree dans un portail
 
     // load des textures + cadres
-    const textureParchemin = useTextureLoader(ASSETS.TEXTURE_PARCHEMIN)
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
     const medievalFrame = useLoader(TextureLoader, ASSETS.MEDIEVAL_FRAME)
 
     // hooks
+    // const scrollRef = useRef(0)
     const scrollRef = useScrollControl()  // gestion du scroll
-    useActivePortal() // gestion du portail actif
-    useCameraControl(scrollRef, camera) // gestion de la camera
+    // useActivePortal() // gestion du portail actif
+    // useCameraControl(scrollRef, camera) // gestion de la camera
+    useEasedCamera(scrollRef, camera) // gestion de la camera
 
     return <>
         {/* activation voix-off */}
@@ -51,66 +53,67 @@ export default function Scene() {
             }}
         />
 
-        <Intro />
+        <ParcheminBackground />
 
-        <group ref={groupRef}>
-            {/* Parchemin */}
-            <mesh position={[0, 0, -3]}>
-                <planeGeometry args={[370, 20]} />
-                <meshBasicMaterial map={textureParchemin} />
-            </mesh>
+        <ScrollableScene>
 
-            {/* Portail 1 - Medieval */}
-            <Portal
-                id={DATA.medieval.name}
-                name={DATA.medieval.date}
-                position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.medieval.name]}
-                onClick={() => {
-                    if (canEnterPortal)
-                        setCurrentScene(DATA.medieval.name)
-                }}
-                textureDecoration={medievalFrame}
-            >
-                <Suspense>
-                    <MedievalScene />
-                </Suspense>
-            </Portal>
+                <Intro />
+                 {/* Portail 1 - Medieval */}
+                <Portal
+                    id={DATA.medieval.name}
+                    name={DATA.medieval.date}
+                    // position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.medieval.name]}
+                    onClick={() => {
+                        if (canEnterPortal)
+                            setCurrentScene(DATA.medieval.name)
+                    }}
+                    textureDecoration={medievalFrame}
+                >
+                    <Suspense>
+                        <MedievalScene />
+                    </Suspense>
+                </Portal>
 
-            {/* Portail 2 - Victorien */}
-            <Portal
-                id={DATA.moderne.name}
-                name={DATA.moderne.date}
-                position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.moderne.name]}
-                onClick={() => {
-                    if (canEnterPortal) setCurrentScene(DATA.moderne.name)
-                }}
-                textureDecoration={warFrame}
-            >
-                <Suspense>
-                    <VictorianScene />
-                    <ambientLight intensity={0.6} />
-                    <spotLight position={[0, 5, 5]} intensity={0.8} />
-                </Suspense>
-            </Portal>
+                {/* Portail 2 - Victorien */}
+                <Portal
+                    id={DATA.moderne.name}
+                    name={DATA.moderne.date}
+                    // position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.moderne.name]}
+                    onClick={() => {
+                        if (canEnterPortal) setCurrentScene(DATA.moderne.name)
+                    }}
+                    textureDecoration={warFrame}
+                >
+                    <Suspense>
+                        <VictorianScene />
+                        <ambientLight intensity={0.6} />
+                        <spotLight position={[0, 5, 5]} intensity={0.8} />
+                    </Suspense>
+                </Portal>
 
-            {/* Portail 3 - 2nd guerre mondiale */}
-            <Portal
-                id={DATA.guerre.name}
-                name={DATA.guerre.date}
-                position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.guerre.name]}
-                onClick={() => {
-                    if (canEnterPortal) setCurrentScene(DATA.guerre.name)
-                }}
-                textureDecoration={warFrame}
-            >
-                <Suspense>
-                    <WarScene />
-                    <ambientLight intensity={0.6} />
-                    <spotLight position={[0, 5, 5]} intensity={0.8} />
-                </Suspense>
-            </Portal>
-        </group>
+                {/* Portail 3 - 2nd guerre mondiale */}
+                <Portal
+                    id={DATA.guerre.name}
+                    name={DATA.guerre.date}
+                    // position={CONSTANTS.POSITIONS_PARCHEMIN[DATA.guerre.name]}
+                    onClick={() => {
+                        if (canEnterPortal) setCurrentScene(DATA.guerre.name)
+                    }}
+                    textureDecoration={warFrame}
+                >
+                    <Suspense>
+                        <WarScene />
+                        <ambientLight intensity={0.6} />
+                        <spotLight position={[0, 5, 5]} intensity={0.8} />
+                    </Suspense>
+                </Portal>
+                <Conclusion />
 
-        <Conclusion />
+        </ScrollableScene>
+
+
+        
+
+        
     </>
 }

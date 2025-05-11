@@ -8,7 +8,7 @@ import { SETTINGS } from './constants'
 
 export default function App() {
   return <>
-    <Canvas flat camera={{ position: [0, 0, 5], fov: 75 }} dpr={[1, 1.5]} eventSource={document.getElementById('root')} eventPrefix="client">
+    <Canvas flat camera={{ position: [0, 0, 0], fov: 75 }} dpr={[1, 1.5]}>
       <Suspense fallback={null}>
         <Scene />
 
