@@ -27,7 +27,7 @@ export default function UIlayer() {
     return <div className="uiLayer">
         {/* UI 0 - Loader */}
         {step === 0 && (
-             <Loader onFinish={handleLoaderFinish} />
+            <Loader onFinish={handleLoaderFinish} />
         )}
 
         {/* UI 1 - Titre + button */}
@@ -35,7 +35,7 @@ export default function UIlayer() {
             <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
                 <h1>Mur - <br></br>Mur</h1>
                 <button className="startButton" onClick={handleStart}>
-                    <p>Démarrer</p>
+                    Démarrer
                 </button>
             </div>
         )}

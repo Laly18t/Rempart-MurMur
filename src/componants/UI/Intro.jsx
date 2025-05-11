@@ -4,7 +4,7 @@ import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
 import IntroAnimation from "../animations/IntroAnimation"
 
-export default function Intro() {
+export default function Intro({ ...props }) {
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
 
@@ -14,7 +14,11 @@ export default function Intro() {
 
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
-        <group visible={step > 1}>
+        <group visible={step > 1} {...props}>
+            {/* <mesh position={[0, 0, 0]}>
+                <planeGeometry args={[28, 18]} />
+                <meshBasicMaterial color={"limegreen"} />
+            </mesh> */}
             <Text position={[-2, -2, 0]} color={'red'} fontSize={0.7} anchorY="top" anchorX="left" lineHeight={0.8} >
                 Introduction
             </Text>
