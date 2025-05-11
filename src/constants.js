@@ -39,6 +39,11 @@ export const SETTINGS = {
     DEBUG_VOICEOVER: false,
     SOUND_OFF: 0.0,
     SOUND_ON: 0.8,
+    DEFAULT_ZOOM: 4,
+    PORTAL_SIZE: {
+        WIDTH: 6.75555556, 
+        HEIGHT: 3.8
+    }
 }
 
 export const TEXTS = {
