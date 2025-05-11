@@ -1,16 +1,24 @@
 import { useLoader } from "@react-three/fiber"
-import { useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { TextureLoader, RepeatWrapping } from 'three'
 
-// chargement de la texture du parchemin
-const useTextureLoader = (path) => {
-    const texture = useLoader(TextureLoader, path)
-    
-    useEffect(() => {
-        texture.wrapS = texture.wrapT = RepeatWrapping // pour une texturee infinie
-        texture.repeat.set(10, 1)
-    }, [texture])
-    return texture
+// Hook pour charger et configurer des textures
+const useTextureLoader = (path, repeatX = 10, repeatY = 1) => {
+  // Utilisation de useMemo pour éviter les re-rendus inutiles
+  const texture = useLoader(TextureLoader, path)
+  
+  useEffect(() => {
+    if (texture) {
+      // Configuration du wrapping
+      texture.wrapS = texture.wrapT = RepeatWrapping
+      // Configuration de la répétition avec les paramètres fournis
+      texture.repeat.set(repeatX, repeatY)
+      // Nécessaire pour certains rendus
+      texture.needsUpdate = true
+    }
+  }, [texture, repeatX, repeatY])
+  
+  return texture
 }
 
 export default useTextureLoader
