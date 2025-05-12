@@ -15,11 +15,11 @@ export default function WarScene(props) {
         }
     }
 
-    const cameras = {
-        camera_trappe: group.current.getObjectByName('camera_trappe'),
-        camera_radio: group.current.getObjectByName('camera_radio'),
-        camera_generale: group.current.getObjectByName('camera_generale'),
-    }
+    // const cameras = {
+    //     camera_trappe: group.current.getObjectByName('camera_trappe'),
+    //     camera_radio: group.current.getObjectByName('camera_radio'),
+    //     camera_generale: group.current.getObjectByName('camera_generale'),
+    // }
 
     return (
         <group position={[-1,-2, -5]} rotation-y={ -3.14 } ref={group} {...props} dispose={null}>
