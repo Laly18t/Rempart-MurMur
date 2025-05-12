@@ -47,6 +47,7 @@ export const SETTINGS = {
 }
 
 export const TEXTS = {
+    LOADER: "Ceci est un exemple de texte de chargement qui peut être remplacé par n'importe quelle autre phrase.",
     INTRO: 'blablabla blabla'
 }
 

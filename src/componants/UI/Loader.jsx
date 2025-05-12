@@ -1,5 +1,6 @@
-import { Html, useProgress } from '@react-three/drei'
+import { useProgress } from '@react-three/drei'
 import { useState, useEffect } from 'react'
+import { TEXTS } from '../../constants'
 
 export default function Loader({ onFinish }) {
     const { progress } = useProgress()
@@ -33,7 +34,7 @@ export default function Loader({ onFinish }) {
         }}>
             <p style={{textAlign:'center'}}>{progress.toFixed(0)} % chargé </p>
 
-            <p>Ceci est un exemple de texte de chargement qui peut être remplacé par n'importe quelle autre phrase.</p>
+            <p>{TEXTS.LOADER}</p>
         </div>
     )
 }
