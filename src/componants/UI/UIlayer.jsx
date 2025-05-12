@@ -12,34 +12,6 @@ export default function UIlayer() {
     const setStep = useAppStore((state) => state.setStep)
     const nextStep = useAppStore((state) => state.nextStep)
 
-//     const [{ step }, setStep] = useControls('step', {
-//       step: {
-//         value: stateStep,
-//         min: 0,
-//         max: 7,
-//         step: 1,
-//         onChange: (value) => {
-//           setStep(value)
-//         }
-//       }
-//   }, [ stateStep, state, nextStep ]);
-
-    // useControls(
-    // () => ({
-    //     step: {
-    //         min: 0,
-    //         max: 7,
-    //         step: 1,
-    //         label: "Pet color",
-    //         value: step,
-    //         onChange: (c) => {
-    //             setStep(c);
-    //         },
-    //     },
-    // }),
-    // [setStep, step, nextStep]
-    // );
-
     // animation fade in
     const handleLoaderFinish = () => {
         setStep(1)
