@@ -1,11 +1,12 @@
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
-import { suspend } from 'suspend-react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useLoader } from '@react-three/fiber'
 import { MeshPortalMaterial, useCursor, Text } from '@react-three/drei'
 import { easing } from 'maath'
 import useSceneStore from '../stores/useSceneStore'
 import { SETTINGS } from '../constants'
+import useAppStore from '../stores/useAppStore'
+import { TextureLoader } from 'three'
 
 // font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')
@@ -18,13 +19,19 @@ export default function Portal({
     height = SETTINGS.PORTAL_SIZE.HEIGHT,
     bg = "#eab676",
     textureDecoration,
+    badgeDecoration,
+    portalStep,
     children,
     onClick,
     debug = false,
 }) {
     const { currentScene } = useSceneStore() // store
+    const { step } = useAppStore() // store
     const portalRef = useRef()
+    const badgeRef = useRef()
     const [hovered, setHovered] = useState(false)
+
+    const texture = useLoader(TextureLoader, `.${badgeDecoration}`)
 
     // changement de curseur en hover
     useCursor(hovered)
@@ -34,6 +41,12 @@ export default function Portal({
         // animation d'ouverture du portail au click
         if (portalRef.current) {
             easing.damp(portalRef.current, 'blend', currentScene === id ? 1 : 0, 0.2, delta)
+        }
+
+        // effet pop du badge
+        if (badgeRef.current) {
+            const targetOpacity = step === portalStep ? 1 : 0
+            easing.damp(badgeRef.current, 'opacity', targetOpacity, 0.7, delta)
         }
     })
 
@@ -73,6 +86,12 @@ export default function Portal({
                     {children}
                 </MeshPortalMaterial>
             </mesh>
+
+            {/* badge decoratif */}
+                <mesh position={[1, -0.8, 0.5]}> {/* TODO: temporaire */}
+                    <planeGeometry args={[1.5, 1.5]} /> 
+                    <meshBasicMaterial ref={badgeRef} map={texture} opacity={0} transparent={true} />
+                </mesh>
         </group>
     )
 }

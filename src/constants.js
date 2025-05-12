@@ -55,7 +55,10 @@ export const ASSETS = {
     TEXTURE_PARCHEMIN: '/texture_parchemin.png',
     WAR_FRAME: '/cadre_1942.png',
     MODERN_FRAME: '/cadre_1789.png',
-    MEDIEVAL_FRAME: '/cadre_1317.png'
+    MEDIEVAL_FRAME: '/cadre_1317.png',
+    MEDIEVAL_BADGE: '/badge_1317.png',
+    MODERN_BADGE: '/badge_1789.png',
+    WAR_BADGE: '/badge_1942.png',
 }
 
 export const INTERACTION = {

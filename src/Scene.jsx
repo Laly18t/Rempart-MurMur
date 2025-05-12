@@ -80,6 +80,8 @@ export default function Scene() {
                             setCurrentScene(DATA.medieval.name)
                     }}
                     textureDecoration={medievalFrame}
+                    badgeDecoration={ASSETS.MEDIEVAL_BADGE}
+                    portalStep={3}
                 >
                     <Suspense>
                         <MedievalScene />
@@ -96,6 +98,8 @@ export default function Scene() {
                         if (canEnterPortal) setCurrentScene(DATA.moderne.name)
                     }}
                     textureDecoration={modernFrame}
+                    badgeDecoration={ASSETS.MODERN_BADGE}
+                    portalStep={4}
                 >
                     <Suspense>
                         <VictorianScene />
@@ -114,6 +118,8 @@ export default function Scene() {
                         if (canEnterPortal) setCurrentScene(DATA.guerre.name)
                     }}
                     textureDecoration={warFrame}
+                    badgeDecoration={ASSETS.WAR_BADGE}
+                    portalStep={5}
                 >
                     <Suspense>
                         <WarScene />
