@@ -17,7 +17,6 @@ export default function SoundButton() {
                 alt="sound"
                 onClick={() => {
                     setMute(!mute)
-                    console.log('mute', mute)
                 }}
             />
         </button>

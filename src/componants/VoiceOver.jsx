@@ -74,9 +74,7 @@ export default function VoiceOver({ onAudioEnd }) {
 
             SETTINGS.DEBUG_VOICEOVER && console.log('AudioBufferSourceNode', sound)
             if (sound.source instanceof AudioBufferSourceNode) {
-                SETTINGS.DEBUG_VOICEOVER && console.log('AudioBufferSourceNode détecté')
                 sound.source.onended = () => {
-                    console.log('Audio terminé', audioIdx)
                     setIsPlaying(false)
                     onAudioEnd?.(audioIdx)
 

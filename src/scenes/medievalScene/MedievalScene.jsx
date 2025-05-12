@@ -4,10 +4,8 @@ import { Select } from "@react-three/postprocessing"
 // import { debounce } from "lodash"
 
 import Lustre from './Lustre' // composant
-import useSceneStore from '../../stores/useSceneStore' // store
 
 export default function MedievalScene(props) {
-    const { currentScene } = useSceneStore() // store
     const { scene } = useGLTF('/models/scene_1317_v1_textures_allume.glb') // load model
     const { nodes, materials, cameras } = useGLTF('/models/scene_1317_v1_textures_allume.glb')
     // const groupRef = useRef()
