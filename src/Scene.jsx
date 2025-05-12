@@ -85,7 +85,7 @@ export default function Scene() {
                         <MedievalScene />
                     </Suspense>
                 </Portal>
-                <ArrowButton position={[3, -0.2, 0]} onClick={handleClickButton} />
+                <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
             </group>
 
             {/* Portail 2 - Modern */}
