@@ -22,12 +22,13 @@ import useActivePortal from './hooks/useActivePortal'
 // stores
 import useSceneStore from './stores/useSceneStore'
 import Intro from './componants/UI/Intro'
-import Conclusion from './componants/UI/Conclusion'
+import Outro from './componants/UI/Outro'
 import ScrollableScene from './componants/ScrollableScene'
 import { useEasedCamera } from './hooks/useEasedCamera'
 import ParcheminBackground from './componants/ParcheminBackground'
 import ArrowButton from './componants/ArrowButton'
 import useAppStore from './stores/useAppStore'
+import CTA_end from './componants/UI/CTA_end'
 
 // scene centrale
 export default function Scene() {
@@ -66,7 +67,7 @@ export default function Scene() {
             }}
         />
 
-        <ParcheminBackground />
+        <ParcheminBackground visible={step < 5} />
 
         {/* Group avec chaque etape de l'XP */}
         <ScrollableScene>
@@ -137,7 +138,10 @@ export default function Scene() {
             </group>
 
             {/* Partie 4 - Conclusion */}
-            <Conclusion />
+            <Outro />
+
+            {/* Partie 5 - CTA de fin */}
+            <CTA_end />
 
         </ScrollableScene>
     </>
