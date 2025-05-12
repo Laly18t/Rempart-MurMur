@@ -10,6 +10,7 @@ const useScrollControl = () => {
     const { currentScene } = useSceneStore()
     const maxWidth = useAppStore((state) => state.maxWidth)
     const step = useAppStore((state) => state.step)
+    const totalItems = useAppStore((state) => state.totalItems)
     const setStep = useAppStore((state) => state.setStep)
     
     useEffect(() => {
@@ -27,16 +28,14 @@ const useScrollControl = () => {
             // setStep(index + 2) // on set le step
         }
 
-
         if (step > 1){ // quand on a passé le loader et le bouton démarrer
-            const totalLength = 4 ; 
-            const scrollLength = maxWidth / totalLength ; // longueur de scroll pour chaque scene
+            const scrollLength = maxWidth / totalItems // longueur de scroll pour chaque scene
             scrollRef.current = scrollLength * (step - 2) // on limite le scroll à la longueur de la scène
             
             window.addEventListener('wheel', handleScroll) // on ecoute la molette
         }
         return () => window.removeEventListener('wheel', handleScroll) // cleanup
-    }, [currentScene, maxWidth, step])
+    }, [currentScene, maxWidth, step, totalItems])
 
     
     return scrollRef
