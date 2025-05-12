@@ -14,7 +14,7 @@ export default function ConclusionAnimation({ step = 0 }){
     }
 
     return (
-        <Html center position={[0, 1, 0]} zIndexRange={[100, 0]}>
+        <Html center position={[0, 0.5, 0]} zIndexRange={[100, 0]}>
             <div style={{ width: 150, height: 150, background: 'transparent', zIndex: 10 }}>
                 <Lottie animationData={animationData} options={defaultOptions} style={{ background: 'transparent' }} />
             </div>
