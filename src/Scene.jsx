@@ -44,10 +44,10 @@ export default function Scene() {
 
     // hooks
     // const scrollRef = useRef(0)
-    const scrollRef = useScrollControl()  // gestion du scroll
+    // const scrollRef = useScrollControl()  // gestion du scroll
     useActivePortal() // gestion du portail actif
     // useCameraControl(scrollRef, camera) // gestion de la camera
-    useEasedCamera(scrollRef, camera) // gestion de la camera
+    // useEasedCamera(scrollRef, camera) // gestion de la camera
 
     const step = useAppStore((state) => state.step)
     const setStep = useAppStore((state) => state.setStep)
@@ -67,7 +67,7 @@ export default function Scene() {
             }}
         />
 
-        <ParcheminBackground visible={step < 5} />
+        <ParcheminBackground visible={step < 6} />
 
         {/* Group avec chaque etape de l'XP */}
         <ScrollableScene>
@@ -75,7 +75,7 @@ export default function Scene() {
             <Intro />
 
             {/* Portail 1 - Medieval */}
-            <group ref={portalRef}>
+            {/* <group ref={portalRef}>
                 <Portal
                     id={DATA.medieval.name}
                     onClick={() => {
@@ -95,7 +95,7 @@ export default function Scene() {
                     </Suspense>
                 </Portal>
                 <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
-            </group>
+            </group> */}
 
             {/* Portail 2 - Modern */}
             <group ref={portalRef}>
@@ -139,6 +139,7 @@ export default function Scene() {
 
             {/* Partie 4 - Conclusion */}
             <Outro />
+
 
             {/* Partie 5 - CTA de fin */}
             <CTA_end />

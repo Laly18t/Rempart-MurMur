@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 const useSceneStore = create((set) => ({
-    currentScene: 'intro', // default scene
+    currentScene: null, // default scene
     cameraTarget: null, // position cible pour la caméra (Vector3)
 
     setCurrentScene: (scene, position = null) =>
@@ -12,7 +12,7 @@ const useSceneStore = create((set) => ({
 
     resetScene: () =>
         set(() => ({
-            currentScene: 'intro',
+            currentScene: null,
             cameraTarget: null,
         })),
 }))

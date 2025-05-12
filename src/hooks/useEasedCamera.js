@@ -52,19 +52,27 @@ const useEasedCamera = (
     const focus = new THREE.Vector3(0, 0, 0)
 
     useEffect(() => {
+
         if (currentScene) {
             const active = scene.getObjectByName(currentScene)
+            console.log("currentScene", currentScene, active)
             
             if (active) {
                 active.parent.localToWorld(position.set(0, 0.5, 0.25))
                 active.parent.localToWorld(focus.set(0, 0, -2))
 
                 camera?.lookAt(...position.toArray(), ...focus.toArray(), true)
-            }   
+            } else {
+                // Si la scène n'est pas trouvée, on remet
+                // la caméra à sa position par défaut
+                camera.position.set(0, 0, SETTINGS.DEFAULT_ZOOM)
+                camera.lookAt(0, 0, 0)
+            }
         }
     }, [currentScene])
 
     useFrame((_, delta) => {
+        return;
         // Mettre à jour la position cible basée sur scrollRef
         const targetX = scrollRef.current
 
