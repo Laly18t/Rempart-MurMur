@@ -6,7 +6,7 @@ import useSceneStore from "../stores/useSceneStore"
 
 // gestion de la camera
 const useCameraControl = (scrollRef, camera) => {
-    const { currentScene } = useSceneStore()
+    const { currentScene, cameraTarget } = useSceneStore()
 
     const mouse = useRef({ x: 0, y: 0 })
     const targetRotation = useRef(new Euler())
@@ -27,8 +27,8 @@ const useCameraControl = (scrollRef, camera) => {
     useFrame(() => {
         // deplacement de la camera en zoom sur la scene
         if (currentScene && POSITIONS_ZOOM[currentScene]) {
-            camera.position.lerp(new Vector3(...POSITIONS_ZOOM[currentScene]), 0.05)
-            camera.lookAt(-3, 0, 0)
+            camera.position.lerp(cameraTarget.clone(), 0.05)
+            camera.lookAt(0, 0, 0)
 
             // rotation de la camera
             const maxTilt = 0.1 // limite la rotation (en radians)
@@ -48,6 +48,10 @@ const useCameraControl = (scrollRef, camera) => {
             // reset des rotations
             camera.rotation.x = 0
             camera.rotation.y = 0
+            camera.rotation.z = 0
+            // reset de la rotation cible
+            // targetRotation.current.x = 0
+            // targetRotation.current.y = 0
         }
     })
 }

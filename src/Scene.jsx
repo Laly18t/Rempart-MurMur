@@ -32,7 +32,7 @@ import useAppStore from './stores/useAppStore'
 // scene centrale
 export default function Scene() {
     const { currentScene, setCurrentScene } = useSceneStore()
-    const groupRef = useRef()
+    const portalRef = useRef()
     const { camera } = useThree()
     const [canEnterPortal, setCanEnterPortal] = useState(true) // bloquer l'entree dans un portail
 
@@ -55,6 +55,8 @@ export default function Scene() {
         setStep(step + 1)
     }
 
+    console.log('step', step)
+
     return <>
         {/* activation voix-off */}
         <VoiceOver
@@ -72,12 +74,16 @@ export default function Scene() {
             <Intro />
 
             {/* Portail 1 - Medieval */}
-            <group>
+            <group ref={portalRef}>
                 <Portal
                     id={DATA.medieval.name}
                     onClick={() => {
                         if (canEnterPortal)
                             setCurrentScene(DATA.medieval.name)
+                            const worldPosition = new THREE.Vector3()
+                            portalRef.current.getWorldPosition(worldPosition)
+                            worldPosition.z += 1.5
+                            setCurrentScene(DATA.medieval.name, worldPosition)
                     }}
                     textureDecoration={medievalFrame}
                     badgeDecoration={ASSETS.MEDIEVAL_BADGE}
@@ -91,7 +97,7 @@ export default function Scene() {
             </group>
 
             {/* Portail 2 - Modern */}
-            <group>
+            <group ref={portalRef}>
                 <Portal
                     id={DATA.moderne.name}
                     onClick={() => {
@@ -111,7 +117,7 @@ export default function Scene() {
             </group>
 
             {/* Portail 3 - 2nd guerre mondiale */}
-            <group>
+            <group ref={portalRef}>
                 <Portal
                     id={DATA.guerre.name}
                     onClick={() => {
