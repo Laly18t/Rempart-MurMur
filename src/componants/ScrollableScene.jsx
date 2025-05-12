@@ -1,7 +1,3 @@
-
-
-import { useThree } from "@react-three/fiber"
-import { Scroll, ScrollControls } from "./controls/ScrollControls"
 import { Children, cloneElement, useEffect } from "react"
 import useAppStore from "../stores/useAppStore"
 import { SETTINGS } from "../constants"
@@ -23,4 +19,4 @@ const ScrollableScene = ({w = SETTINGS.PORTAL_SIZE.WIDTH, h = SETTINGS.PORTAL_SI
         </group>
     )
 }
-export default ScrollableScene;
+export default ScrollableScene
