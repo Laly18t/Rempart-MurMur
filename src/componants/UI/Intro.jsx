@@ -1,4 +1,6 @@
 import { Text } from "@react-three/drei"
+import { useLoader } from "@react-three/fiber"
+import { TextureLoader } from "three"
 
 import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
@@ -12,6 +14,8 @@ export default function Intro({ debug = false, ...props }) {
         setStep(3)
     }
 
+    const texture = useLoader(TextureLoader, './intro_castle.png')
+
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
         <group visible={step > 1} {...props}>
@@ -19,13 +23,19 @@ export default function Intro({ debug = false, ...props }) {
                 <planeGeometry args={[28, 18]} />
                 <meshBasicMaterial color={"limegreen"} />
             </mesh>}
-            <Text position={[0, 0, 0]} color={'red'} fontSize={0.3} anchorY="center" anchorX="center" lineHeight={0.8} >
+            <Text position={[0, -1, 0]} color={'red'} fontSize={0.3} anchorY="center" anchorX="center" lineHeight={0.8} >
                 Introduction
             </Text>
 
-            {step > 1 && <IntroAnimation />}
+            <mesh position={[0,0.4,0]}> {/* TODO: temporaire */}
+                <planeGeometry args={[5.5, 2.4]} /> 
+                <meshBasicMaterial map={texture} transparent={true} />
+            </mesh>
 
-            <ArrowButton position={[2, 0, 0]} onClick={handleClickButton} />
+            {/* TODO: avoir la bonne animation */}
+            {/* {step > 1 && <IntroAnimation />} */}
+
+            <ArrowButton position={[2, -1.15, 0]} onClick={handleClickButton} />
         </group>
 
     </>
