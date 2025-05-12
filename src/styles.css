@@ -82,6 +82,15 @@ body {
   }
 
   div.sound {
+    
+    .soundButton {
+      border:none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    border:none;
+    background-color: transparent;
     cursor: pointer;
     margin: 2%;
     position: absolute;

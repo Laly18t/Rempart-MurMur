@@ -1,3 +1,4 @@
+import { useCursor } from '@react-three/drei'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 
 export default function SoundButton() {
@@ -10,14 +11,15 @@ export default function SoundButton() {
     const texture = !mute ? textures.on : textures.off
 
     return (
-        <div className='soundButton'>
+        <button className='soundButton'>
             <img
                 src={texture}
                 alt="sound"
                 onClick={() => {
                     setMute(!mute)
+                    console.log('mute', mute)
                 }}
             />
-        </div>
+        </button>
     )
 }
