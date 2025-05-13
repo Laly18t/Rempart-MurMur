@@ -7,7 +7,7 @@ import useSceneStore from '../stores/useSceneStore'
 import { SETTINGS } from '../constants'
 import useAppStore from '../stores/useAppStore'
 
-function Rig({ position = new THREE.Vector3(0, 0, SETTINGS.DEFAULT_ZOOM), focus = new THREE.Vector3(0, 0, 0), modelsInfo = {} }) {
+export default function Rig({ position = new THREE.Vector3(0, 0, SETTINGS.DEFAULT_ZOOM), focus = new THREE.Vector3(0, 0, 0), modelsInfo = {} }) {
     const { controls, scene, camera } = useThree()
     const targetPosition = useRef(new THREE.Vector3(0, 0, 2))
     const targetLookAt = useRef(new THREE.Vector3(0, 0, 0))
@@ -19,32 +19,70 @@ function Rig({ position = new THREE.Vector3(0, 0, SETTINGS.DEFAULT_ZOOM), focus 
     const maxWidth = useAppStore((state) => state.maxWidth)
     const step = useAppStore((state) => state.step)
     const totalItems = useAppStore((state) => state.totalItems)
+    const getCurrentSceneInfo = useSceneStore((state) => state.getCurrentSceneInfo)
 
     useEffect(() => {
         if (currentScene) { // si on est dans un scene active (on clique sur un portail)
             const active = scene.getObjectByName(currentScene)
             if (active) {
-              active.parent.localToWorld(position.set(0, 0.5, 0.25))
-              active.parent.localToWorld(focus.set(0, 0, -2))
+                const modelInfo = getCurrentSceneInfo();
+
+                if (modelInfo && modelInfo.cameras && modelInfo.cameras.length > 0) {
+                    console.log(`Utilisation de la caméra du modèle ${currentScene}`)
+
+                    // Transformer les coordonnées locales en coordonnées mondiales
+                    const defaultPos = new THREE.Vector3(0, 0, 2)
+                    const defaultFocus = new THREE.Vector3(0, 0, -2)
+                    active.parent.localToWorld(defaultPos.set(0, 0.5, 0.25))
+                    active.parent.localToWorld(defaultFocus.set(0, 0, -2))
+
+                    // active.parent.localToWorld(position.set(0, 0, 2))
+                    // active.parent.localToWorld(focus.set(0, 0, -2))
+
+                    const modelCamera = modelInfo.cameras[2]
+
+                    // // Obtenir la position mondiale de la caméra du modèle
+                    const worldPosition = new THREE.Vector3()
+                    const worldQuaternion = new THREE.Quaternion()
+                    const worldScale = new THREE.Vector3()
+
+                    // Extraire la matrice mondiale
+                    modelCamera.updateMatrixWorld(true)
+                    modelCamera.matrixWorld.decompose(worldPosition, worldQuaternion, worldScale)
+
+                    console.log('modelCamera', modelCamera, worldPosition, worldQuaternion, worldScale)
+
+                    // Créer un vecteur de direction basé sur la rotation de la caméra
+                    const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(worldQuaternion)
+
+                    // Calculer le point de focus en avançant dans la direction
+                    const targetPosition = worldPosition.clone().add(direction.multiplyScalar(10))
+
+                    // Appliquer la transition de caméra
+                    controls?.setLookAt(
+                        worldPosition.x, worldPosition.y, worldPosition.z,
+                        targetPosition.x, targetPosition.y, targetPosition.z,
+                        true // Activer l'animation
+                    )
+                } else {
+                    active.parent.localToWorld(position.set(0, 0.5, 0.25))
+                    active.parent.localToWorld(focus.set(0, 0, -2))
+                    controls?.setLookAt(...position.toArray(), ...focus.toArray(), true)
+                }
             }
-            controls?.setLookAt(...position.toArray(), ...focus.toArray(), true)
         }
 
-
-        if (step > 1 && currentScene === null){ // quand on change de step mais qu'on n'est pas dans une scene active (pas de portail)
+        if (step > 1 && (currentScene === 'intro' || currentScene === null)) { // quand on change de step mais qu'on n'est pas dans une scene active (pas de portail)
             const scrollLength = maxWidth / totalItems // longueur de scroll pour chaque scene
             const targetX = scrollLength * (step - 2) // on limite le scroll à la longueur de la scène
-            
+
             // change postion x of postiion variable
             position.set(targetX, 0, SETTINGS.DEFAULT_ZOOM)
             focus.set(targetX, 0, -SETTINGS.DEFAULT_ZOOM)
 
             controls?.setLookAt(...position.toArray(), ...focus.toArray(), true)
         }
-        
-      })
-
-    // // Accédez à la référence du scroll depuis App
+    }, [currentScene, controls, scene, step, maxWidth, totalItems])
 
 
     // useFrame((state, dt) => {
@@ -102,7 +140,7 @@ function Rig({ position = new THREE.Vector3(0, 0, SETTINGS.DEFAULT_ZOOM), focus 
     //         const scrollLength = maxWidth / totalItems // longueur de scroll pour chaque scene
     //         const targetX = scrollLength * (step - 2) // on limite le scroll à la longueur de la scène
     //         // easing.damp(camera.position, "x", targetX, 0.15, delta, maxSpeed)
-            
+
     //         console.log('scrollRef', controls?.setPosition(targetX, 0, SETTINGS.DEFAULT_ZOOM))
     //     }
     //     return;
@@ -160,7 +198,7 @@ function Rig({ position = new THREE.Vector3(0, 0, SETTINGS.DEFAULT_ZOOM), focus 
     //                 if (active) {
     //                     active.parent.localToWorld(position.set(0, 0.5, 0.25))
     //                     active.parent.localToWorld(focus.set(0, 0, -2))
-                        
+
     //                 }
     //                 controls?.setLookAt(...position.toArray(), ...focus.toArray(), true)
     //             // }
@@ -190,5 +228,3 @@ function Rig({ position = new THREE.Vector3(0, 0, SETTINGS.DEFAULT_ZOOM), focus 
         mouseButtons={{ left: ACTION.NONE, middle: ACTION.NONE, right: ACTION.NONE, wheel: ACTION.NONE }}
     />
 }
-
-export default Rig

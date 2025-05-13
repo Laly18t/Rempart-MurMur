@@ -17,7 +17,7 @@ export default function UIlayer() {
 
     // animation fade in
     const handleLoaderFinish = () => {
-        setStep(1)
+        nextStep()
     }
     // animation fade out 
     const handleStart = () => {
@@ -25,7 +25,7 @@ export default function UIlayer() {
     
         // apres l'anim (500ms), on cache titre et affiche sound
         setTimeout(() => {
-            setStep(2)
+            nextStep()
         }, 500)
     } 
 

@@ -50,10 +50,10 @@ export default function Scene() {
     // useEasedCamera(scrollRef, camera) // gestion de la camera
 
     const step = useAppStore((state) => state.step)
-    const setStep = useAppStore((state) => state.setStep)
+    const nextStep = useAppStore((state) => state.nextStep)
 
     const handleClickButton = () => {
-        setStep(step + 1)
+        nextStep()
     }
 
     return <>

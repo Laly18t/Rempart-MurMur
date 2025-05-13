@@ -8,10 +8,9 @@ import IntroAnimation from "../animations/IntroAnimation"
 
 export default function Intro({ debug = false, ...props }) {
     const step = useAppStore((state) => state.step)
-    const setStep = useAppStore((state) => state.setStep)
-
+    const nextStep = useAppStore((state) => state.nextStep)
     const handleClickButton = () => {
-        setStep(3)
+        nextStep()
     }
 
     const texture = useLoader(TextureLoader, './intro_castle.png')
