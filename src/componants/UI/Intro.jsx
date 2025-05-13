@@ -15,7 +15,7 @@ export default function Intro({ debug = false, ...props }) {
         nextStep()
     }
 
-    const texture = useLoader(TextureLoader, './intro_castle.png')
+    const texture = useLoader(TextureLoader, './castle_clean.PNG')
 
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
