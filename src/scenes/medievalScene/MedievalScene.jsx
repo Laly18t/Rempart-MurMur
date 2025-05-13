@@ -1,48 +1,89 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 import { Select } from "@react-three/postprocessing"
 // import { debounce } from "lodash"
 
 import Lustre from './Lustre' // composant
+import InfoBulle from '../../componants/InfoBulle' // composant
+import useVoiceOverStore from '../../stores/useVoiceOverStore'
+import { useThree } from '@react-three/fiber'
 
-export default function MedievalScene(props) {
-    const { scene } = useGLTF('/models/scene_1317_v1_textures_allume.glb') // load model
-    const { nodes, materials, cameras } = useGLTF('/models/scene_1317_v1_textures_allume.glb')
-    // const groupRef = useRef()
+export default function MedievalScene({ ...props }) {
+    const { scene: sceneOn, cameras: camerasOn } = useGLTF('/models/scene_1317_v3_eteint.glb')
+    const { scene: sceneOff } = useGLTF('/models/scene_1317_v3_allume.glb')
+    const [useModel, setUseModel] = useState(true)
+    const groupRef = useRef()
+    const voiceOver = useVoiceOverStore()
+    const index = useVoiceOverStore()
 
     // gestion du outline
-    const [hovered, setHovered] = useState(null)
+    // const [hovered, setHovered] = useState(null)
+
+    const handleClickInfoBulle = () => {
+        voiceOver.setIndex(2)
+        console.log('clic')
+    }
+
+    const cameraFromGLB = useMemo(() => {
+        return camerasOn.find(cam => cam.name.endsWith('_1')) || camerasOn[0]
+    }, [camerasOn])
+
+    const set = useThree((state) => state.set)
+
+    useEffect(() => {
+        if (cameraFromGLB) {
+            // Assigne la caméra comme caméra principale
+            set({ camera: cameraFromGLB })
+        }
+    }, [cameraFromGLB, set])
 
     return (
-        <group position={[0, -2, 0]} rotation-y={-3.1} {...props} dispose={null}>
-            <primitive castShadow receiveShadow object={scene} />
-            {/* <Select
-                enabled={hovered === 'lustre'}
-                onPointerOver={() => setHovered('lustre')}
-                onPointerOut={() => setHovered(null)}
-            >
-                <Lustre />
-                <Poison position={[0,1.5,-2]} />
-                <ambientLight intensity={0.2} />
-            </Select> */}
+        // <group position={[0, -2, -1]} rotation-y={-3.1} {...props} dispose={null}>
+        //     <primitive castShadow receiveShadow object={scene} />
+        //     {/* <Select
+        //         enabled={hovered === 'lustre'}
+        //         onPointerOver={() => setHovered('lustre')}
+        //         onPointerOut={() => setHovered(null)}
+        //     >
+        //         <Lustre />
+        //         <Poison position={[0,1.5,-2]} />
+        //         <ambientLight intensity={0.2} />
+        //     </Select> */}
+
+        // </group>
+        <group
+            position={[0, -2, -1]}
+            rotation-y={-3.1}
+            ref={groupRef}
+            {...props}
+            dispose={null}
+            onClick={() => {
+                setUseModel(prev => !prev)
+                voiceOver.setIndex(1)
+                console.log('Model switched →', useModel ? 'ON' : 'OFF')
+            }}
+        >
+            {/* Affiche une seule scène, mais conserve la même caméra */}
+            <primitive object={useModel ? sceneOn : sceneOff} />
+            <InfoBulle position={[2.3, 3, 1.4]} rotation-y={1} onClick={handleClickInfoBulle} />
         </group>
 
     )
 
 
     return <>
-        
+
         <group position={[0, -2, 0]} rotation-y={-3.1}>
 
-        <Select
-            enabled={hovered === 'lustre'}
-            onPointerOver={() => setHovered('lustre')}
-            onPointerOut={() => setHovered(null)}
-        >
-            <Lustre />
-        </Select>
-        
-        <ambientLight intensity={0.2} />
+            <Select
+                enabled={hovered === 'lustre'}
+                onPointerOver={() => setHovered('lustre')}
+                onPointerOut={() => setHovered(null)}
+            >
+                <Lustre />
+            </Select>
+
+            <ambientLight intensity={0.2} />
             <group name="SETUP">
                 <group name="arriere_plan" position={[-0.243, 1.627, 7.156]}>
                     <mesh
@@ -131,4 +172,6 @@ export default function MedievalScene(props) {
     </>
 }
 
-useGLTF.preload('/models/scene_1317_v1_textures_allume.glb')
+// useGLTF.preload('/models/scene_1317_v1_textures_allume.glb')
+useGLTF.preload('/models/scene_1317_v3_allume.glb')
+useGLTF.preload('/models/scene_1317_v3_eteint.glb')

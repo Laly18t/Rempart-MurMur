@@ -79,7 +79,7 @@ export const AUDIO_SEQUENCES = {
         [EPOQUES.MEDIEVAL]: [
             // '/audio/rempart-1317.mp3',
             '/audio/rempart-1317_2.mp3',
-            '/audio/rempart-1317_3.mp3',
+            '/audio/rempart-1317_3temp.mp3',
             '/audio/rempart-1317_4.mp3',
             '/audio/rempart-1317_5.mp3',
         ],
