@@ -7,7 +7,7 @@ export default function SubtitleButton() {
     
     // const { subtitle, setsubtitle } = useVoiceOverStore()
 
-    const texture = ('./subtitle.png')
+    const texture = ('./ui/subtitle.png')
     // const texture = !subtitle ? textures.on : textures.off
 
     return (

@@ -44,7 +44,7 @@ export default function UIlayer() {
         {/* UI 1 - Titre + button */}
         {step === 1 && (
             <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
-                <img src="./logo.svg" style={{width:'20%', paddingBottom:'90px',}} alt="Logo" className="logo" />
+                <img src="./ui/logo.svg" style={{width:'20%', paddingBottom:'90px',}} alt="Logo" className="logo" />
                 <button className="startButton" onClick={handleStart}>
                     Démarrer
                 </button>

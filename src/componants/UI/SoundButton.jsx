@@ -5,8 +5,8 @@ export default function SoundButton() {
     const { mute, setMute } = useVoiceOverStore()
 
     const textures = {
-        off: './sound_off.png',
-        on: './sound_on.png'
+        off: './ui/sound_off.png',
+        on: './ui/sound_on.png'
     }
     const texture = !mute ? textures.on : textures.off
 

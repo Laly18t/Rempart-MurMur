@@ -1,7 +1,7 @@
 import { useTexture } from '@react-three/drei'
 
 export default function ArrowButton({ position = [1, -5, 0], onClick = () => {}, ...props }) {
-    const texture = useTexture('./arrow.png') // TODO : remplacer par le bon fichier
+    const texture = useTexture('./ui/arrow.png') // TODO : remplacer par le bon fichier
 
     return (
         <mesh

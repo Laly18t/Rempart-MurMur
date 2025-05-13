@@ -69,7 +69,7 @@ body {
       border:none;
       background-color: transparent;
       background-position: center;
-      background-image: url('/start.png');
+      background-image: url('/ui/start.png');
       display: flex;
       color: beige;
       flex-direction: column;
