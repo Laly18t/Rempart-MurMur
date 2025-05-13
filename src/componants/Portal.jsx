@@ -20,12 +20,11 @@ export default function Portal({
     bg = "#eab676",
     textureDecoration,
     badgeDecoration,
-    portalStep,
     children,
     onClick,
     debug = false,
 }) {
-    const { currentScene } = useSceneStore() // store
+    const { currentScene, outScene } = useSceneStore() // store
     const { step } = useAppStore() // store
     const portalRef = useRef()
     const badgeRef = useRef()
@@ -44,8 +43,9 @@ export default function Portal({
         }
 
         // effet pop du badge
-        if (badgeRef.current) {
-            const targetOpacity = step === portalStep ? 1 : 0
+        if (badgeRef.current && outScene) {
+            // TODO: gérer la persistance du badge si il a été aff
+            const targetOpacity = outScene === id ? 1 : 0 
             easing.damp(badgeRef.current, 'opacity', targetOpacity, 0.7, delta)
         }
     })

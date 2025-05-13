@@ -1,16 +1,16 @@
 import { useThree } from "@react-three/fiber"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Audio, AudioListener, AudioLoader } from "three"
 
 import { AUDIO_SEQUENCES, SETTINGS } from "../constants"
 import useSceneStore from "../stores/useSceneStore"
 import useVoiceOverStore from "../stores/useVoiceOverStore"
+import useAppStore from "../stores/useAppStore"
 
 export default function VoiceOver({ onAudioEnd }) {
     const { camera } = useThree()
-    const currentScene = useSceneStore((state) => (state.currentScene))
-
-    const [clickedOnAudio, setClickedOnAudio] = useState(false)
+    const {currentScene, outScene} = useSceneStore()
+    const step = useAppStore((state) => (state.step))
 
     const {
         index,
@@ -21,12 +21,32 @@ export default function VoiceOver({ onAudioEnd }) {
         setIsPlaying,
         setSceneFinished,
         mute,
+        previousIndex
     } = useVoiceOverStore()
 
     const soundRef = useRef(null)
     const listenerRef = useRef(null)
 
-    const files = AUDIO_SEQUENCES[currentScene] || []
+    const files = useMemo(() => {
+
+        if (currentScene !== null) {
+            return AUDIO_SEQUENCES.SCENE[currentScene] ?? []
+        }
+
+        if (currentScene === null && outScene !== null) {
+            return AUDIO_SEQUENCES.SCENE[outScene] ?? []
+        }
+
+        
+        if (typeof AUDIO_SEQUENCES.STEP[step] !== 'undefined' && AUDIO_SEQUENCES.STEP[step] !== null) {
+            return [AUDIO_SEQUENCES.STEP[step]]
+        }
+        
+
+        return [];
+
+    }, [ step, currentScene, outScene, index, currentIndex])
+
 
     const stopAudio = () => {
         if (!soundRef.current || !soundRef.current.isPlaying) return
@@ -46,11 +66,12 @@ export default function VoiceOver({ onAudioEnd }) {
     }
 
     const playAudio = useCallback((audioIdx) => {
+        console.log('playAudio', {step, currentScene, outScene, audioIdx, f: files[audioIdx], isPlaying})
         if (!files[audioIdx]) return
         if (isPlaying) return
         if (mute === true) return
 
-        console.log('Lecture du son', audioIdx, files[audioIdx], isPlaying)
+        // console.log('Lecture du son', audioIdx, files[audioIdx], isPlaying)
 
         const listener = new AudioListener()
         const sound = new Audio(listener)
@@ -62,6 +83,7 @@ export default function VoiceOver({ onAudioEnd }) {
 
         setIsPlaying(true)
         setCurrentIndex(audioIdx)
+
 
         loader.load(files[audioIdx], (buffer) => {
             SETTINGS.DEBUG_VOICEOVER && console.log('Buffer chargé', buffer)
@@ -77,38 +99,36 @@ export default function VoiceOver({ onAudioEnd }) {
                 sound.source.onended = () => {
                     setIsPlaying(false)
                     onAudioEnd?.(audioIdx)
+                    setSceneFinished()
 
-                    const nextIndex = audioIdx + 1
-                    if (nextIndex < files.length) {
-                        // setIndex(nextIndex)
-                    } else {
-                        setSceneFinished()
-                    }
+                    // const nextIndex = audioIdx + 1
+                    // if (nextIndex < files.length) {
+                    //     // setIndex(nextIndex)
+                    // } else {
+                    //     setSceneFinished()
+                    // }
                 }
             }
         })
     }, [camera, files, currentScene, setIndex, setIsPlaying, setSceneFinished, onAudioEnd, isPlaying, mute])
 
-    // Activer automatiquement l'audio pour les scènes autres que l'intro
-    useEffect(() => {
-        // Si ce n'est pas l'intro, on considère qu'on a déjà l'autorisation
-        if (currentScene && currentScene !== 'intro') {
-            setClickedOnAudio(true)
-        }
-    }, [currentScene])
+   
 
     // Lancer le son automatiquement
     useEffect(() => {
-        if (!clickedOnAudio) return // on ne lance pas le son si on n'a pas cliqué sur le son (permission de lecture)
+       
+
         if (!files.length || index >= files.length) return // on ne lance pas si il n'y a pas de son
         if (index === currentIndex && isPlaying) return // on ne relance pas le son si on est sur le même index et qu'il joue déjà
 
-        SETTINGS.DEBUG_VOICEOVER && console.log('Lancement du son', index, files, 'currentScene:', currentScene)
+        if (index === previousIndex) return; // on ne joue pas en boucle
+         console.log('play ', step, currentScene, {index,currentIndex,previousIndex});
+        SETTINGS.DEBUG_VOICEOVER && console.log('Lancement du son', index, files, 'currentScene:', currentScene, 'outScene:', outScene)
         stopAudio()
         playAudio(index)
 
         return () => stopAudio()
-    }, [files, playAudio, currentScene, clickedOnAudio, index, currentIndex, isPlaying])
+    }, [files, playAudio, currentScene, index, currentIndex, isPlaying, outScene])
 
     // useEffect mute
     useEffect(() => {
@@ -116,25 +136,6 @@ export default function VoiceOver({ onAudioEnd }) {
             soundRef.current.setVolume(mute ? SETTINGS.SOUND_OFF : SETTINGS.SOUND_ON)
         }
     }, [mute])
-
-    // Lancer le son de l'intro au clic
-    useEffect(() => {
-        const handleClick = () => {
-            // Correction de la condition qui était toujours vraie
-            if (!(currentScene === 'intro' || currentScene === null)) return
-
-            setClickedOnAudio(true)
-            setIndex(0)
-        }
-
-        if (currentScene === null || currentScene === 'intro') {
-            window.addEventListener('click', handleClick)
-        }
-
-        return () => {
-            window.removeEventListener('click', handleClick)
-        }
-    }, [currentScene, setIndex])
 
     return null
 }

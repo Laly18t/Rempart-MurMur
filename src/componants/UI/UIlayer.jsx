@@ -29,12 +29,6 @@ export default function UIlayer() {
         }, 500)
     } 
 
-    useEffect(() => {
-        if (step >= 2) {
-            setCurrentScene('intro')
-        }
-    }, [step, currentScene])
-
     return <div className="uiLayer">
         {/* UI 0 - Loader */}
         {step === 0 && (

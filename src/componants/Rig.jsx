@@ -3,6 +3,7 @@ import { useThree, useFrame } from "@react-three/fiber"
 import { useRef, useEffect } from "react"
 import { easing } from 'maath'
 import { CameraControls } from '@react-three/drei'
+
 import useSceneStore from '../stores/useSceneStore'
 import { SETTINGS } from '../constants'
 import useAppStore from '../stores/useAppStore'
@@ -12,7 +13,6 @@ export default function Rig({ modelsInfo = {} }) {
 
     const currentScene = useSceneStore((state) => state.currentScene)
     const getCurrentSceneInfo = useSceneStore((state) => state.getCurrentSceneInfo)
-    const getCurrentScene = useSceneStore.getState
 
     const maxWidth = useAppStore((state) => state.maxWidth)
     const step = useAppStore((state) => state.step)
@@ -23,11 +23,9 @@ export default function Rig({ modelsInfo = {} }) {
 
     // Gestion du focus sur une scène (portail cliqué)
     useEffect(() => {
-        console.log('step', step)
         // if (!currentScene || currentScene === 'intro') return
 
         const modelInfo = getCurrentSceneInfo()
-        console.log('toto', getCurrentScene().currentScene)
         // const active = scene.getObjectByName(currentScene)
         
         if (currentScene ==! 'intro') {

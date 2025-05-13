@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 
-const useVoiceOverStore = create((set) => ({
+const useVoiceOverStore = create((set, get) => ({
     mute: false,
-    index: -1,
+    index: 0,
     currentIndex: -1,
+    previousIndex: -1,
     isPlaying: false,
     isSceneFinished: false,
 
@@ -11,7 +12,15 @@ const useVoiceOverStore = create((set) => ({
     setIndex: (index) => set({ index }), // changer l'index de l'audio
     setCurrentIndex: (currentIndex) => set({ currentIndex }), // changer l'index de l'audio
     setIsPlaying: (bool) => set({ isPlaying: bool }),   // changer l'état de lecture
-    setSceneFinished: () => set({ isSceneFinished: true, isPlaying: false, index: -1, currentIndex: -1 }), // marquer la scene comme terminée
+    setSceneFinished: () => {
+        const { index } = get();
+        console.log('setSceneFinished', index);
+        set({ isSceneFinished: true, isPlaying: false, index: -1, currentIndex: -1, previousIndex: index })
+    }, // marquer la scene comme terminée
+    setPreviousIndex: ( index ) => {
+        console.log('--> setPreviousIndex', index)
+        set({previousIndex: index})
+    }
 }))
 
 export default useVoiceOverStore
