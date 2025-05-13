@@ -1,10 +1,25 @@
 import React, { useRef, useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { MeshNormalMaterial } from 'three'
+import useSceneStore from '../../stores/useSceneStore'
 
 export default function VictorianScene(props) {
     const { scene } = useGLTF('/models/scene_1786.gltf') // load model
     const groupRef = useRef()
+    // const { setSceneInfo } = useSceneStore((state) => ({
+    //     setSceneInfo: state.setSceneInfo,
+    // }))
+
+    // useEffect(() => {
+    //     if (group.current) {
+    //         const cameras = {
+    //             // camera_trappe: group.current.getObjectByName('camera_trappe'),
+    //             // camera_radio: group.current.getObjectByName('camera_radio'),
+    //             // camera_generale: group.current.getObjectByName('camera_generale'),
+    //         }
+    //         setSceneInfo(DATA.guerre.name, { group: null, cameras })
+    //     }
+    // }, [group, setSceneInfo])
 
     // temporaire
     useEffect(() => {

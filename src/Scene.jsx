@@ -56,8 +56,6 @@ export default function Scene() {
         setStep(step + 1)
     }
 
-    console.log('step', step)
-
     return <>
         {/* activation voix-off */}
         <VoiceOver

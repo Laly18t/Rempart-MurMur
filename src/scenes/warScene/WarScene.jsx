@@ -1,10 +1,13 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useGLTF, PerspectiveCamera, useAnimations } from '@react-three/drei'
+import useSceneStore from '../../stores/useSceneStore'
+import { DATA } from '../../constants'
 
 export default function WarScene(props) {
     const group = useRef()
     const { nodes, materials, animations } = useGLTF('/models/scene_1942_v6.glb')
     const { actions } = useAnimations(animations, group)
+    const setSceneInfo = useSceneStore((state) => (state.setSceneInfo))
 
 
     const handleClick = () => {
@@ -20,6 +23,17 @@ export default function WarScene(props) {
     //     camera_radio: group.current.getObjectByName('camera_radio'),
     //     camera_generale: group.current.getObjectByName('camera_generale'),
     // }
+
+    useEffect(() => {
+        if (group.current) {
+            const cameras = [
+                group.current.getObjectByName('camera_radio'),
+                group.current.getObjectByName('camera_trappe'),
+                group.current.getObjectByName('camera_generale'),
+            ]
+            setSceneInfo(DATA.guerre.name, { group: group.current, cameras })
+        }
+    }, [group])
 
     return (
         <group position={[-1,-2, -5]} rotation-y={ -3.14 } ref={group} {...props} dispose={null}>
