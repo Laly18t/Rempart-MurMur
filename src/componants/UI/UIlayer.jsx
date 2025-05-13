@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Loader from './Loader'
 import SoundButton from "./SoundButton"
 import SubtitleButton from "./SubtitleButton"
 import useAppStore from '../../stores/useAppStore'
 import { useControls } from 'leva';
+import useSceneStore from '../../stores/useSceneStore';
 
 export default function UIlayer() {
     const [fadeOut, setFadeOut] = useState(false)
@@ -11,6 +12,8 @@ export default function UIlayer() {
     const step = useAppStore((state) => state.step)
     const setStep = useAppStore((state) => state.setStep)
     const nextStep = useAppStore((state) => state.nextStep)
+    const setCurrentScene = useSceneStore((state) => state.setCurrentScene)
+    const currentScene = useSceneStore((state) => state.currentScene)
 
     // animation fade in
     const handleLoaderFinish = () => {
@@ -25,6 +28,12 @@ export default function UIlayer() {
             setStep(2)
         }, 500)
     } 
+
+    useEffect(() => {
+        if (step >= 2) {
+            setCurrentScene('intro')
+        }
+    }, [step, currentScene])
 
     return <div className="uiLayer">
         {/* UI 0 - Loader */}
