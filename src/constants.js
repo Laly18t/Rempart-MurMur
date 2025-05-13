@@ -69,8 +69,8 @@ export const INTERACTION = {
 export const AUDIO_SEQUENCES = {
     STEP: {
         1: null,
-        2: '/audio/test-intro.mp3', 
-        3: null, // '/audio/rempart-1317_1.mp3',
+        2: '/audio/rempart-intro.mp3', 
+        3: '/audio/rempart-1317_1.mp3',
         4: null,
         5: null,
         6: '/audio/rempart-fin.mp3'
@@ -86,11 +86,10 @@ export const AUDIO_SEQUENCES = {
         [EPOQUES.MODERN]: [
             // '/audio/rempart-1789.mp3',
             '/audio/test-intro.mp3',
-            '/audio/rempart-1317_1.mp3',
+            '/audio/test-intro.mp3',
             '/audio/test-intro.mp3',
         ],
         [EPOQUES.WAR]: [
-            // '/audio/rempart-1942.mp3'
             '/audio/test-intro.mp3',
         ]
     },
