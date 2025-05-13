@@ -5,10 +5,12 @@ import { TextureLoader } from "three"
 import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
 import IntroAnimation from "../animations/IntroAnimation"
+import useVoiceOverStore from "../../stores/useVoiceOverStore"
 
 export default function Intro({ debug = false, ...props }) {
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
+    const voiceOver = useVoiceOverStore()
     const handleClickButton = () => {
         nextStep()
     }
@@ -34,7 +36,7 @@ export default function Intro({ debug = false, ...props }) {
             {/* TODO: avoir la bonne animation */}
             {/* {step > 1 && <IntroAnimation />} */}
 
-            <ArrowButton position={[2, -1.15, 0]} onClick={handleClickButton} />
+            {!voiceOver.isPlaying && <ArrowButton position={[2, -1.15, 0]} onClick={handleClickButton} />}
         </group>
 
     </>
