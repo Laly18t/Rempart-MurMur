@@ -32,7 +32,9 @@ import CTA_end from './componants/UI/CTA_end'
 
 // scene centrale
 export default function Scene() {
-    const { currentScene, setCurrentScene } = useSceneStore()
+    const setCurrentScene = useSceneStore((state) => state.setCurrentScene)
+    const getCurrentScene = useSceneStore.getState
+
     const portalRef = useRef()
     const { camera } = useThree()
     const [canEnterPortal, setCanEnterPortal] = useState(true) // bloquer l'entree dans un portail
@@ -51,9 +53,13 @@ export default function Scene() {
 
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
+    const setStep = useAppStore((state) => state.setStep)
 
     const handleClickButton = () => {
         nextStep()
+    }
+    const handleReturnButton = () => {
+        setStep(step - 1)
     }
 
     return <>
@@ -73,16 +79,13 @@ export default function Scene() {
             <Intro />
 
             {/* Portail 1 - Medieval */}
-            {/* <group ref={portalRef}>
+            <group ref={portalRef}>
                 <Portal
                     id={DATA.medieval.name}
                     onClick={() => {
-                        if (canEnterPortal)
-                            setCurrentScene(DATA.medieval.name)
-                            const worldPosition = new THREE.Vector3()
-                            portalRef.current.getWorldPosition(worldPosition)
-                            worldPosition.z += 1.5
-                            setCurrentScene(DATA.medieval.name, worldPosition)
+                        setCurrentScene(DATA.medieval.name)
+                        console.log("click medieval", getCurrentScene().currentScene)
+                        nextStep()
                     }}
                     textureDecoration={medievalFrame}
                     badgeDecoration={ASSETS.MEDIEVAL_BADGE}
@@ -93,14 +96,17 @@ export default function Scene() {
                     </Suspense>
                 </Portal>
                 <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
-            </group> */}
+                <ArrowButton position={[-2.5, 0.2, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
+            </group>
 
             {/* Portail 2 - Modern */}
             <group ref={portalRef}>
                 <Portal
                     id={DATA.moderne.name}
                     onClick={() => {
-                        if (canEnterPortal) setCurrentScene(DATA.moderne.name)
+                        if (canEnterPortal) 
+                            setCurrentScene(DATA.moderne.name)
+                            nextStep()
                     }}
                     textureDecoration={modernFrame}
                     badgeDecoration={ASSETS.MODERN_BADGE}
@@ -113,6 +119,7 @@ export default function Scene() {
                     </Suspense>
                 </Portal>
                 <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
+                <ArrowButton position={[-2.4, 0, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
             </group>
 
             {/* Portail 3 - 2nd guerre mondiale */}
@@ -120,7 +127,9 @@ export default function Scene() {
                 <Portal
                     id={DATA.guerre.name}
                     onClick={() => {
-                        if (canEnterPortal) setCurrentScene(DATA.guerre.name)
+                        if (canEnterPortal) 
+                            setCurrentScene(DATA.guerre.name) 
+                            nextStep()
                     }}
                     textureDecoration={warFrame}
                     badgeDecoration={ASSETS.WAR_BADGE}
@@ -133,6 +142,7 @@ export default function Scene() {
                     </Suspense>
                 </Portal>
                 <ArrowButton position={[2.3, 0, 0]} onClick={handleClickButton} />
+                <ArrowButton position={[-2.3, 0, 0]} scale={[-1, 1, 1]}  onClick={handleReturnButton} />
             </group>
 
             {/* Partie 4 - Conclusion */}

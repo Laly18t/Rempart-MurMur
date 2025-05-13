@@ -88,7 +88,7 @@ export default function Portal({
             </mesh>
 
             {/* badge decoratif */}
-                <mesh position={[1, -0.8, 0.5]}> {/* TODO: temporaire */}
+                <mesh position={[1, -0.8, 0.2]}> {/* TODO: temporaire */}
                     <planeGeometry args={[1.3, 1.3]} /> 
                     <meshBasicMaterial ref={badgeRef} map={texture} opacity={0} transparent={true} />
                 </mesh>

@@ -8,12 +8,16 @@ import ArrowButton from "../ArrowButton"
 
 export default function Conclusion({debug = false, ...props}) {
     const step = useAppStore((state) => state.step)
+    const setStep = useAppStore((state) => state.setStep)
+    const nextStep = useAppStore((state) => state.nextStep)
 
     const texture = useLoader(TextureLoader, './intro_castle.png')
 
-    const nextStep = useAppStore((state) => state.nextStep)
     const handleClickButton = () => {
         nextStep()
+    }
+    const handleReturnButton = () => {
+        setStep(step - 1)
     }
 
         
@@ -35,6 +39,7 @@ export default function Conclusion({debug = false, ...props}) {
 
             {/* {step > 1 && <ConclusionAnimation />} */}
             <ArrowButton position={[2, -1.15, 0]} onClick={handleClickButton} />
+            <ArrowButton position={[-2, -1.15, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
         </group>
     </>
 }
