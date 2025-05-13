@@ -67,11 +67,36 @@ export const INTERACTION = {
 
 // chemin des audio
 export const AUDIO_SEQUENCES = {
-    'intro': ['/audio/rempart-intro.mp3'],
-    [EPOQUES.MEDIEVAL]: ['/audio/rempart-1317.mp3', ],
-    [EPOQUES.MODERN]: ['/audio/rempart-1789.mp3'],
-    [EPOQUES.WAR]: ['/audio/rempart-1942.mp3'],
-    'outro': ['/audio/rempart-fin.mp3'],
+    STEP: {
+        1: null,
+        2: '/audio/test-intro.mp3', 
+        3: null, // '/audio/rempart-1317_1.mp3',
+        4: null,
+        5: null,
+        6: '/audio/rempart-fin.mp3'
+    },
+    SCENE: {
+        [EPOQUES.MEDIEVAL]: [
+            // '/audio/rempart-1317.mp3',
+            '/audio/rempart-1317_2.mp3',
+            '/audio/rempart-1317_3.mp3',
+            '/audio/rempart-1317_4.mp3',
+            '/audio/rempart-1317_5.mp3',
+        ],
+        [EPOQUES.MODERN]: [
+            // '/audio/rempart-1789.mp3',
+            '/audio/test-intro.mp3',
+            '/audio/rempart-1317_1.mp3',
+            '/audio/test-intro.mp3',
+        ],
+        [EPOQUES.WAR]: [
+            // '/audio/rempart-1942.mp3'
+            '/audio/test-intro.mp3',
+        ]
+    },
+    FX: {
+
+    }
 }
 
 export default { POSITIONS_ZOOM, POSITIONS_PARCHEMIN, SETTINGS, ASSETS, AUDIO_SEQUENCES, INTERACTION }
