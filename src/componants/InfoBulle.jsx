@@ -5,20 +5,24 @@ import { Text } from '@react-three/drei'
 
 import { POSITIONS_ZOOM } from '../constants'
 import useZoom from '../hooks/useZoom'
+import useSceneStore from '../stores/useSceneStore'
 
-export default function InfoBulle({ position = [0, 0, 0], title = "Info", content = "Ceci est une info." }) {
+export default function InfoBulle({ position = [0, 0, 0], title = "Info", content = "Ceci est une info.", onClick = () => {} }) {
     const [visible, setVisible] = useState(false)
     const pointRef = useRef()
     const popUpRef = useRef()
 
-    // zoom
-    const CAMERA_TARGET_IN = new Vector3(95, 0, 1)
-    const CAMERA_TARGET_OUT = new Vector3(...POSITIONS_ZOOM['monde-guerre'])
-    const toggleZoom = useZoom(CAMERA_TARGET_IN, CAMERA_TARGET_OUT) // hook de zoom
+    const currentScene = useSceneStore((state) => state.currentScene)
+
+    // // zoom
+    // const CAMERA_TARGET_IN = new Vector3(900, 0, 1)
+    // const CAMERA_TARGET_OUT = new Vector3(...POSITIONS_ZOOM[currentScene])
+    // const toggleZoom = useZoom(CAMERA_TARGET_IN, CAMERA_TARGET_OUT) // hook de zoom
 
     const handleClick = () => {
-        toggleZoom()
+        // toggleZoom()
         setVisible(prev => !prev)
+        onClick()
     }
 
     // billboard effect
