@@ -19,6 +19,7 @@ export default function Conclusion({ debug = false, ...props }) {
         './castle_dammage.PNG',
         './castle_renovation.PNG'
     ])
+    const textureButton = useLoader(TextureLoader, './ui/outro_button.png')
 
     const handleMeshClick = () => {
         // Toggle entre 0 et 1 uniquement
@@ -33,11 +34,11 @@ export default function Conclusion({ debug = false, ...props }) {
         setStep(step - 1)
     }
 
-    // Timer 35s une fois que ce composant est monté
+    // Timer 35s une fois que ce composant est montré
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowCTA(true)
-        }, 35000)
+        }, 1) // 35000
 
         return () => clearTimeout(timer)
     }, [])
@@ -53,7 +54,7 @@ export default function Conclusion({ debug = false, ...props }) {
 
             {/* Mesh interactif */}
             <mesh position={[0, 0.4, 0]} onClick={handleMeshClick}>
-                <planeGeometry args={[5.5, 2.4]} />
+                <planeGeometry args={[6.3, 2.8]} />
                 <meshBasicMaterial
                     map={textures[textureIndex]}
                     transparent={true}
@@ -62,30 +63,34 @@ export default function Conclusion({ debug = false, ...props }) {
 
             {/* Titre principal */}
             <Text
-                position={[0, -1, 0]}
+                position={[0, 1.5, 0.1]}
                 color={'red'}
-                fontSize={0.2}
+                fontSize={0.4}
                 anchorY="center"
                 anchorX="center"
                 lineHeight={0.8}
             >
-                Le château traverse les âges
+                2025
             </Text>
 
             {/* CTA de fin visible après 35s */}
             {showCTA && (
-                <Text
-                    position={[0, -1.5, 0]}
-                    color={'orange'}
-                    fontSize={0.3}
-                    anchorY="center"
-                    anchorX="center"
-                    lineHeight={0.8}
-                    onClick={handleCTAClick}
-                    style={{ cursor: 'pointer' }}
-                >
-                    CTA de fin
-                </Text>
+                <mesh position={[0, -1.3, 0]}>
+                    <planeGeometry args={[2, 0.5]} />
+                    <meshBasicMaterial map={textureButton} transparent={true} />
+                    <Text
+                        position={[0, 0.15, 0.01]}
+                        color={'#F8EEE5'}
+                        fontSize={0.3}
+                        anchorY="center"
+                        anchorX="center"
+                        lineHeight={0.8}
+                        onClick={handleCTAClick}
+                        style={{ cursor: 'pointer' }}
+                    >
+                        S'engager
+                    </Text>
+                </mesh>
             )}
 
             {/* {step > 1 && <ConclusionAnimation />} */}
