@@ -3,9 +3,7 @@ import { useTexture } from '@react-three/drei'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 
 export default function SubtitleButton() {
-    // TODO: add subtitle gestion on store
-    
-    // const { subtitle, setsubtitle } = useVoiceOverStore()
+    const { showSubtitle, setShowSubtitle } = useVoiceOverStore()
 
     const texture = ('./ui/subtitle.png')
     // const texture = !subtitle ? textures.on : textures.off
@@ -16,7 +14,7 @@ export default function SubtitleButton() {
                 src={texture}
                 alt="subtitle"
                 onClick={() => {
-                    // setsubtitle(!subtitle)
+                    setShowSubtitle(!showSubtitle)
                 }}
             />
         </button>

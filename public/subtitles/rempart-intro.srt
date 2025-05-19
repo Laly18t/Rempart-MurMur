@@ -1,0 +1,63 @@
+1
+00:00:01,560 --> 00:00:02,460
+Oh, bonjour.
+
+2
+00:00:03,440 --> 00:00:03,960
+Bienvenue.
+
+3
+00:00:05,000 --> 00:00:05,980
+Qui êtes-vous ?
+
+4
+00:00:06,720 --> 00:00:07,760
+Ah, je vois.
+
+5
+00:00:08,080 --> 00:00:09,940
+Vous voulez connaître mon histoire ?
+
+6
+00:00:10,680 --> 00:00:13,560
+Mais vous savez, ça fait un bail
+que j'ai pas raconté tout ça.
+
+7
+00:00:14,120 --> 00:00:16,040
+Entre nous, je
+suis un vieux tas de pierres
+
+8
+00:00:16,360 --> 00:00:18,140
+et mes souvenirs sont un peu flous.
+
+9
+00:00:18,720 --> 00:00:22,240
+Mais bon, si vous êtes arrivé jusqu'ici,
+c'est que vous êtes curieux.
+
+10
+00:00:22,720 --> 00:00:25,320
+Et moi, je suis pas du genre
+à refuser un peu de compagnie.
+
+11
+00:00:26,160 --> 00:00:29,720
+Alors voilà, je suis une maison forte,
+ou le château de Montbellre.
+
+12
+00:00:30,080 --> 00:00:30,920
+Le temps.
+
+13
+00:00:31,480 --> 00:00:35,040
+Perché sur ma colline, entouré
+par la forêt, je vois tout d'ici.
+
+14
+00:00:35,920 --> 00:00:38,760
+Les vallées, les chemins,
+les gens qui vont et viennent.
+
