@@ -1,5 +1,5 @@
-1
-00:00:01,560 --> 00:00:02,460
+﻿1
+00:00:00,740 --> 00:00:02,140
 Oh, bonjour.
 
 2
@@ -15,11 +15,11 @@ Qui êtes-vous ?
 Ah, je vois.
 
 5
-00:00:08,080 --> 00:00:09,940
+00:00:07,980 --> 00:00:09,940
 Vous voulez connaître mon histoire ?
 
 6
-00:00:10,680 --> 00:00:13,560
+00:00:10,600 --> 00:00:13,700
 Mais vous savez, ça fait un bail
 que j'ai pas raconté tout ça.
 
