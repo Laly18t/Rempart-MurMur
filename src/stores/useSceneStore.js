@@ -32,15 +32,11 @@ const useSceneStore = create((set, get) => ({
     setCurrentScene: (scene, position = null) => {
 
         const { isPlaying, setPreviousIndex, setIndex } = useVoiceOverStore.getState()
-
-
-
+        
         if (isPlaying) {
             console.warn('try to skip audio, just wait')
             return;
         }
-
-       
 
         set(() => ({
             currentScene: scene,
@@ -54,10 +50,14 @@ const useSceneStore = create((set, get) => ({
 
     resetScene: () => {
         const { currentScene } = get()
+        const { setSceneFinished } = useVoiceOverStore.getState()
+
+        setSceneFinished(false)
+        
         const newState = {
             currentScene: null,
             cameraTarget: null,
-            audioIndex: 0
+            audioIndex: 0,
         };
 
         if (currentScene !== null ) { // dans le cas ou on sort d'un portal on garde l'id de la currentScene

@@ -1,56 +1,98 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react'
 import Loader from './Loader'
 import SoundButton from "./SoundButton"
 import SubtitleButton from "./SubtitleButton"
 import useAppStore from '../../stores/useAppStore'
-import { useControls } from 'leva';
-import useSceneStore from '../../stores/useSceneStore';
+import useSceneStore from '../../stores/useSceneStore'
+import useVoiceOverStore from '../../stores/useVoiceOverStore'
+import videoSrc from '/ui/video.mp4'
+import Subtitle from './Subtitle'
 
 export default function UIlayer() {
     const [fadeOut, setFadeOut] = useState(false)
+    const [showMedievalVideo, setShowMedievalVideo] = useState(false)
+    const [videoFading, setVideoFading] = useState(false)
+    const videoRef = useRef(null)
+    const videoPlayedRef = useRef(false)
 
     const step = useAppStore((state) => state.step)
-    const setStep = useAppStore((state) => state.setStep)
     const nextStep = useAppStore((state) => state.nextStep)
-    const setCurrentScene = useSceneStore((state) => state.setCurrentScene)
-    const currentScene = useSceneStore((state) => state.currentScene)
+    const { currentScene } = useSceneStore()
+    const { isSceneFinished, isPlaying } = useVoiceOverStore()
 
-    // animation fade in
-    const handleLoaderFinish = () => {
-        nextStep()
-    }
-    // animation fade out 
-    const handleStart = () => {
-        setFadeOut(true) // animation
-    
-        // apres l'anim (500ms), on cache titre et affiche sound
+    // reset lecture de la vidéo
+    useEffect(() => {
+        if (currentScene !== 'monde-medieval') {
+            videoPlayedRef.current = false
+            setShowMedievalVideo(false) // reset video
+            setVideoFading(false) // reset fade
+        }
+    }, [currentScene])
+
+    // Affichage de la video medieval
+    useEffect(() => {
+        if (currentScene === 'monde-medieval' && isSceneFinished && !isPlaying && !videoPlayedRef.current && !videoFading) {
+            videoPlayedRef.current = true
+            setShowMedievalVideo(true)
+            setTimeout(() => {
+                videoRef.current?.play().catch(console.error)
+            }, 300)
+        }
+    }, [currentScene, isSceneFinished, isPlaying, videoFading])
+
+    // Gestion de la fin de la video
+    const handleVideoEnd = useCallback(() => {
+        setVideoFading(true)
         setTimeout(() => {
-            nextStep()
-        }, 500)
-    } 
+            setShowMedievalVideo(false)
+            setVideoFading(false)
+        }, 1000)
+    }, [])
 
-    return <div className="uiLayer">
-        {/* UI 0 - Loader */}
-        {step === 0 && (
-            <Loader onFinish={handleLoaderFinish} />
-        )}
+    // Initialisation de la vidéo
+    const handleVideoRef = useCallback((element) => {
+        if (element) {
+            videoRef.current = element
+            element.loop = false
+            element.addEventListener('ended', handleVideoEnd)
+        }
+    }, [handleVideoEnd])
 
-        {/* UI 1 - Titre + button */}
-        {step === 1 && (
-            <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
-                <img src="./ui/logo.svg" style={{width:'20%', paddingBottom:'90px',}} alt="Logo" className="logo" />
-                <button className="startButton" onClick={handleStart}>
-                    Démarrer
-                </button>
-            </div>
-        )}
+    // Animation fade-out du titre
+    const handleStart = useCallback(() => {
+        setFadeOut(true)
+        setTimeout(() => nextStep(), 500)
+    }, [nextStep])
 
-        {/* UI 2 - option de sons permanentes */}
-        {step > 1 && (
-            <div className="sound fade-in">
-                <SubtitleButton />
-                <SoundButton />
-            </div>
-        )}
-    </div>
+    return (
+        <div className="uiLayer">
+            <Subtitle />
+            {step === 0 && <Loader onFinish={() => nextStep()} />}
+
+            {step === 1 && (
+                <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
+                    <img src="./ui/logo.svg" alt="Logo" className="logo" style={{ width: '20%', paddingBottom: '90px' }} />
+                    <button className="startButton" onClick={handleStart}>
+                        Démarrer
+                    </button>
+                </div>
+            )}
+
+            {step > 1 && (
+                <div className="sound fade-in">
+                    <SubtitleButton />
+                    <SoundButton />
+                </div>
+            )}
+
+            {showMedievalVideo && (
+                <div className={`video-container ${videoFading ? 'fade-out' : 'fade-in'}`}>
+                    <video ref={handleVideoRef} width="100%" height="100%" controls={false} autoPlay playsInline>
+                        <source src={videoSrc} type="video/mp4" />
+                        Votre navigateur ne supporte pas la lecture vidéo.
+                    </video>
+                </div>
+            )}
+        </div>
+    )
 }
