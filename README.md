@@ -1,4 +1,4 @@
-# Rempart-MurMur
+# Rempart MurMur
 
 Une application 3D interactive construite avec **React**, **Three.js**, et **@react-three/fiber**, propulsée par **Vite** pour un développement rapide.
 
