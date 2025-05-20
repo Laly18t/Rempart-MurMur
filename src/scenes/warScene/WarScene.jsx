@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from 'react'
 import { useGLTF, PerspectiveCamera, useAnimations } from '@react-three/drei'
 import useSceneStore from '../../stores/useSceneStore'
 import { DATA } from '../../constants'
+import { useLoader } from '@react-three/fiber'
+import { TextureLoader } from 'three'
 
 export default function WarScene({...props}) {
     const group = useRef()
-    const { nodes, materials, animations } = useGLTF('/models/scene_1942_v6.glb')
+    const { nodes, materials, animations } = useGLTF('/models/scene_1942_v7.glb')
     const { actions } = useAnimations(animations, group)
     const setSceneInfo = useSceneStore((state) => (state.setSceneInfo))
 
@@ -17,11 +19,7 @@ export default function WarScene({...props}) {
         }
     }
 
-    // const cameras = {
-    //     camera_trappe: group.current.getObjectByName('camera_trappe'),
-    //     camera_radio: group.current.getObjectByName('camera_radio'),
-    //     camera_generale: group.current.getObjectByName('camera_generale'),
-    // }
+    const texture = useLoader(TextureLoader, '/people_war.PNG')
 
     useEffect(() => {
         if (group.current) {
@@ -36,6 +34,11 @@ export default function WarScene({...props}) {
 
     return (
         <group position={[-1,-2, -5]} rotation-y={ -3.14 } ref={group} {...props} dispose={null}>
+             <mesh position={[1.7, 1.6, 1.408]} rotation-y={ -3.14 }> {/* TODO: temporaire */}
+                <boxGeometry args={[1.3, 2.5, 0.00001]} /> 
+                <meshBasicMaterial map={texture} transparent={true} />
+                {/* <meshBasicMaterial color='red' /> */}
+            </mesh>
             <group>
                 <group name="Neutretest" />
                 <group name="Neutre">
@@ -229,4 +232,4 @@ export default function WarScene({...props}) {
     )
 }
 
-useGLTF.preload('/models/scene_1942_v6.glb')
+useGLTF.preload('/models/scene_1942_v7.glb')
