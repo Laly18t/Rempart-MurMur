@@ -1,3 +1,17 @@
+/* import fonts */
+@font-face {
+  font-family: 'IMfeelEnglish';
+  src: url('/fonts/IMFellEnglish-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Alegreya';
+  src: url('/fonts/AlegreyaSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -109,6 +123,54 @@ body {
       max-width: 50px;
       max-height: 50px;
     }
+  }
+
+  .video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .video-container video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+.popUpTitre {
+  display: flex;
+  align-items: center;
+
+  p{
+    margin: 0 0 0 5px;
+    font-family: 'ImfeelEnglish';
+    font-size: 8px;
+  }
+}
+.popUpInfo {
+  h2 {
+    margin: 0 0 3px 0;
+    font-size: 5px;
+    font-weight: bold;
+  }
+  p{
+    margin: 0;
+    font-family: 'Alegreya';
+    font-size: 4px;
+  }
+  div {
+    padding: 3px;
+    border-radius: 3px;
+    background-color: beige;
+    max-width: 100px;
   }
 }
 
