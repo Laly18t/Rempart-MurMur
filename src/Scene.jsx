@@ -86,7 +86,6 @@ export default function Scene() {
                 >
                     <Suspense>
                         <MedievalScene />
-                        <ambientLight intensity={0.2} />
                     </Suspense>
                 </Portal>
                 <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
