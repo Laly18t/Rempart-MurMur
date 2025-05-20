@@ -1,18 +1,19 @@
 import React, { useState, useRef } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
-import { Vector3 } from 'three'
-import { Text } from '@react-three/drei'
+import { useFrame, useLoader, useThree } from '@react-three/fiber'
+import { TextureLoader, Vector3 } from 'three'
+import { Html, Text, Billboard } from '@react-three/drei'
 
 import { POSITIONS_ZOOM } from '../constants'
 import useZoom from '../hooks/useZoom'
 import useSceneStore from '../stores/useSceneStore'
 
-export default function InfoBulle({ position = [0, 0, 0], title = "Info", content = "Ceci est une info.", onClick = () => {} }) {
+export default function InfoBulle({ position = [0, 0, 0], title = "Info", content = "Ceci est une info.", distanceFactor = 7, onClick = () => {} }) {
     const [visible, setVisible] = useState(false)
     const pointRef = useRef()
     const popUpRef = useRef()
 
     const currentScene = useSceneStore((state) => state.currentScene)
+    const textureButton = useLoader(TextureLoader, './ui/bulle_info.svg')
 
     // // zoom
     // const CAMERA_TARGET_IN = new Vector3(900, 0, 1)
@@ -22,43 +23,38 @@ export default function InfoBulle({ position = [0, 0, 0], title = "Info", conten
     const handleClick = () => {
         // toggleZoom()
         setVisible(prev => !prev)
+        console.log('click')
         onClick()
     }
 
-    // billboard effect
-    useFrame(({ camera }) => {
-        if (pointRef.current) {
-            pointRef.current.lookAt(camera.position)
-        }
-    })
-
-    return (
-        <group position={position} ref={pointRef} onClick={handleClick}>
+    return <>
+        {currentScene !== null && (
+        <Billboard position={position} follow={true} lockX={false} lockY={false} lockZ={false}>
 
             {/* Point cliquable */}
-            <mesh >
-                <sphereGeometry args={[0.1, 16, 16]} />
-                <meshBasicMaterial color="hotpink" />
-            </mesh>
+            {/* <mesh rotation-y={2.5}>
+                <sphereGeometry args={[0.2, 5, 5]} />
+                <meshBasicMaterial 
+                    map={textureButton}
+                    />
+            </mesh> */}
+            <Html className='popUp' style={{pointerEvents: 'none', }} center transform distanceFactor={distanceFactor} >
+                <div className='popUpTitre'>
+                <img onClick={handleClick} src="./ui/bulle_info.svg" alt="info" style={{ width: '10px', height: '10px', cursor: 'pointer', pointerEvents: 'auto', }} />
+                <p style={{ color: 'white', }}>Découvrir</p>
+                </div>
 
-            {/* Popup texte */}
-            {visible === true && (
-                <group ref={popUpRef} >
-                    {/* Fond */}
-                    <mesh position={[0, -0.5, 0.5]}>
-                        <boxGeometry args={[0.01, 1, 1]} />
-                        <meshBasicMaterial color="grey" />
-                        {/* Titre */}
-                        <Text fontSize={0.3} rotation={[0, -Math.PI / 2, 0]} anchorY="top" anchorX="left" lineHeight={0.8} position={[-0.1, 0.3, -0.3]} material-toneMapped={false}>
-                            {title}
-                        </Text>
-                        {/* Text */}
-                        <Text fontSize={0.1} rotation={[0, -Math.PI / 2, 0]} anchorY="top" anchorX="left" lineHeight={0.8} position={[-0.1, 0, -0.3]} material-toneMapped={false}>
-                            {content}
-                        </Text>
-                    </mesh>
-                </group>
-            )}
-        </group>
-    )
+                {/* Popup texte */}
+                {visible === true && (
+                    <group ref={popUpRef} className='popUpInfo'>
+                        <div>
+                        <h2>{title}</h2>
+                        <p>{content}</p>
+                        </div>
+                    </group>
+                )}
+            </Html> 
+        </Billboard>
+    )}
+    </>
 }
