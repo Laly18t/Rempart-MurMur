@@ -7,7 +7,7 @@ import useSceneStore from '../stores/useSceneStore'
 import { SETTINGS } from '../constants'
 import useAppStore from '../stores/useAppStore'
 import { TextureLoader } from 'three'
-import useClickSound from '../hooks/useClickSound'
+import usePlaySound from '../hooks/usePlaySound'
 
 // font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')
@@ -32,8 +32,8 @@ export default function Portal({
     const [hovered, setHovered] = useState(false)
 
     const texture = useLoader(TextureLoader, `.${badgeDecoration}`)
-    const playPortalEnterSound = useClickSound('/audio/sounds/portal_enter.wav')
-    const playPortalExitSound = useClickSound('/audio/sounds/portal_exit.wav')
+    const playPortalEnterSound = usePlaySound('/audio/sounds/portal_enter.wav')
+    const playPortalExitSound = usePlaySound('/audio/sounds/portal_exit.wav')
 
     // changement de curseur en hover
     useCursor(hovered)

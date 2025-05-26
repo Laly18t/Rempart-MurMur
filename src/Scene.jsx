@@ -28,6 +28,7 @@ import ParcheminBackground from './componants/ParcheminBackground'
 import ArrowButton from './componants/ArrowButton'
 import useAppStore from './stores/useAppStore'
 import CTA_end from './componants/UI/CTA_end'
+import usePlaySound from './hooks/usePlaySound'
 
 // scene centrale
 export default function Scene() {
@@ -48,6 +49,9 @@ export default function Scene() {
     useActivePortal() // gestion du portail actif
     // useCameraControl(scrollRef, camera) // gestion de la camera
     // useEasedCamera(scrollRef, camera) // gestion de la camera
+    const playMedievalMusic = usePlaySound(`/audio/sounds/1317_v3.wav`)
+    const playMordernMusic = usePlaySound(`/audio/sounds/1697_v3.wav`)
+    const playWarMusic = usePlaySound(`/audio/sounds/1942_v5.wav`)
 
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
@@ -80,7 +84,10 @@ export default function Scene() {
             <group ref={portalRef}>
                 <Portal
                     id={DATA.medieval.name}
-                    onClick={()=> {setCurrentScene(DATA.medieval.name)}}
+                    onClick={()=> {
+                        setCurrentScene(DATA.medieval.name)
+                        playMedievalMusic()
+                    }}
                     textureDecoration={medievalFrame}
                     badgeDecoration={ASSETS.MEDIEVAL_BADGE}
                 >
@@ -96,7 +103,10 @@ export default function Scene() {
             <group ref={portalRef}>
                 <Portal
                     id={DATA.moderne.name}
-                    onClick={() => { setCurrentScene(DATA.moderne.name) }}
+                    onClick={() => { 
+                        setCurrentScene(DATA.moderne.name)
+                        playMordernMusic()
+                     }}
                     textureDecoration={modernFrame}
                     badgeDecoration={ASSETS.MODERN_BADGE}
                 >
@@ -114,7 +124,10 @@ export default function Scene() {
             <group ref={portalRef}>
                 <Portal
                     id={DATA.guerre.name}
-                    onClick={() => { setCurrentScene(DATA.guerre.name) }}
+                    onClick={() => { 
+                        setCurrentScene(DATA.guerre.name)
+                        playWarMusic()
+                     }}
                     textureDecoration={warFrame}
                     badgeDecoration={ASSETS.WAR_BADGE}
                 >

@@ -6,6 +6,8 @@ import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
 import IntroAnimation from "../animations/IntroAnimation"
 import useVoiceOverStore from "../../stores/useVoiceOverStore"
+import { useEffect } from "react"
+import usePlaySound from "../../hooks/usePlaySound"
 
 export default function Intro({ debug = false, ...props }) {
     const step = useAppStore((state) => state.step)
@@ -16,6 +18,16 @@ export default function Intro({ debug = false, ...props }) {
     }
 
     const texture = useLoader(TextureLoader, './castle_clean.PNG')
+    const playSound = usePlaySound(`/audio/sounds/parchemin_v1_1.wav`)
+    
+    // play de la musique de fond
+    useEffect(() => {
+        if(step === 2){
+            playSound()
+            console.log('play', step)
+        }
+    }
+    , [step])
 
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
