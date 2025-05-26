@@ -49,9 +49,6 @@ export default function Scene() {
     useActivePortal() // gestion du portail actif
     // useCameraControl(scrollRef, camera) // gestion de la camera
     // useEasedCamera(scrollRef, camera) // gestion de la camera
-    const playMedievalMusic = usePlaySound(`/audio/sounds/1317_v3.wav`)
-    const playMordernMusic = usePlaySound(`/audio/sounds/1697_v3.wav`)
-    const playWarMusic = usePlaySound(`/audio/sounds/1942_v5.wav`)
 
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
@@ -86,10 +83,10 @@ export default function Scene() {
                     id={DATA.medieval.name}
                     onClick={()=> {
                         setCurrentScene(DATA.medieval.name)
-                        playMedievalMusic()
                     }}
                     textureDecoration={medievalFrame}
                     badgeDecoration={ASSETS.MEDIEVAL_BADGE}
+                    playMusicName={DATA.medieval.date}
                 >
                     <Suspense>
                         <MedievalScene />
@@ -105,10 +102,10 @@ export default function Scene() {
                     id={DATA.moderne.name}
                     onClick={() => { 
                         setCurrentScene(DATA.moderne.name)
-                        playMordernMusic()
-                     }}
+                    }}
                     textureDecoration={modernFrame}
                     badgeDecoration={ASSETS.MODERN_BADGE}
+                    playMusicName={DATA.moderne.date}
                 >
                     <Suspense>
                         <VictorianScene />
@@ -126,10 +123,10 @@ export default function Scene() {
                     id={DATA.guerre.name}
                     onClick={() => { 
                         setCurrentScene(DATA.guerre.name)
-                        playWarMusic()
-                     }}
+                    }}
                     textureDecoration={warFrame}
                     badgeDecoration={ASSETS.WAR_BADGE}
+                    playMusicName={DATA.guerre.date}
                 >
                     <Suspense>
                         <WarScene />

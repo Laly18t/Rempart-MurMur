@@ -24,6 +24,7 @@ export default function Portal({
     children,
     onClick,
     debug = false,
+    playMusicName
 }) {
     const { currentScene, outScene } = useSceneStore() // store
     const { step } = useAppStore() // store
@@ -34,6 +35,8 @@ export default function Portal({
     const texture = useLoader(TextureLoader, `.${badgeDecoration}`)
     const playPortalEnterSound = usePlaySound('/audio/sounds/portal_enter.wav')
     const playPortalExitSound = usePlaySound('/audio/sounds/portal_exit.wav')
+
+    const playMusic = usePlaySound(`/audio/sounds/${playMusicName}.wav`)
 
     // changement de curseur en hover
     useCursor(hovered)
@@ -56,13 +59,15 @@ export default function Portal({
 
     // gestion du sound design au click
     useEffect(() => {   
-        if (currentScene) {
-            playPortalEnterSound()
+        if (currentScene === id) {
+            playPortalEnterSound.play()
+            playMusic.play()
         }
         if (outScene) {
-            playPortalExitSound()
+            playMusic.stop()
+            playPortalExitSound.play()
         }
-    }, [outScene, currentScene])
+    }, [outScene, currentScene, playMusicName])
 
     const portalSize = {
         width: 2.245,

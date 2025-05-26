@@ -12,7 +12,7 @@ export const DATA = {
     },
     moderne: {
         name: EPOQUES.MODERN,
-        date: '1786'
+        date: '1697'
     },
     guerre: {
         name: EPOQUES.WAR,

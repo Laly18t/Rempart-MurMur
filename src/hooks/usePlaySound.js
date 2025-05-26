@@ -1,7 +1,7 @@
+// hooks/usePlaySound.js
 import { useEffect, useRef } from 'react'
 import { AudioLoader, Audio, AudioListener } from 'three'
 
-// gestoin du sound design au click
 export default function usePlaySound(url, loop = false) {
     const audioRef = useRef()
 
@@ -17,9 +17,8 @@ export default function usePlaySound(url, loop = false) {
             audioRef.current = sound
         })
 
-        // ajout au document au cas où
         window.addEventListener('click', () => {
-            if (audioRef.current && !audioRef.current.context.state === 'running') {
+            if (audioRef.current && audioRef.current.context.state !== 'running') {
                 audioRef.current.context.resume()
             }
         })
@@ -27,7 +26,7 @@ export default function usePlaySound(url, loop = false) {
         return () => {
             if (audioRef.current?.isPlaying) audioRef.current.stop()
         }
-    }, [url])
+    }, [url, loop])
 
     const play = () => {
         if (audioRef.current && !audioRef.current.isPlaying) {
@@ -35,5 +34,11 @@ export default function usePlaySound(url, loop = false) {
         }
     }
 
-    return play
+    const stop = () => {
+        if (audioRef.current?.isPlaying) {
+            audioRef.current.stop()
+        }
+    }
+
+    return { play, stop }
 }

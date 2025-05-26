@@ -23,8 +23,10 @@ export default function Intro({ debug = false, ...props }) {
     // play de la musique de fond
     useEffect(() => {
         if(step === 2){
-            playSound()
+            playSound.play()
             console.log('play', step)
+        } else{
+            playSound.stop()
         }
     }
     , [step])
