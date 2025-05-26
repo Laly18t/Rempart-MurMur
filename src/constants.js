@@ -65,14 +65,20 @@ export const INTERACTION = {
     ZOOM_SPEED: 0.03,
 }
 
+export const SOUND_DESIGN = {
+    INTRO_MUSIC: '/audio/intro-music.mp3',
+    PORTAL_ENTER: '/audio/portal-enter.wav',
+    PORTAL_EXIT: '/audio/portal-exit.wav',
+}
+
 // chemin des audio
 export const AUDIO_SEQUENCES = {
     STEP: {
         1: null,
         // 2: null,
         3: null,
-        2: '/audio/rempart-intro.mp3', 
-        // 2: '/audio/test-intro.mp3',
+        // 2: '/audio/rempart-intro.mp3', 
+        2: '/audio/test-intro.mp3',
         // 3: '/audio/test-intro.mp3',
         4: null,
         5: null,

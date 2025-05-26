@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import { MeshPortalMaterial, useCursor, Text } from '@react-three/drei'
 import { easing } from 'maath'
@@ -7,6 +7,7 @@ import useSceneStore from '../stores/useSceneStore'
 import { SETTINGS } from '../constants'
 import useAppStore from '../stores/useAppStore'
 import { TextureLoader } from 'three'
+import useClickSound from '../hooks/useClickSound'
 
 // font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')
@@ -31,6 +32,8 @@ export default function Portal({
     const [hovered, setHovered] = useState(false)
 
     const texture = useLoader(TextureLoader, `.${badgeDecoration}`)
+    const playPortalEnterSound = useClickSound('/audio/sounds/portal_enter.wav')
+    const playPortalExitSound = useClickSound('/audio/sounds/portal_exit.wav')
 
     // changement de curseur en hover
     useCursor(hovered)
@@ -40,6 +43,7 @@ export default function Portal({
         // animation d'ouverture du portail au click
         if (portalRef.current) {
             easing.damp(portalRef.current, 'blend', currentScene === id ? 1 : 0, 0.2, delta)
+            // playPortalSound()
         }
 
         // effet pop du badge
@@ -49,6 +53,16 @@ export default function Portal({
             easing.damp(badgeRef.current, 'opacity', targetOpacity, 0.7, delta)
         }
     })
+
+    // gestion du sound design au click
+    useEffect(() => {   
+        if (currentScene) {
+            playPortalEnterSound()
+        }
+        if (outScene) {
+            playPortalExitSound()
+        }
+    }, [outScene, currentScene])
 
     const portalSize = {
         width: 2.245,
@@ -78,7 +92,8 @@ export default function Portal({
                 name={id}
                 onPointerOver={() => setHovered(true)}
                 onPointerOut={() => setHovered(false)}
-                onClick={onClick}
+                onClick={onClick
+                }
             >
                 <planeGeometry args={[portalSize.width, portalSize.height]} />
                 <MeshPortalMaterial ref={portalRef} events={currentScene === id} side={THREE.DoubleSide}>
