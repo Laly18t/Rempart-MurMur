@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react'
+import React, {forwardRef, useEffect, useRef} from 'react'
 import { useGLTF, PerspectiveCamera, useAnimations } from '@react-three/drei'
 import useSceneStore from '../../stores/useSceneStore'
 import { DATA } from '../../constants'
 import { useLoader } from '@react-three/fiber'
-import { TextureLoader } from 'three'
+import {MeshNormalMaterial, TextureLoader} from 'three'
 
-export default function WarScene({...props}) {
-    const group = useRef()
-    const { nodes, materials, animations } = useGLTF('/models/scene_1942_v7.glb')
+function WarScene({...props}, ref) {
+    const group = ref ?? useRef()
+    const { nodes, materials, animations, scene } = useGLTF('/models/scene_1942_v7.glb')
     const { actions } = useAnimations(animations, group)
     const setSceneInfo = useSceneStore((state) => (state.setSceneInfo))
 
@@ -30,7 +30,29 @@ export default function WarScene({...props}) {
             ]
             setSceneInfo(DATA.guerre.name, { group: group.current, cameras })
         }
+
+        scene.traverse((child) => {
+
+            if (child.name === 'camera_generale') { //Caméra_face
+                console.log('Camera trouvée:', child)
+                group.current.mainCamera = child
+            }
+        })
     }, [group])
+
+    return (
+      <group position={[0,-2, -3]} rotation-y={ -3.14 } ref={group} {...props} dispose={null}>
+          <mesh position={[-2.7, 1.15, -1.7]} rotation-y={ -3 }> {/* TODO: temporaire */}
+              <boxGeometry args={[1.3, 2.5, 0.00001]} />
+              <meshBasicMaterial map={texture} transparent={true} />
+              {/* <meshBasicMaterial color='red' /> */}
+          </mesh>
+          <primitive castShadow receiveShadow object={scene} />
+          <ambientLight intensity={0.6} />
+          <spotLight position={[0, 5, 5]} intensity={0.8} />
+          {/* <InfoBulle position={[.52, 1.5, -1.5]} onClick={handleClickInfoBulle} /> */}
+      </group>
+    )
 
     return (
         <group position={[-1,-2, -5]} rotation-y={ -3.14 } ref={group} {...props} dispose={null}>
@@ -228,8 +250,12 @@ export default function WarScene({...props}) {
                     rotation={[Math.PI / 2, 0, -Math.PI]}
                 />
             </group>
+            <ambientLight intensity={0.6} />
+            <spotLight position={[0, 5, 5]} intensity={0.8} />
         </group>
     )
 }
+
+export default forwardRef(WarScene)
 
 useGLTF.preload('/models/scene_1942_v7.glb')

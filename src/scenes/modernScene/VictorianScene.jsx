@@ -1,14 +1,15 @@
-import React, { useRef, useEffect, useMemo } from 'react'
-import { useGLTF } from '@react-three/drei'
+import React, {useRef, useEffect, useMemo, forwardRef} from 'react'
+import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 import { MeshNormalMaterial, TextureLoader } from 'three'
 import useSceneStore from '../../stores/useSceneStore'
 import InfoBulle from '../../componants/InfoBulle'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 import { useLoader, useThree } from '@react-three/fiber'
 
-export default function VictorianScene({...props}) {
+
+function VictorianScene({...props}, ref) {
     const { scene } = useGLTF('/models/scene_1786.gltf') // load model
-    const groupRef = useRef()
+    const groupRef = ref ?? useRef()
     const voiceOver = useVoiceOverStore();
     // const { setSceneInfo } = useSceneStore((state) => ({
     //     setSceneInfo: state.setSceneInfo,
@@ -37,6 +38,11 @@ export default function VictorianScene({...props}) {
                 child.castShadow = true
                 child.receiveShadow = true
             }
+
+            if (child.name === 'Caméra_face') { //Caméra_face
+                console.log('Camera trouvée:', child)
+                groupRef.current.mainCamera = child
+            }
         })
     }, [scene])
 
@@ -63,9 +69,13 @@ export default function VictorianScene({...props}) {
                 {/* <meshBasicMaterial color='red' /> */}
             </mesh>
             <primitive castShadow receiveShadow object={scene} />
-            {/* <InfoBulle position={[.52, 1.5, -1.5]} onClick={handleClickInfoBulle} /> */}
+            <ambientLight intensity={0.6} />
+            <spotLight position={[0, 5, 5]} intensity={0.8} />
+            {/*<InfoBulle position={[.52, 1.5, -1.5]} onClick={handleClickInfoBulle} />*/}
         </group>
         </>
 }
+
+export default forwardRef(VictorianScene)
 
 useGLTF.preload('/models/scene_1786.gltf')

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react'
-import { AnimationMixer, TextureLoader } from 'three'
+import React, {useState, useEffect, useMemo, useRef, forwardRef} from 'react'
+import {AnimationMixer, MeshNormalMaterial, TextureLoader} from 'three'
 import { Select } from "@react-three/postprocessing"
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
-import { useGLTF, PerspectiveCamera } from '@react-three/drei'
+import {useGLTF, PerspectiveCamera, Html} from '@react-three/drei'
 import { LoopOnce } from 'three'
 
 // composants
@@ -10,12 +10,12 @@ import Lustre from './Lustre'
 import InfoBulle from '../../componants/InfoBulle'
 import useVoiceOverStore from '../../stores/useVoiceOverStore' // store
 
-export default function MedievalScene({ ...props }) {
+function MedievalScene({ ...props }, ref) {
     const { scene: sceneOn, animations, cameras: camerasOn } = useGLTF('/models/scene_1317_v3_a.glb')
     const { scene: sceneOff, cameras: camerasOff } = useGLTF('/models/scene_1317_v3_e.glb')
     const { scene: sceneDestroy, cameras: camerasDestroy } = useGLTF('/models/scene_1317_v3_d.glb')
-    const [useModel, setUseModel] = useState(false)
-    const groupRef = useRef()
+    const [useModel, setUseModel] = useState(true)
+    const groupRef = ref ?? useRef()
     const mixers = useRef([])
     const voiceOver = useVoiceOverStore()
     const index = useVoiceOverStore()
@@ -31,12 +31,23 @@ export default function MedievalScene({ ...props }) {
             return camerasOff.find(cam => cam.name.endsWith('_1')) || camerasOff[0]
         }
     }, [camerasOn, camerasOff, useModel])
+
+    // useEffect(() => {
+    //     if (cameraFromGLB) {
+    //         // Assigne la caméra comme caméra principale
+    //         set({ camera: cameraFromGLB })
+    //     }
+    // }, [cameraFromGLB, set])
     useEffect(() => {
-        if (cameraFromGLB) {
-            // Assigne la caméra comme caméra principale
-            set({ camera: cameraFromGLB })
-        }
-    }, [cameraFromGLB, set])
+
+        const currentScene = useModel ? sceneOn : sceneOff
+
+        currentScene.traverse((child) => {
+            if (child.name.endsWith('_1')) { //Caméra_face
+                groupRef.current.mainCamera = child
+            }
+        })
+    }, [useModel])
 
     // maj mixer
     useFrame((state, delta) => {
@@ -78,7 +89,7 @@ export default function MedievalScene({ ...props }) {
         <ambientLight intensity={useModel ? 2 : 0.2} />
 
         <group
-            position={[0, 0, 0]}
+            position={[0,-2, -1]}
             rotation-y={-3.1}
             ref={groupRef}
             {...props}
@@ -111,5 +122,7 @@ export default function MedievalScene({ ...props }) {
     </>
 }
 
-useGLTF.preload('/models/scene_1317_v3_allume.glb')
-useGLTF.preload('/models/scene_1317_v3_eteint.glb')
+export default forwardRef(MedievalScene)
+
+useGLTF.preload('/models/scene_1317_v3_a.glb')
+useGLTF.preload('/models/scene_1317_v3_e.glb')
