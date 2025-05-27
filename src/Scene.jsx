@@ -10,7 +10,7 @@ import VictorianScene from './scenes/modernScene/VictorianScene' // 1749
 import WarScene from './scenes/warScene/WarScene'             // 1942
 
 // constants
-import CONSTANTS, { ASSETS, DATA } from './constants'
+import CONSTANTS, { ASSETS, DATA, SETTINGS } from './constants'
 
 // hooks
 import useScrollControl from './hooks/useScrollControl'
@@ -36,7 +36,10 @@ export default function Scene() {
     const {currentScene, outScene} = useSceneStore()
     const getCurrentScene = useSceneStore.getState
 
-    const portalRef = useRef()
+    // Create separate refs for each portal
+    const medievalPortalRef = useRef()
+    const modernPortalRef = useRef()
+    const warPortalRef = useRef()
 
     // load des textures + cadres
     const warFrame = useLoader(TextureLoader, ASSETS.WAR_FRAME)
@@ -75,10 +78,10 @@ export default function Scene() {
         {/* Group avec chaque etape de l'XP */}
         <ScrollableScene>
             {/* Partie 0 - Introduction */}
-            <Intro />
+             <Intro />
 
             {/* Portail 1 - Medieval */}
-            <group ref={portalRef}>
+            <group ref={medievalPortalRef}>
                 <Portal
                     id={DATA.medieval.name}
                     onClick={()=> {
@@ -87,17 +90,16 @@ export default function Scene() {
                     textureDecoration={medievalFrame}
                     badgeDecoration={ASSETS.MEDIEVAL_BADGE}
                     playMusicName={DATA.medieval.date}
+                    portalGroupRef={medievalPortalRef}
                 >
-                    <Suspense>
                         <MedievalScene />
-                    </Suspense>
                 </Portal>
                 <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
                 <ArrowButton position={[-2.5, 0.2, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
             </group>
 
             {/* Portail 2 - Modern */}
-            <group ref={portalRef}>
+            <group ref={modernPortalRef}>
                 <Portal
                     id={DATA.moderne.name}
                     onClick={() => { 
@@ -106,19 +108,16 @@ export default function Scene() {
                     textureDecoration={modernFrame}
                     badgeDecoration={ASSETS.MODERN_BADGE}
                     playMusicName={DATA.moderne.date}
+                    portalGroupRef={modernPortalRef}
                 >
-                    <Suspense>
                         <VictorianScene />
-                        <ambientLight intensity={0.6} />
-                        <spotLight position={[0, 5, 5]} intensity={0.8} />
-                    </Suspense>
                 </Portal>
                 <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
                 <ArrowButton position={[-2.4, 0, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
             </group>
 
             {/* Portail 3 - 2nd guerre mondiale */}
-            <group ref={portalRef}>
+            <group ref={warPortalRef}>
                 <Portal
                     id={DATA.guerre.name}
                     onClick={() => { 
@@ -127,12 +126,9 @@ export default function Scene() {
                     textureDecoration={warFrame}
                     badgeDecoration={ASSETS.WAR_BADGE}
                     playMusicName={DATA.guerre.date}
+                    portalGroupRef={warPortalRef}
                 >
-                    <Suspense>
-                        <WarScene />
-                        <ambientLight intensity={0.6} />
-                        <spotLight position={[0, 5, 5]} intensity={0.8} />
-                    </Suspense>
+                    <WarScene />
                 </Portal>
                 <ArrowButton position={[2.3, 0, 0]} onClick={handleClickButton} />
                 <ArrowButton position={[-2.3, 0, 0]} scale={[-1, 1, 1]}  onClick={handleReturnButton} />
