@@ -23,10 +23,12 @@ export default function Rig({ modelsInfo = {} }) {
 
     // Gestion du focus sur une scène (portail cliqué)
     useEffect(() => {
+        return;
         // if (!currentScene || currentScene === 'intro') return
 
         const modelInfo = getCurrentSceneInfo()
         // const active = scene.getObjectByName(currentScene)
+        // console.log('modelInfo', controls.camera)
         
         if (currentScene ==! 'intro') {
             if (modelInfo?.cameras?.length > 0) {
@@ -69,7 +71,7 @@ export default function Rig({ modelsInfo = {} }) {
 
     // useFrame pour une animation fluide vers la position cible
     useFrame((_, dt) => {
-        if (step > 1 && (!currentScene || currentScene === 'intro')) {
+        // if (step > 1 && (!currentScene || currentScene === 'intro')) {
             const currentPos = controls.getPosition(new THREE.Vector3())
             const currentTarget = controls.getTarget(new THREE.Vector3())
 
@@ -81,7 +83,7 @@ export default function Rig({ modelsInfo = {} }) {
                 currentTarget.x, currentTarget.y, currentTarget.z,
                 false
             )
-        }
+        // }
     })
 
     return (
