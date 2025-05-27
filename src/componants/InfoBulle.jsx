@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, {useState, useRef, useMemo} from 'react'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader, Vector3 } from 'three'
 import { Html, Text, Billboard } from '@react-three/drei'
@@ -11,6 +11,8 @@ export default function InfoBulle({ position = [0, 0, 0], title = "Info", conten
     const [visible, setVisible] = useState(false)
     const pointRef = useRef()
     const popUpRef = useRef()
+
+    const { camera } = useThree()
 
     const currentScene = useSceneStore((state) => state.currentScene)
     const textureButton = useLoader(TextureLoader, './ui/bulle_info.svg')
@@ -27,14 +29,22 @@ export default function InfoBulle({ position = [0, 0, 0], title = "Info", conten
         onClick()
     }
 
+
+    const positionWithCameraOffset = useMemo(() => {
+        const cameraPosOffset = new Vector3(...position);
+        cameraPosOffset.x = cameraPosOffset.x - camera.position.x
+        return cameraPosOffset;
+    }, [position, camera.position])
+
+
     return <>
         {currentScene !== null && (
-        <Billboard position={position} follow={true} lockX={false} lockY={false} lockZ={false}>
+        <Billboard position={positionWithCameraOffset} follow={true} lockX={false} lockY={false} lockZ={false}>
 
             {/* Point cliquable */}
             {/* <mesh rotation-y={2.5}>
                 <sphereGeometry args={[0.2, 5, 5]} />
-                <meshBasicMaterial 
+                <meshBasicMaterial
                     map={textureButton}
                     />
             </mesh> */}
@@ -53,7 +63,7 @@ export default function InfoBulle({ position = [0, 0, 0], title = "Info", conten
                         </div>
                     </group>
                 )}
-            </Html> 
+            </Html>
         </Billboard>
     )}
     </>
