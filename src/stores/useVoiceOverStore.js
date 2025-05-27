@@ -1,7 +1,8 @@
 import { create } from 'zustand'
+import { SETTINGS } from '../constants'
 
 const useVoiceOverStore = create((set, get) => ({
-    mute: false,
+    mute: SETTINGS.AUDIO_MUTED,
     showSubtitle: true,
     index: 0,
     currentIndex: -1,
@@ -15,7 +16,7 @@ const useVoiceOverStore = create((set, get) => ({
         set({ showSubtitle })
     }, // changer l'état de l'affichage des sous-titres
     setCurrentFileName: (currentFileName) => {
-        console.log('setCurrentFileName', currentFileName)
+        // console.log('setCurrentFileName', currentFileName)
         set({ currentFileName })
     }, // changer le nom du fichier audio
 
@@ -25,11 +26,11 @@ const useVoiceOverStore = create((set, get) => ({
     setIsPlaying: (bool) => set({ isPlaying: bool }),   // changer l'état de lecture
     setSceneFinished: () => {
         const { index } = get();
-        console.log('setSceneFinished', index);
+        // console.log('setSceneFinished', index);
         set({ isSceneFinished: true, isPlaying: false, index: -1, currentIndex: -1, previousIndex: index })
     }, // marquer la scene comme terminée
     setPreviousIndex: ( index ) => {
-        console.log('--> setPreviousIndex', index)
+        // console.log('--> setPreviousIndex', index)
         set({previousIndex: index})
     }
 }))
