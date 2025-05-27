@@ -42,21 +42,6 @@ export default function MedievalScene({ ...props }) {
     }, [cameraFromGLB, set])
 
     return <>
-     {/*
-        // <group position={[0, -2, -1]} rotation-y={-3.1} {...props} dispose={null}>
-        //     <primitive castShadow receiveShadow object={scene} />
-        //     <Select
-        //         enabled={hovered === 'lustre'}
-        //         onPointerOver={() => setHovered('lustre')}
-        //         onPointerOut={() => setHovered(null)}
-        //     >
-        //         <Lustre />
-        //         <Poison position={[0,1.5,-2]} />
-        //         <ambientLight intensity={0.2} />
-        //     </Select>
-        // </group> */}
-
-        
         <ambientLight intensity={useModel ? 0.2 : 0.9} />
 
         <group
@@ -90,6 +75,5 @@ export default function MedievalScene({ ...props }) {
     </>
 }
 
-// useGLTF.preload('/models/scene_1317_v1_textures_allume.glb')
 useGLTF.preload('/models/scene_1317_v3_allume.glb')
 useGLTF.preload('/models/scene_1317_v3_eteint.glb')
