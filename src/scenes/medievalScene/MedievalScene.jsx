@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-import { TextureLoader } from 'three'
+import { AnimationMixer, TextureLoader } from 'three'
 import { Select } from "@react-three/postprocessing"
-import { useLoader, useThree } from '@react-three/fiber'
+import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
+import { LoopOnce } from 'three'
 
 // composants
 import Lustre from './Lustre' 
@@ -10,30 +11,26 @@ import InfoBulle from '../../componants/InfoBulle'
 import useVoiceOverStore from '../../stores/useVoiceOverStore' // store
 
 export default function MedievalScene({ ...props }) {
-    const { scene: sceneOn, cameras: camerasOn } = useGLTF('/models/scene_1317_v3_eteint.glb')
-    const { scene: sceneOff } = useGLTF('/models/scene_1317_v3_allume.glb')
-    const [useModel, setUseModel] = useState(true)
+    const { scene: sceneOn, animations, cameras: camerasOn } = useGLTF('/models/scene_1317_v3_a.glb')
+    const { scene: sceneOff, cameras: camerasOff } = useGLTF('/models/scene_1317_v3_e.glb')
+    const { scene: sceneDestroy, cameras: camerasDestroy } = useGLTF('/models/scene_1317_v3_d.glb')
+    const [useModel, setUseModel] = useState(false)
     const groupRef = useRef()
+    const mixers = useRef([])
     const voiceOver = useVoiceOverStore()
     const index = useVoiceOverStore()
 
     const people = useLoader(TextureLoader, '/people_medieval.PNG')
-
-    // gestion du outline
-    // const [hovered, setHovered] = useState(null)
-
-    const handleClickInfoBulle = () => {
-        // voiceOver.setIndex(2)
-        console.log('clic')
-    }
-
-    const cameraFromGLB = useMemo(() => {
-        return camerasOn.find(cam => cam.name.endsWith('_1')) || camerasOn[0]
-    }, [camerasOn])
-
     const set = useThree((state) => state.set)
-    const texture = useLoader(TextureLoader, '/people_medieval.PNG')
 
+    // utiliser la camera principale
+    const cameraFromGLB = useMemo(() => {
+        if(useModel === true) {
+            return camerasOn.find(cam => cam.name.endsWith('_1')) || camerasOn[0]
+        } else {
+            return camerasOff.find(cam => cam.name.endsWith('_1')) || camerasOff[0]
+        }
+    }, [camerasOn, camerasOff, useModel])
     useEffect(() => {
         if (cameraFromGLB) {
             // Assigne la caméra comme caméra principale
@@ -41,35 +38,74 @@ export default function MedievalScene({ ...props }) {
         }
     }, [cameraFromGLB, set])
 
+    // maj mixer
+    useFrame((state, delta) => {
+        mixers.current.forEach(({ mixer }) => mixer.update(delta))
+    })
+
+    const handleClick = (e) => {
+        const clickedObject = e.object
+        console.log('Objet cliqué:', clickedObject.name)
+        
+        // action 1 - allumer la lumiere
+        if (clickedObject.name === 'EXPORT_LUSTRE') {
+            console.log('Lustre cliqué')
+            setUseModel(prev => !prev)
+            voiceOver.setIndex(1)
+        }
+
+        // action 2 - trouver le poison
+        if (clickedObject.name === 'EXPORT_FIOLE') {
+            console.log('Fiole cliquée')
+            const clip = animations.find(a => a.name === 'animation_0')
+            const target = sceneOn.getObjectByName('EXPORT_FIOLE')
+
+            if (clip && target) {
+                const mixer = new AnimationMixer(target)
+                const action = mixer.clipAction(clip)
+                action.setLoop(LoopOnce, 1)
+                action.clampWhenFinished = true
+                action.reset().play()
+
+                // Ajouter le mixer pour mise à jour via useFrame
+                mixers.current.push({ mixer, action })
+            } 
+        }
+
+    }
+
     return <>
-        <ambientLight intensity={useModel ? 0.2 : 0.9} />
+        <ambientLight intensity={useModel ? 2 : 0.2} />
 
         <group
-            position={[0, -2, -1]}
+            position={[0, 0, 0]}
             rotation-y={-3.1}
             ref={groupRef}
             {...props}
             dispose={null}
-            onClick={() => {
-                setUseModel(prev => !prev)
-                voiceOver.setIndex(1)
-            }}
+            onClick={handleClick}
         >
-            <mesh position={[0.2, 1.2, 0.2]} rotation-y={ -3.14 }> {/* TODO: temporaire */}
-                <boxGeometry args={[0.9, 2, 0.00001]} /> 
-                <meshBasicMaterial map={people} transparent={true}  />
-                {/* <meshBasicMaterial color='red' /> */}
-            </mesh>
+            {useModel &&
+                <>
+                    <mesh position={[0.2, 1.2, 0.2]} rotation-y={ -3.14 }>
+                        <boxGeometry args={[0.9, 2, 0.00001]} /> 
+                        <meshBasicMaterial map={people} transparent={true}  />
+                    </mesh>
+
+                    <InfoBulle position={[3, 2, 1.6]}
+                    title='Les murs en disent long'
+                    content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
+                    />
+                    <InfoBulle position={[-1, 1, 1.6]}
+                        title='Ta chaise dit tout de toi'
+                        content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
+                    />
+                </>
+            }
 
             <primitive object={useModel ? sceneOn : sceneOff} />
-            <InfoBulle position={[3, 2, 1.6]} onClick={handleClickInfoBulle}
-                title='Les murs en disent long'
-                content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
-            />
-            <InfoBulle position={[-0.5, 1, 1.6]} onClick={handleClickInfoBulle}
-                title='Ta chaise dit tout de toi'
-                content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
-            />
+
+            
         </group>
 
     </>
