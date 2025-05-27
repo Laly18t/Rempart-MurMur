@@ -43,7 +43,9 @@ export const SETTINGS = {
     PORTAL_SIZE: {
         WIDTH: 6.75555556, 
         HEIGHT: 3.8
-    }
+    },
+    AUDIO_MUTED: true,
+    PORTAL_ENTER_DURATION: 0.5,
 }
 
 export const TEXTS = {
