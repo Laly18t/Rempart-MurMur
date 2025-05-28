@@ -23,8 +23,10 @@ export default function VoiceOver({ onAudioEnd }) {
         setIndex,
         setIsPlaying,
         setSceneFinished,
+        isSceneFinished,
         mute,
         previousIndex,
+        setPreviousIndex,
         setCurrentFileName,
         setProgress
     } = useVoiceOverStore()
@@ -42,13 +44,11 @@ export default function VoiceOver({ onAudioEnd }) {
             return AUDIO_SEQUENCES.SCENE[outScene] ?? []
         }
 
-        
         if (typeof AUDIO_SEQUENCES.STEP[step] !== 'undefined' && AUDIO_SEQUENCES.STEP[step] !== null) {
             return [AUDIO_SEQUENCES.STEP[step]]
         }
-        
 
-        return [];
+        return []
 
     }, [ step, currentScene, outScene, index, currentIndex])
 
@@ -73,12 +73,9 @@ export default function VoiceOver({ onAudioEnd }) {
     }
 
     const playAudio = useCallback((audioIdx) => {
-        // console.log('playAudio', {step, currentScene, outScene, audioIdx, f: files[audioIdx], isPlaying})
         if (!files[audioIdx]) return
         if (isPlaying) return
         if (mute === true) return
-
-        // console.log('Lecture du son', audioIdx, files[audioIdx], isPlaying)
 
         const listener = new AudioListener()
         const sound = new Audio(listener)
@@ -90,9 +87,6 @@ export default function VoiceOver({ onAudioEnd }) {
 
         setIsPlaying(true)
         setCurrentIndex(audioIdx)
-
-
-
 
         loader.load(files[audioIdx], (buffer) => {
             SETTINGS.DEBUG_VOICEOVER && console.log('Buffer chargé', buffer)
@@ -113,14 +107,16 @@ export default function VoiceOver({ onAudioEnd }) {
                     setProgress(0)
                     setIsPlaying(false)
                     onAudioEnd?.(audioIdx)
-                    setSceneFinished()
+                    // setSceneFinished()
+                    setPreviousIndex(audioIdx)
 
-                    // const nextIndex = audioIdx + 1
-                    // if (nextIndex < files.length) {
-                    //     // setIndex(nextIndex)
-                    // } else {
-                    //     setSceneFinished()
-                    // }
+                    const isLastAudio = audioIdx === files.length - 1
+
+                    if (isLastAudio) {
+                        setSceneFinished()
+                    } else {
+                        // console.log('audio else', isSceneFinished)
+                    }
                 }
             }
         })
@@ -139,17 +135,13 @@ export default function VoiceOver({ onAudioEnd }) {
             setProgress(elapsed)
         }
     })
-   
 
     // Lancer le son automatiquement
     useEffect(() => {
-       
-
         if (!files.length || index >= files.length) return // on ne lance pas si il n'y a pas de son
         if (index === currentIndex && isPlaying) return // on ne relance pas le son si on est sur le même index et qu'il joue déjà
-
-        if (index === previousIndex) return; // on ne joue pas en boucle
-        //  console.log('play ', step, currentScene, {index,currentIndex,previousIndex});
+        if (index === previousIndex) return // on ne joue pas en boucle
+        
         SETTINGS.DEBUG_VOICEOVER && console.log('Lancement du son', index, files, 'currentScene:', currentScene, 'outScene:', outScene)
         stopAudio()
         playAudio(index)
