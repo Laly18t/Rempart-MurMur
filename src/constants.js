@@ -44,7 +44,7 @@ export const SETTINGS = {
         WIDTH: 6.75555556, 
         HEIGHT: 3.8
     },
-    AUDIO_MUTED: true,
+    AUDIO_MUTED: false,
     PORTAL_ENTER_DURATION: 0.5,
 }
 
@@ -78,9 +78,9 @@ export const AUDIO_SEQUENCES = {
     STEP: {
         1: null,
         // 2: null,
+        2: '/audio/rempart-intro.mp3', 
+        // 2: '/audio/test-intro.mp3',
         3: null,
-        // 2: '/audio/rempart-intro.mp3', 
-        2: '/audio/test-intro.mp3',
         // 3: '/audio/test-intro.mp3',
         4: null,
         5: null,
@@ -89,6 +89,7 @@ export const AUDIO_SEQUENCES = {
     SCENE: {
         [EPOQUES.MEDIEVAL]: [
             // '/audio/rempart-1317.mp3',
+            '/audio/test-intro.mp3',
             '/audio/test-intro.mp3',
             // '/audio/test-intro.mp3',
             // '/audio/rempart-1317_4.mp3',
