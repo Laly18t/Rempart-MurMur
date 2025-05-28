@@ -10,6 +10,7 @@ import Lustre from './Lustre'
 import InfoBulle from '../../componants/InfoBulle'
 import useVoiceOverStore from '../../stores/useVoiceOverStore' // store
 import useSceneStore from '../../stores/useSceneStore'
+import usePlaySound from '../../hooks/usePlaySound'
 
 function MedievalScene({ ...props }, ref) {
     const { scene: sceneOn, animations, cameras: camerasOn } = useGLTF('/models/scene_1317_v4_a.glb')
@@ -24,7 +25,9 @@ function MedievalScene({ ...props }, ref) {
     const salleDRef = useRef()
 
     const people = useLoader(TextureLoader, '/people_medieval.PNG')
-    const set = useThree((state) => state.set)
+    const playCandles = usePlaySound('/audio/sounds/bougie.wav')
+    const playPoison = usePlaySound('/audio/sounds/fiole.mp3')
+    
 
     // utiliser la camera principale
     useEffect(() => {
@@ -51,6 +54,7 @@ function MedievalScene({ ...props }, ref) {
             console.log('Lustre cliqué')
             setSwitchBaking(prev => !prev)
             voiceOver.setIndex(1)
+            playCandles.play() // bruitage bougie
         }
 
         // action 2 - trouver le poison
@@ -65,24 +69,15 @@ function MedievalScene({ ...props }, ref) {
                 action.setLoop(LoopOnce, 1)
                 action.clampWhenFinished = true
                 action.reset().play()
-
+                playPoison.play() // bruitage fiole
+                
                 // Ajouter le mixer pour mise à jour via useFrame
                 mixers.current.push({ mixer, action })
             } 
         }
     }
 
-    // Switch de salle 
-    useEffect(() => {
-        if(useSwitchBaking === false){
-            if (salleRef.current && salleDRef.current) {
-                salleRef.current.visible = true
-                salleDRef.current.visible = false
-            }
-        }
-    }, [useSwitchBaking])
-
-    // Switch de salle 
+    // Switch de murs
     useEffect(() => {
         if (currentScene === 'monde-medieval' && isSceneFinished) {
             console.log('switch')
