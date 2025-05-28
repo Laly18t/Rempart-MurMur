@@ -71,10 +71,6 @@ export default function Portal({
         }
     })
 
-    // get properties of camera
-
-
-
     const { mute } = useVoiceOverStore() // store
 
     // gestion du sound design au click
@@ -110,25 +106,13 @@ export default function Portal({
                     onUpdate: () => controls?.camera.updateProjectionMatrix(),
                     ease: "power2.inOut"
                 }, 0)
-                // console.log('Entering portal:', controls?.camera.position, innerRef.current.mainCamera.position)
-
-                console.log(innerRef.current.mainCamera);
 
                 const portalGroup = portalGroupRef?.current;
-
-                console.log('Portal group:', portalGroup);
-                console.log('Portal group position:', portalGroup?.position);
-                console.log('Portal group rotation:', portalGroup?.rotation);
-                console.log('Portal group scale:', portalGroup?.scale);
 
                 if (portalGroup) {
                     portalGroup.updateMatrixWorld(true);
                 }
                 innerRef.current.mainCamera.updateMatrixWorld(true);
-
-
-                console.log('Before conversion - Local camera position:', innerRef.current.mainCamera.position)
-                console.log('Before conversion - Local camera rotation:', innerRef.current.mainCamera.rotation)
 
                 // CONVERSION DES COORDONNÉES LOCALES EN COORDONNÉES MONDIALES
 
@@ -141,10 +125,6 @@ export default function Portal({
                 const worldRotation = new THREE.Euler()
                 innerRef.current.mainCamera.getWorldQuaternion(worldQuaternion)
                 worldRotation.setFromQuaternion(worldQuaternion)
-
-                console.log('After conversion - World position:', worldPosition)
-                console.log('After conversion - World rotation:', worldRotation)
-                console.log('Current main camera position:', controls.camera.position)
                // If the innerRef has a mainCamera, set it as the active camera
                 tl.to(controls.camera.position, {
                     x: portalGroup?.position.x + worldPosition.x ,
