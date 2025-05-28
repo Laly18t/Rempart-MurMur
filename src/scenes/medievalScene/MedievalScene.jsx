@@ -9,59 +9,47 @@ import { LoopOnce } from 'three'
 import Lustre from './Lustre' 
 import InfoBulle from '../../componants/InfoBulle'
 import useVoiceOverStore from '../../stores/useVoiceOverStore' // store
+import useSceneStore from '../../stores/useSceneStore'
 
 function MedievalScene({ ...props }, ref) {
-    const { scene: sceneOn, animations, cameras: camerasOn } = useGLTF('/models/scene_1317_v3_a.glb')
+    const { scene: sceneOn, animations, cameras: camerasOn } = useGLTF('/models/scene_1317_v4_a.glb')
     const { scene: sceneOff, cameras: camerasOff } = useGLTF('/models/scene_1317_v3_e.glb')
-    const { scene: sceneDestroy, cameras: camerasDestroy } = useGLTF('/models/scene_1317_v3_d.glb')
-    const [useModel, setUseModel] = useState(true)
+    const [useSwitchBaking, setSwitchBaking] = useState(true)
     const groupRef = ref ?? useRef()
     const mixers = useRef([])
     const voiceOver = useVoiceOverStore()
-    const index = useVoiceOverStore()
+    const { isSceneFinished } = useVoiceOverStore()
+    const { currentScene } = useSceneStore()
+    const salleRef = useRef()
+    const salleDRef = useRef()
 
     const people = useLoader(TextureLoader, '/people_medieval.PNG')
     const set = useThree((state) => state.set)
 
     // utiliser la camera principale
-    const cameraFromGLB = useMemo(() => {
-        if(useModel === true) {
-            return camerasOn.find(cam => cam.name.endsWith('_1')) || camerasOn[0]
-        } else {
-            return camerasOff.find(cam => cam.name.endsWith('_1')) || camerasOff[0]
-        }
-    }, [camerasOn, camerasOff, useModel])
-
-    // useEffect(() => {
-    //     if (cameraFromGLB) {
-    //         // Assigne la caméra comme caméra principale
-    //         set({ camera: cameraFromGLB })
-    //     }
-    // }, [cameraFromGLB, set])
     useEffect(() => {
-
-        const currentScene = useModel ? sceneOn : sceneOff
+        const currentScene = useSwitchBaking ? sceneOff : sceneOn
 
         currentScene.traverse((child) => {
-            if (child.name.endsWith('_1')) { //Caméra_face
+            if (child.name.endsWith('_1')) { //Camera_face
                 groupRef.current.mainCamera = child
             }
         })
-    }, [useModel])
+    }, [useSwitchBaking])
 
-    // maj mixer
+    // mixer pour animation
     useFrame((state, delta) => {
         mixers.current.forEach(({ mixer }) => mixer.update(delta))
     })
 
     const handleClick = (e) => {
         const clickedObject = e.object
-        console.log('Objet cliqué:', clickedObject.name)
+        // console.log('Objet cliqué:', clickedObject.name)
         
         // action 1 - allumer la lumiere
         if (clickedObject.name === 'EXPORT_LUSTRE') {
             console.log('Lustre cliqué')
-            setUseModel(prev => !prev)
+            setSwitchBaking(prev => !prev)
             voiceOver.setIndex(1)
         }
 
@@ -82,11 +70,31 @@ function MedievalScene({ ...props }, ref) {
                 mixers.current.push({ mixer, action })
             } 
         }
-
     }
 
+    // Switch de salle 
+    useEffect(() => {
+        if(useSwitchBaking === false){
+            if (salleRef.current && salleDRef.current) {
+                salleRef.current.visible = true
+                salleDRef.current.visible = false
+            }
+        }
+    }, [useSwitchBaking])
+
+    // Switch de salle 
+    useEffect(() => {
+        if (currentScene === 'monde-medieval' && isSceneFinished) {
+            console.log('switch')
+            if (salleRef.current && salleDRef.current) {
+                salleRef.current.visible = false
+                salleDRef.current.visible = true
+            }
+        }
+    }, [currentScene, isSceneFinished])
+
     return <>
-        <ambientLight intensity={useModel ? 2 : 0.2} />
+        <ambientLight intensity={useSwitchBaking ? 0.2 : 2} />
 
         <group
             position={[0,-2, -1]}
@@ -96,8 +104,21 @@ function MedievalScene({ ...props }, ref) {
             dispose={null}
             onClick={handleClick}
         >
-            {useModel &&
+            {!useSwitchBaking &&
                 <>
+                    {/* Salle avec lumiere */}
+                    <primitive 
+                        object={sceneOn} 
+                        ref={(instance) => {
+                            if (instance) {
+                                salleRef.current = instance.getObjectByName('EXPORT_SALLE')
+                                salleDRef.current = instance.getObjectByName('EXPORT_SALLE_D')
+                                // salleRef.current.visible = true
+                                // salleDRef.current.visible = false
+                                
+                            }}
+                        }
+                    />
                     <mesh position={[0.2, 1.2, 0.2]} rotation-y={ -3.14 }>
                         <boxGeometry args={[0.9, 2, 0.00001]} /> 
                         <meshBasicMaterial map={people} transparent={true}  />
@@ -114,8 +135,10 @@ function MedievalScene({ ...props }, ref) {
                 </>
             }
 
-            <primitive object={useModel ? sceneOn : sceneOff} />
-
+            {/* Salle sans lumiere */}
+            {useSwitchBaking && 
+                <primitive object={sceneOff} />
+            }
             
         </group>
 
@@ -124,5 +147,5 @@ function MedievalScene({ ...props }, ref) {
 
 export default forwardRef(MedievalScene)
 
-useGLTF.preload('/models/scene_1317_v3_a.glb')
+useGLTF.preload('/models/scene_1317_v4_a.glb')
 useGLTF.preload('/models/scene_1317_v3_e.glb')
