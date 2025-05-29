@@ -29,7 +29,7 @@ export default function Portal({
     playMusicName,
     onEnter = () => {},
     onExit = () => {},
-    portalGroupRef // ✨ Nouvelle prop
+    portalGroupRef
 }) {
     const { currentScene, outScene } = useSceneStore() // store
     const { step } = useAppStore() // store
@@ -148,7 +148,7 @@ export default function Portal({
                         }
                     }
                 }, 0.5)
-            }
+            } 
             // tl.to(innerRef.current.position, { x: 3, duration: SETTINGS.PORTAL_ENTER_DURATION})
             // console.log('Entered portal:', id, portalRef.current.blend)
             onEnter();
@@ -232,7 +232,7 @@ export default function Portal({
                 <planeGeometry args={[portalSize.width, portalSize.height]} />
                 <MeshPortalMaterial ref={portalRef} events={currentScene === id} side={THREE.DoubleSide}>
                     <color attach="background" args={[bg]} />
-                    {cloneElement(children, { ref: innerRef })}
+                    {cloneElement(children, { ref: innerRef, portalGroupRef: portalGroupRef })}
                 </MeshPortalMaterial>
             </mesh>
 

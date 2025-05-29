@@ -77,8 +77,8 @@ export const SOUND_DESIGN = {
 export const AUDIO_SEQUENCES = {
     STEP: {
         1: null,
-        // 2: null,
-        2: '/audio/rempart-intro.mp3', 
+        2: null,
+        // 2: '/audio/rempart-intro.mp3', 
         // 2: '/audio/test-intro.mp3',
         3: null,
         // 3: '/audio/test-intro.mp3',
@@ -89,6 +89,7 @@ export const AUDIO_SEQUENCES = {
     SCENE: {
         [EPOQUES.MEDIEVAL]: [
             // '/audio/rempart-1317.mp3',
+            '/audio/test-intro.mp3',
             '/audio/test-intro.mp3',
             '/audio/test-intro.mp3',
             // '/audio/test-intro.mp3',
