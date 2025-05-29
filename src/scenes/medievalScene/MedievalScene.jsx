@@ -60,7 +60,7 @@ function MedievalScene({ ...props }, ref) {
 
     const handleClick = (e) => {
         const clickedObject = e.object
-        // console.log('Objet cliqué:', clickedObject.name)
+        console.log('Objet cliqué:', clickedObject.name)
 
         // action 1 - allumer la lumiere
         if (clickedObject.name === 'EXPORT_LUSTRE') {
@@ -110,14 +110,28 @@ function MedievalScene({ ...props }, ref) {
 
     // Switch de murs
     useEffect(() => {
-        if (currentScene === 'monde-medieval' && isSceneFinished) {
-            console.log('switch')
-            if (salleRef.current && salleDRef.current) {
+        if (salleRef.current && salleDRef.current) {
+            if (currentScene === 'monde-medieval' && isSceneFinished) {
+                console.log('switch', salleRef.current.visible)
                 salleRef.current.visible = false
                 salleDRef.current.visible = true
             }
         }
     }, [currentScene, isSceneFinished])
+    useEffect(() => {
+        if (salleRef.current && salleDRef.current) {
+            if (!isSceneFinished) {
+                salleRef.current.visible = true
+                salleDRef.current.visible = false
+            }
+        }
+    }, [useSwitchBaking, isSceneFinished])
+    useEffect(() => {
+        if (sceneOn) {
+            salleRef.current = sceneOn.getObjectByName('EXPORT_SALLE')
+            salleDRef.current = sceneOn.getObjectByName('EXPORT_SALLE_D')
+        }
+    }, [sceneOn])
 
     const handleZoom = () => {
         cameraZoom(camera, cameraRefs.current.camera1, () => { }, props.portalGroupRef.current)
@@ -140,30 +154,24 @@ function MedievalScene({ ...props }, ref) {
                     {/* Salle avec lumiere */}
                     <primitive
                         object={sceneOn}
-                        ref={(instance) => {
-                            if (instance) {
-                                salleRef.current = instance.getObjectByName('EXPORT_SALLE')
-                                salleDRef.current = instance.getObjectByName('EXPORT_SALLE_D')
-                                // salleRef.current.visible = true
-                                // salleDRef.current.visible = false
-
-                            }
-                        }
-                        }
                     />
                     <mesh position={[0.2, 1.2, 0.2]} rotation-y={-3.14}>
                         <boxGeometry args={[0.9, 2, 0.00001]} />
                         <meshBasicMaterial map={people} transparent={true} />
                     </mesh>
-
-                    <InfoBulle position={[3, 2, 1.6]}
-                        title='Les murs en disent long'
-                        content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
-                    />
-                    <InfoBulle position={[-1, 1, 1.6]}
-                        title='Ta chaise dit tout de toi'
-                        content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
-                    />
+                    
+                    {currentScene === 'monde-medieval' &&
+                    <>
+                        <InfoBulle position={[3, 2, 1.6]}
+                            title='Les murs en disent long'
+                            content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
+                        />
+                        <InfoBulle position={[-1, 1, 1.6]}
+                            title='Ta chaise dit tout de toi'
+                            content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
+                        />
+                    </>
+                    }
                 </>
             }
 
