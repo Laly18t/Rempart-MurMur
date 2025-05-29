@@ -11,7 +11,7 @@ const useVoiceOverStore = create((set, get) => ({
     isSceneFinished: false,
     currentFileName: '',
     progress: 0, // progression en secondes
-    setProgress: (progress) => set({ progress }),
+    setProgress: (progress) => { if (get().progress !== progress) set({ progress })},
     setShowSubtitle: (showSubtitle) => {
         set({ showSubtitle })
     }, // changer l'état de l'affichage des sous-titres
@@ -20,7 +20,7 @@ const useVoiceOverStore = create((set, get) => ({
     }, // changer le nom du fichier audio
 
     setMute: (mute) => set({ mute }), // changer l'état du son
-    setIndex: (index) => set({ index }), // changer l'index de l'audio
+    setIndex: (index) => { if (get().index !== index) set({ index }) },
     setCurrentIndex: (currentIndex) => set({ currentIndex }), // changer l'index de l'audio
     setIsPlaying: (bool) => set({ isPlaying: bool }),   // changer l'état de lecture
     setSceneFinished: () => {
