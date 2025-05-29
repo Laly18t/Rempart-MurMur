@@ -39,12 +39,12 @@ export default function Loader({ onFinish }) {
             transform: 'translate(-50%, -50%)',
             color: 'white',
             fontSize: '1.5em',
-            // background: 'rgba(0, 0, 0, 1)',
+            background: 'rgba(149, 149, 149, 0.5)',
             padding: '0.5em 1em',
             borderRadius: '10px',
             pointerEvents: 'none'
         }}>
-            <Lottie animationData={animationData} options={defaultOptions} style={{ background: 'transparent', width: '190%', height:'190%', transform: 'translate(-25%, 0%)', }} />
+            <Lottie animationData={animationData} options={defaultOptions} style={{ background: 'transparent' }} />
             <p style={{textAlign:'center'}}>{progress.toFixed(0)} % chargé </p>
         </div>
     )
