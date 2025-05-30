@@ -2,12 +2,13 @@ import React, {useState, useRef, useMemo} from 'react'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader, Vector3 } from 'three'
 import { Html, Text, Billboard } from '@react-three/drei'
+import cn from 'mxcn'
 
 import { POSITIONS_ZOOM } from '../constants'
 import useZoom from '../hooks/useZoom'
 import useSceneStore from '../stores/useSceneStore'
 
-export default function InfoBulle({ position = [0, 0, 0], title = "Info", content = "Ceci est une info.", distanceFactor = 7, onClick = () => {} }) {
+export default function InfoBulle({ position = [0, 0, 0], title = "Info", content = "Ceci est une info.", distanceFactor = 7, onClick = () => {}, className = '' }) {
     const [visible, setVisible] = useState(false)
     const pointRef = useRef()
     const popUpRef = useRef()
@@ -55,15 +56,16 @@ export default function InfoBulle({ position = [0, 0, 0], title = "Info", conten
                 </div>
 
                 {/* Popup texte */}
-                {visible === true && (
-                    <group ref={popUpRef} className='popUpInfo'>
+                {visible === true && (<div className='popUpContainer'>
+                    <img src='./ui/cadre_ornement.svg' className='cadreOrnement' alt='cadre ornement' />
+                    <div ref={popUpRef} className={cn('popUpInfo', className)}>
                         <div>
                         <h2>{title}</h2>
                         <p>{content}</p>
                         </div>
-                    </group>
-                )}
-            </Html>
+                    </div>
+                </div>)}
+            </Html>                            
         </Billboard>
     )}
     </>

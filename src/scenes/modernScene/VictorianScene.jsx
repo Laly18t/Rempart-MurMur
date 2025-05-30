@@ -1,16 +1,17 @@
-import React, {useRef, useEffect, useMemo, forwardRef} from 'react'
+import React, { useRef, useEffect, useMemo, forwardRef } from 'react'
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 import { MeshNormalMaterial, TextureLoader } from 'three'
+import { useLoader, useThree } from '@react-three/fiber'
+
 import useSceneStore from '../../stores/useSceneStore'
 import InfoBulle from '../../componants/InfoBulle'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
-import { useLoader, useThree } from '@react-three/fiber'
 
-
-function VictorianScene({...props}, ref) {
+function VictorianScene({ ...props }, ref) {
     const { scene } = useGLTF('/models/scene_1786.gltf') // load model
     const groupRef = ref ?? useRef()
-    const voiceOver = useVoiceOverStore();
+    const voiceOver = useVoiceOverStore()
+    const { currentScene } = useSceneStore()
     // const { setSceneInfo } = useSceneStore((state) => ({
     //     setSceneInfo: state.setSceneInfo,
     // }))
@@ -26,9 +27,6 @@ function VictorianScene({...props}, ref) {
     //     }
     // }, [group, setSceneInfo])
 
-    const handleClickInfoBulle = () => {
-        voiceOver.setIndex(1);
-    }
 
     // temporaire
     useEffect(() => {
@@ -51,9 +49,9 @@ function VictorianScene({...props}, ref) {
     //  const cameraFromGLB = useMemo(() => {
     //         return camerasOn.find(cam => cam.name.endsWith('_generale')) || camerasOn[0]
     //     }, [camerasOn])
-    
+
     //     const set = useThree((state) => state.set)
-    
+
     //     useEffect(() => {
     //         if (cameraFromGLB) {
     //             // Assigne la caméra comme caméra principale
@@ -62,18 +60,31 @@ function VictorianScene({...props}, ref) {
     //     }, [cameraFromGLB, set])
 
     return <>
-        <group position={[0,-2, -1]} rotation-y={ -3.14 } ref={groupRef} {...props} dispose={null}>
-            <mesh position={[-2.7, 1.15, -1.7]} rotation-y={ -3 }> {/* TODO: temporaire */}
-                <boxGeometry args={[1.4, 1.8, 0.00001]} /> 
+        <group position={[0, -2, -1]} rotation-y={-3.14} ref={groupRef} {...props} dispose={null}>
+            <mesh position={[-2.7, 1.15, -1.7]} rotation-y={-3}> {/* TODO: temporaire */}
+                <boxGeometry args={[1.4, 1.8, 0.00001]} />
                 <meshBasicMaterial map={texture} transparent={true} />
                 {/* <meshBasicMaterial color='red' /> */}
             </mesh>
             <primitive castShadow receiveShadow object={scene} />
             <ambientLight intensity={0.6} />
             <spotLight position={[0, 5, 5]} intensity={0.8} />
-            {/*<InfoBulle position={[.52, 1.5, -1.5]} onClick={handleClickInfoBulle} />*/}
+            {currentScene === 'monde-moderne' &&
+                <>
+                    <InfoBulle position={[3.8, 3, 1.6]}
+                        className='modernBulle'
+                        title="A l'abris de tous"
+                        content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
+                    />
+                    <InfoBulle position={[-1.5, 0.5, 1.6]}
+                        className='modernBulle'
+                        title="De la lumière ?"
+                        content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
+                    />
+                </>
+            }
         </group>
-        </>
+    </>
 }
 
 export default forwardRef(VictorianScene)

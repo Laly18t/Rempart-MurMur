@@ -180,8 +180,35 @@ body {
   }
 }
 
-.popUpInfo {
+.popUpContainer {
   z-index: 20;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  transform: translate(15px, 10px);
+  width: 80px;
+  height: 50px;
+
+  .cadreOrnement {
+    position: absolute;
+    width: 30%;
+    left: 0;
+  }
+}
+
+.popUpInfo {
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 80px;
+  height: 50px;
+  
+  &.medievalBulle{
+    width: 86px !important;
+  }
+  &.warBulle{
+    width: 77px !important;
+  }
 
   h2 {
     margin: 0 0 3px 0;
@@ -198,8 +225,13 @@ body {
   div {
     padding: 3px;
     border-radius: 3px;
-    background-color: beige;
+    background-color: transparent;
+    background-position: center;
+    background-image: url('/ui/cadre_horizontal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
     max-width: 100px;
+    max-height: 70px;
   }
 }
 

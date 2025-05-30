@@ -86,9 +86,9 @@ export default function Conclusion({ debug = false, ...props }) {
                         anchorX="center"
                         lineHeight={0.8}
                         onClick={handleCTAClick}
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: 'pointer', textTransform: 'uppercase', }}
                     >
-                        S'engager
+                        Participer
                     </Text>
                 </mesh>
             )}

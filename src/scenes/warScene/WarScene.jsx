@@ -139,10 +139,12 @@ function WarScene({ ...props }, ref) {
             {currentScene === 'monde-guerre' &&
                 <>
                     <InfoBulle position={[3.5, 2, 1.6]}
+                        className='warBulle'
                         title="A l'abris de tous"
                         content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
                     />
                     <InfoBulle position={[-2.4, 1, 1.6]}
+                        className='warBulle'
                         title="De la lumière ?"
                         content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
                     />

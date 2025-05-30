@@ -139,7 +139,7 @@ function MedievalScene({ ...props }, ref) {
     }
 
     return <>
-        <ambientLight intensity={useSwitchBaking ? 0.2 : 2} />
+        <ambientLight intensity={useSwitchBaking ? 0.2 : 1.8} />
 
         <group
             position={[0, -2, -1]}
@@ -160,18 +160,19 @@ function MedievalScene({ ...props }, ref) {
                         <meshBasicMaterial map={people} transparent={true} />
                     </mesh>
                     
-                    {currentScene === 'monde-medieval' &&
-                    <>
-                        <InfoBulle position={[3, 2, 1.6]}
+                    {currentScene === 'monde-medieval' && <>
+                        <InfoBulle 
+                            position={[6.3, 3, 1.6]}
+                            className='medievalBulle'
                             title='Les murs en disent long'
                             content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
                         />
-                        <InfoBulle position={[-1, 1, 1.6]}
+                        <InfoBulle position={[0.7, 1, 1.6]}
+                            className='medievalBulle'
                             title='Ta chaise dit tout de toi'
                             content='À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir.'
                         />
-                    </>
-                    }
+                    </>}
                 </>
             }
 
