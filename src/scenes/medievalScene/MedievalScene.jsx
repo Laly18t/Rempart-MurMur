@@ -15,8 +15,8 @@ import { cameraZoom } from '../../utils/cameraUtils'
 
 
 function MedievalScene({ ...props }, ref) {
-    const { scene: sceneOn, animations } = useGLTF('/models/scene_1317_v6_a.glb')
-    const { scene: sceneOff } = useGLTF('/models/scene_1317_v5_e.glb')
+    const { scene: sceneOn, animations } = useGLTF('/models/scene_1317_v7_a.glb')
+    const { scene: sceneOff } = useGLTF('/models/scene_1317_v6_e.glb')
     const [useSwitchBaking, setSwitchBaking] = useState(true)
     const groupRef = ref ?? useRef()
     const mixers = useRef([])
@@ -194,5 +194,5 @@ function MedievalScene({ ...props }, ref) {
 
 export default forwardRef(MedievalScene)
 
-useGLTF.preload('/models/scene_1317_v6_a.glb')
-useGLTF.preload('/models/scene_1317_v5_e.glb')
+useGLTF.preload('/models/scene_1317_v7_a.glb')
+useGLTF.preload('/models/scene_1317_v6_e.glb')
