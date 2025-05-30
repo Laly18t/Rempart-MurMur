@@ -36,6 +36,8 @@ export default function Loader({ onFinish }) {
             zIndex: 10,
             top: '50%',
             left: '50%',
+            height: '40vh',
+            width: '50vh',
             transform: 'translate(-50%, -50%)',
             color: 'white',
             fontSize: '1.5em',
@@ -44,7 +46,16 @@ export default function Loader({ onFinish }) {
             borderRadius: '10px',
             pointerEvents: 'none'
         }}>
-            <Lottie animationData={animationData} options={defaultOptions} style={{ background: 'transparent' }} />
+            <Lottie animationData={animationData} options={defaultOptions} style={{ 
+                background: 'transparent', 
+                width: '190%', 
+                height:'190%', 
+                transform: 'translate(-50%, -50%)', 
+                position: 'absolute',
+                zIndex: 10,
+                top: '50%',
+                left: '50%',
+                }} />
             <p style={{textAlign:'center'}}>{progress.toFixed(0)} % chargé </p>
         </div>
     )
