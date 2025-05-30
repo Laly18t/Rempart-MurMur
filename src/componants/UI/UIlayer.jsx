@@ -7,6 +7,7 @@ import useSceneStore from '../../stores/useSceneStore'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 import videoSrc from '/ui/video.mp4'
 import Subtitle from './Subtitle'
+import { or } from 'three/tsl'
 
 export default function UIlayer() {
     const [fadeOut, setFadeOut] = useState(false)
@@ -22,7 +23,7 @@ export default function UIlayer() {
 
     // reset lecture de la vidéo
     useEffect(() => {
-        if (currentScene !== 'monde-medieval') {
+        if (currentScene !== 'monde-medieval' || currentScene !== 'monde-guerre') {
             videoPlayedRef.current = false
             setShowMedievalVideo(false) // reset video
             setVideoFading(false) // reset fade
@@ -31,7 +32,7 @@ export default function UIlayer() {
 
     // Affichage de la video medieval
     useEffect(() => {
-        if (currentScene === 'monde-medieval' && isSceneFinished && !isPlaying && !videoPlayedRef.current && !videoFading) {
+        if (currentScene === 'monde-medieval' || currentScene === 'monde-guerre' && isSceneFinished && !isPlaying && !videoPlayedRef.current && !videoFading) {
             videoPlayedRef.current = true
             setShowMedievalVideo(true)
             setTimeout(() => {

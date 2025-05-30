@@ -12,7 +12,7 @@ export const DATA = {
     },
     moderne: {
         name: EPOQUES.MODERN,
-        date: '1697'
+        date: '1786'
     },
     guerre: {
         name: EPOQUES.WAR,
@@ -104,7 +104,7 @@ export const AUDIO_SEQUENCES = {
             // null,
         ],
         [EPOQUES.WAR]: [
-            // '/audio/test-intro.mp3',
+            '/audio/test-intro.mp3',
             // null,
         ]
     },

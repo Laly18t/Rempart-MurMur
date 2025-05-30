@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import { useGLTF, PerspectiveCamera, useAnimations } from '@react-three/drei'
 import { AnimationMixer, MeshNormalMaterial, TextureLoader } from 'three'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
@@ -9,15 +9,22 @@ import useSceneStore from '../../stores/useSceneStore'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 import usePlaySound from '../../hooks/usePlaySound'
 import { cameraZoom } from '../../utils/cameraUtils'
+import InfoBulle from '../../componants/InfoBulle'
 
 
 function WarScene({ ...props }, ref) {
     const groupRef = ref ?? useRef()
-    const { animations, scene } = useGLTF('/models/scene_1942_v7.glb')
+    const { animations, scene } = useGLTF('/models/scene_1942_v2.glb')
+    const { set, gl, camera } = useThree()
+
     const voiceOver = useVoiceOverStore()
+    const { isSceneFinished } = useVoiceOverStore()
+    const { currentScene } = useSceneStore()
+
     const mixers = useRef([])
     const cameraRefs = useRef({}) // Pour stocker toutes les caméras
-    const { set, gl, camera } = useThree()
+    const salleRef = useRef()
+    const salleDRef = useRef()
 
     const people = useLoader(TextureLoader, '/people_war.PNG')
     const playRadio = usePlaySound('/audio/sounds/radio.mp3')
@@ -27,11 +34,11 @@ function WarScene({ ...props }, ref) {
     // gestion des cameras
     useEffect(() => {
         scene.traverse((child) => {
-            if (child.name === 'camera_generale') { //Camera_face
+            if (child.name.endsWith('_1')) { //Camera_face
                 cameraRefs.current.camera1 = child
-            } else if (child.name === 'camera_radio') { //Camera_radio
+            } else if (child.name.endsWith('_2')) { //Camera_radio
                 cameraRefs.current.camera2 = child
-            } else if (child.name === 'camera_trappe') { //Camera_trappe
+            } else if (child.name.endsWith('_3')) { //Camera_trappe
                 cameraRefs.current.camera3 = child
             }
         })
@@ -65,7 +72,7 @@ function WarScene({ ...props }, ref) {
         }
 
         // action 2 - ouvrir la trappe
-        if (clickedObject.name === 'couvercle') {
+        if (clickedObject.name === 'couvercle' || clickedObject.name === 'tapis') {
             console.log('Trappe cliqué')
             cameraZoom(
                 camera,
@@ -74,11 +81,10 @@ function WarScene({ ...props }, ref) {
                     voiceOver.setIndex(1)
 
                     const clip = animations.find(a => a.name === 'animation_0')
-                    const target = scene.getObjectByName('couvercle')
+                    const mixer = new AnimationMixer(scene)
+                    const action = mixer.clipAction(clip)
 
-                    if (clip && target) {
-                        const mixer = new AnimationMixer(target)
-                        const action = mixer.clipAction(clip)
+                    if (clip) {
                         action.setLoop(LoopOnce, 1)
                         action.clampWhenFinished = true
                         action.reset().play()
@@ -94,6 +100,31 @@ function WarScene({ ...props }, ref) {
         }
     }
 
+    // Switch de murs
+    useEffect(() => {
+        if (salleRef.current && salleDRef.current) {
+            if (currentScene === 'monde-guerre' && isSceneFinished) {
+                console.log('switch', salleRef.current.visible)
+                salleRef.current.visible = false
+                salleDRef.current.visible = true
+            }
+        }
+    }, [currentScene, isSceneFinished])
+    useEffect(() => {
+        if (salleRef.current && salleDRef.current) {
+            if (!isSceneFinished) {
+                salleRef.current.visible = true
+                salleDRef.current.visible = false
+            }
+        }
+    }, [isSceneFinished])
+    useEffect(() => {
+        if (scene) {
+            salleRef.current = scene.getObjectByName('salle')
+            salleDRef.current = scene.getObjectByName('salle_detruite')
+        }
+    }, [scene])
+
     return (
         <group position={[0, -2, -3]} rotation-y={-3.14} ref={groupRef} {...props} dispose={null} onClick={handleClick}>
             <mesh position={[1.7, 1.35, 1.7]} rotation-y={-3}> {/* TODO: temporaire */}
@@ -102,13 +133,25 @@ function WarScene({ ...props }, ref) {
                 {/* <meshBasicMaterial color='red' /> */}
             </mesh>
             <primitive castShadow receiveShadow object={scene} />
-            <ambientLight intensity={0.6} />
+            <ambientLight intensity={1.2} />
             <spotLight position={[0, 5, 5]} intensity={0.8} />
-            {/* <InfoBulle position={[.52, 1.5, -1.5]} onClick={handleClickInfoBulle} /> */}
+
+            {currentScene === 'monde-guerre' &&
+                <>
+                    <InfoBulle position={[3.5, 2, 1.6]}
+                        title="A l'abris de tous"
+                        content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
+                    />
+                    <InfoBulle position={[-2.4, 1, 1.6]}
+                        title="De la lumière ?"
+                        content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
+                    />
+                </>
+            }
         </group>
     )
 }
 
 export default forwardRef(WarScene)
 
-useGLTF.preload('/models/scene_1942_v7.glb')
+useGLTF.preload('/models/scene_1942_v2.glb')
