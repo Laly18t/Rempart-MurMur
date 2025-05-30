@@ -19,7 +19,7 @@ export default function Conclusion({ debug = false, ...props }) {
         './castle_dammage.PNG',
         './castle_renovation.PNG'
     ])
-    const textureButton = useLoader(TextureLoader, './ui/outro_button.png')
+    const textureButton = useLoader(TextureLoader, './ui/icons/cta_background_defaut.png')
 
     const handleMeshClick = () => {
         // Toggle entre 0 et 1 uniquement
@@ -38,7 +38,7 @@ export default function Conclusion({ debug = false, ...props }) {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowCTA(true)
-        }, 1) // 35000
+        }, 35000) // 35000
 
         return () => clearTimeout(timer)
     }, [])

@@ -16,7 +16,6 @@ export default function usePlaySound(url, loop = false) {
             sound.setBuffer(buffer)
             sound.setLoop(loop)
             if(mute) {
-                console.log('mute sound')
                 sound.setVolume(0) // mute
             }
             else {
