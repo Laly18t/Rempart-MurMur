@@ -86,7 +86,14 @@ export default function UIlayer() {
 
             {step === 1 && (
                 <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
-                    <img src="./ui/logo.svg" alt="Logo" className="logo" style={{ width: '20%', paddingBottom: '90px' }} />
+                    <img src="./ui/ornement_gauche.svg" alt="Logo" className="ornement_L" style={{ position: 'absolute', top: '2%', left: '2%',  width: '30%' }} />
+                    <img src="./ui/ornement_droit.svg" alt="Logo" className="ornement_D" style={{ position: 'absolute', top: '2%', right: '2%',  width: '30%' }} />
+                    <img src="./ui/logo/logo_rempart.svg" alt="Logo" className="logo_Rempart" style={{ position: 'absolute', top: '5%', right: '46%', width: '8%' }} />
+                    <img src="./ui/logo/logo_gobelins.png" alt="Logo" className="logo_Gobelins" style={{ position: 'absolute', bottom: '2%', left: '2%',  width: '6%' }} />
+                    <img src="./ui/logo/logo_CCI.png" alt="Logo" className="logo_CCI" style={{ position: 'absolute', bottom: '1%', left: '10%',  width: '6%' }} />
+
+                    <img src="./ui/logo/logo.svg" alt="Logo" className="logo" style={{ width: '15%', paddingBottom: '10px' }} />
+                    <p>A la découverte de l’histoire du château Montberne</p>
                     <button className="startButton" onClick={handleStart}>
                         Démarrer
                     </button>

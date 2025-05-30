@@ -88,28 +88,38 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 4em;
+    font-size: 2em;
+
+    p{
+      width: 40vw;
+      font-weight: bold;
+      text-align: center;
+      font-family: 'Alegreya';
+    }
 
     .startButton {
       cursor: pointer;
+      font-family: 'IMfeelEnglish';
+      text-transform: uppercase;
       border:none;
       background-color: transparent;
       background-position: center;
-      background-image: url('/ui/icons/start.png');
+      background-image: url('/ui/icons/cta_background_defaut.png');
+      background-size: contain;
+      background-repeat: no-repeat;
       display: flex;
       color: beige;
       flex-direction: column;
       justify-content: center;
-      font-size: 64px;
+      font-size: 54px;
       width: 434px;
       height: 131px;
     }
-    /* .startButton:hover {
-      background-image: url('/start_off.png');
-      background-size: cover;
+    .startButton:hover {
+      background-image: url('/ui/icons/cta_background_hover.png');
+      background-size: contain;
       background-repeat: no-repeat;
-      color: black;
-    } */
+    }
 
   }
 
