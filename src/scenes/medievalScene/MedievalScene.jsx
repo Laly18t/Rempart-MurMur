@@ -23,21 +23,25 @@ import { cameraZoom } from "../../utils/cameraUtils";
 function MedievalScene({ ...props }, ref) {
   const { scene: sceneOn, animations } = useGLTF("/models/scene_1317_v7_a.glb");
   const { scene: sceneOff } = useGLTF("/models/scene_1317_v6_e.glb");
+  const { set, gl, camera, invalidate } = useThree();
   const [useSwitchBaking, setSwitchBaking] = useState(true);
+
   const groupRef = ref ?? useRef();
   const mixers = useRef([]);
   const cameraRefs = useRef({});
-  const { set, gl, camera, invalidate } = useThree();
-  const [forceUpdate, setForceUpdate] = useState(0) 
+  const salleRef = useRef();
+  const salleDRef = useRef();
+  const lustreRef = useRef();
+  const fioleRef = useRef();
+
   const voiceOver = useVoiceOverStore();
   const { isSceneFinished } = useVoiceOverStore();
   const { currentScene } = useSceneStore();
-  const salleRef = useRef();
-  const salleDRef = useRef();
+
   const [visible, setVisible] = useState(false);
-  const lustreRef = useRef();
-  const lustreOutlineRef = useRef();
+  const [forceUpdate, setForceUpdate] = useState(0) 
   const [showLustreOutline, setShowLustreOutline] = useState(false);
+  const [showFioleOutline, setShowFioleOutline] = useState(false);
 
   const people = useLoader(TextureLoader, "/people_medieval.PNG");
   const playCandles = usePlaySound("/audio/sounds/bougie.wav");
@@ -56,8 +60,11 @@ function MedievalScene({ ...props }, ref) {
     currentScene.traverse((child) => {
       if (child.isMesh && child.name === "EXPORT_LUSTRE") {
         lustreRef.current = child;
-        // Activer l'outline sur hover ou selon votre logique
         setShowLustreOutline(true);
+      }
+      if (child.isMesh && child.name === "EXPORT_FIOLE" && useSwitchBaking) {
+        fioleRef.current = child;
+        setShowFioleOutline(true);
       }
 
       if (child.name.endsWith("_1")) {
@@ -89,7 +96,8 @@ function MedievalScene({ ...props }, ref) {
     // action 1 - allumer la lumiere
     if (clickedObject.name === "EXPORT_LUSTRE") {
       console.log("Lustre cliqué");
-      setVisible(!visible);
+      setShowLustreOutline(false)
+      setVisible(!visible)
       cameraZoom(
         camera,
         cameraRefs.current.camera2,
@@ -108,11 +116,14 @@ function MedievalScene({ ...props }, ref) {
     // action 2 - trouver le poison
     if (clickedObject.name === "EXPORT_FIOLE") {
       console.log("Fiole cliquée");
+      setShowFioleOutline(false)
+      setVisible(!visible)
 
       cameraZoom(
         camera,
         cameraRefs.current.camera3,
         () => {
+
           const clip = animations.find((a) => a.name === "animation_0");
           const target = sceneOn.getObjectByName("EXPORT_FIOLE");
 
@@ -130,13 +141,14 @@ function MedievalScene({ ...props }, ref) {
             mixers.current.push({ mixer, action });
 
             // Force update final après l'animation
-             setTimeout(forceInfoBulleUpdate, 100)
+            setTimeout(forceInfoBulleUpdate, 100)
           }
         },
         props.portalGroupRef.current,
         forceInfoBulleUpdate
       );
     }
+    setVisible(true)
   };
 
   // Switch de murs
@@ -200,7 +212,7 @@ function MedievalScene({ ...props }, ref) {
             {/* Outline pour le lustre */}
             {lustreRef.current && (
               <>
-                <primitive castShadow receiveShadow object={lustreRef.current}>
+                <primitive castShadow receiveShadow visible={showLustreOutline} object={lustreRef.current}>
                   <Outlines
                     color="white"
                     thickness={8}
@@ -217,6 +229,23 @@ function MedievalScene({ ...props }, ref) {
           <>
             {/* Salle avec lumiere */}
             <primitive object={sceneOn} />
+
+            <>
+            {/* Outline pour le poison */}
+            {fioleRef.current && (
+              <>
+                <primitive castShadow receiveShadow visible={showFioleOutline} object={fioleRef.current}>
+                  <Outlines
+                    color="white"
+                    thickness={8}
+                    opacity={1}
+                    transparent={false}
+                    angle={Math.PI}
+                  />
+                </primitive>
+              </>
+            )}
+            </>
 
             
 
