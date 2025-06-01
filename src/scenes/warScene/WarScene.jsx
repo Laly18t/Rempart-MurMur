@@ -78,7 +78,7 @@ function WarScene({ ...props }, ref) {
                 camera,
                 cameraRefs.current.camera3,
                 () => {
-                    voiceOver.setIndex(1)
+                    voiceOver.setIndex(é)
 
                     const clip = animations.find(a => a.name === 'animation_0')
                     const mixer = new AnimationMixer(scene)
@@ -102,7 +102,18 @@ function WarScene({ ...props }, ref) {
 
     // Switch de murs
     useEffect(() => {
+        if (scene) {
+            salleRef.current = scene.getObjectByName('salle')
+            salleDRef.current = scene.getObjectByName('salle_detruite')
+        }
+    }, [scene])
+    useEffect(() => {
         if (salleRef.current && salleDRef.current) {
+            if (!isSceneFinished) {
+                salleRef.current.visible = true
+                salleDRef.current.visible = false
+            }
+
             if (currentScene === 'monde-guerre' && isSceneFinished) {
                 console.log('switch', salleRef.current.visible)
                 salleRef.current.visible = false
@@ -110,20 +121,6 @@ function WarScene({ ...props }, ref) {
             }
         }
     }, [currentScene, isSceneFinished])
-    useEffect(() => {
-        if (salleRef.current && salleDRef.current) {
-            if (!isSceneFinished) {
-                salleRef.current.visible = true
-                salleDRef.current.visible = false
-            }
-        }
-    }, [isSceneFinished])
-    useEffect(() => {
-        if (scene) {
-            salleRef.current = scene.getObjectByName('salle')
-            salleDRef.current = scene.getObjectByName('salle_detruite')
-        }
-    }, [scene])
 
     return (
         <group position={[0, -2, -3]} rotation-y={-3.14} ref={groupRef} {...props} dispose={null} onClick={handleClick}>
@@ -132,6 +129,7 @@ function WarScene({ ...props }, ref) {
                 <meshBasicMaterial map={people} transparent={true} />
                 {/* <meshBasicMaterial color='red' /> */}
             </mesh>
+            
             <primitive castShadow receiveShadow object={scene} />
             <ambientLight intensity={1.2} />
             <spotLight position={[0, 5, 5]} intensity={0.8} />
