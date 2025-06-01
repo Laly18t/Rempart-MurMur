@@ -84,7 +84,8 @@ export const AUDIO_SEQUENCES = {
         // 3: '/audio/test-intro.mp3',
         4: null,
         5: null,
-        6: '/audio/rempart-fin.mp3'
+        6: null,
+        7: '/audio/rempart-fin.mp3'
     },
     SCENE: {
         [EPOQUES.MEDIEVAL]: [
@@ -104,6 +105,8 @@ export const AUDIO_SEQUENCES = {
             // null,
         ],
         [EPOQUES.WAR]: [
+            '/audio/test-intro.mp3',
+            '/audio/test-intro.mp3',
             '/audio/test-intro.mp3',
             // null,
         ]

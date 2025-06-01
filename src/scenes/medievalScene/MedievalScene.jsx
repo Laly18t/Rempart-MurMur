@@ -19,6 +19,7 @@ import useVoiceOverStore from "../../stores/useVoiceOverStore"; // store
 import useSceneStore from "../../stores/useSceneStore";
 import usePlaySound from "../../hooks/usePlaySound";
 import { cameraZoom } from "../../utils/cameraUtils";
+import useFrameAnimation from "../../hooks/useFrameAnimation";
 
 function MedievalScene({ ...props }, ref) {
   const { scene: sceneOn, animations } = useGLTF("/models/scene_1317_v7_a.glb");
@@ -43,9 +44,21 @@ function MedievalScene({ ...props }, ref) {
   const [showLustreOutline, setShowLustreOutline] = useState(false);
   const [showFioleOutline, setShowFioleOutline] = useState(false);
 
-  const people = useLoader(TextureLoader, "/people_medieval.PNG");
   const playCandles = usePlaySound("/audio/sounds/bougie.wav");
   const playPoison = usePlaySound("/audio/sounds/fiole.mp3");
+
+      const peopleFrames = [
+        '/animations/medieval/1317_1.png',
+        '/animations/medieval/1317_2.png',
+        '/animations/medieval/1317_3.png',
+        '/animations/medieval/1317_2.png',
+    ]
+    const { 
+        currentTexture: animatedPeopleTexture,
+        startAnimation,
+        stopAnimation,
+        isPlaying 
+    } = useFrameAnimation(peopleFrames, 0.5, true, true)
 
     // Fonction pour forcer la mise à jour des InfoBulles
     const forceInfoBulleUpdate = () => {
@@ -250,8 +263,8 @@ function MedievalScene({ ...props }, ref) {
             
 
             <mesh position={[0.2, 1.2, 0.2]} rotation-y={-3.14}>
-              <boxGeometry args={[0.9, 2, 0.00001]} />
-              <meshBasicMaterial map={people} transparent={true} />
+              <boxGeometry args={[1.5, 2.2, 0.00001]} />
+              <meshBasicMaterial map={animatedPeopleTexture} transparent={true} />
             </mesh>
 
             {currentScene === "monde-medieval" && (
