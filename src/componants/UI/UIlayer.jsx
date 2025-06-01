@@ -7,6 +7,7 @@ import SubtitleButton from "./SubtitleButton"
 import useAppStore from '../../stores/useAppStore'
 import useSceneStore from '../../stores/useSceneStore'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
+import useMobileStore from '../../stores/useMobileStore'
 // import videoSrcWar from '/ui/video.mp4'
 import Subtitle from './Subtitle'
 
@@ -21,6 +22,7 @@ export default function UIlayer() {
     const nextStep = useAppStore((state) => state.nextStep)
     const { currentScene } = useSceneStore()
     const { isSceneFinished, isPlaying } = useVoiceOverStore()
+    const { teaserVisible, setTeaserVisible } = useMobileStore()
     let videoEpoque = 'war'
     let videoSrc = `/ui/video_${videoEpoque}.mp4`
 
@@ -81,6 +83,11 @@ export default function UIlayer() {
         setTimeout(() => nextStep(), 500)
     }, [nextStep])
 
+    const handleTeaserStart = useCallback(() => {
+        setFadeOut(true)
+        setTimeout(() => setTeaserVisible(!teaserVisible), 500)
+    }, [nextStep])
+
     return (
         <div className="uiLayer">
             <Subtitle />
@@ -98,13 +105,12 @@ export default function UIlayer() {
                     <p>A la découverte de l’histoire du château Montberne</p>
                     {isMobile ? (<>
                         <div className='mobileDiv'>
-                        {/* <img src="./ui/cadre_carre.png" alt="Logo" className="logo" style={{ width: '15%', paddingBottom: '10px' }} /> */}
-                        <p>Oh non !</p>
-                        <p>Cette expérience est uniquement disponible sur un ordinateur</p>
-                        <button className="startButton">
-                            Découvrir la bande annonce
-                        </button>
-                    </div>
+                            <p>Oh non !</p>
+                            <p>Cette expérience est uniquement disponible sur un ordinateur</p>
+                            <button className="startButton" onClick={handleTeaserStart}>
+                                Découvrir la bande annonce
+                            </button>
+                        </div>
                     </>) : (<>
                         <button className="startButton" onClick={handleStart}>
                             Démarrer
