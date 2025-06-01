@@ -59,6 +59,17 @@ export default function UIlayer() {
         }
     }, [currentScene, isSceneFinished, isPlaying, videoFading, videoSrc])
 
+    useEffect(() => {
+        if(step === 1){
+            setTimeout(() => {
+                setFadeOut(true)
+                nextStep()
+            }, 2000)
+        } else if (step === 2) {
+            setFadeOut(false)
+        }
+    }, [step])
+
     // Gestion de la fin de la video
     const handleVideoEnd = useCallback(() => {
         setVideoFading(true)
@@ -94,6 +105,14 @@ export default function UIlayer() {
             {step === 0 && !isMobile && <Loader onFinish={() => nextStep()} />}
 
             {step === 1 && (
+                <div className={`soundIntro ${fadeOut ? 'fade-out' : 'fade-in'}`}>
+                    <img src="./ui/picto_casque.PNG" alt="Logo" className="casque" style={{ width: '30%' }} />
+                    
+                    <p>Il s’agit d’une expérience sonore, nous vous recommandons d’activer le son pour profiter pleinement de l’expérience.</p>
+                </div>
+            )}
+
+            {step === 2 && (
                 <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
                     <img src="./ui/ornement_gauche.svg" alt="Logo" className="ornement_L" style={{ position: 'absolute', top: '2%', left: '2%', width: '30%' }} />
                     <img src="./ui/ornement_droit.svg" alt="Logo" className="ornement_D" style={{ position: 'absolute', top: '2%', right: '2%', width: '30%' }} />
@@ -119,7 +138,7 @@ export default function UIlayer() {
                 </div>
             )}
 
-            {step > 1 && !isMobile && (
+            {step > 2 && !isMobile && (
                 <div className="sound fade-in">
                     <SubtitleButton />
                     <SoundButton />

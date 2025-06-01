@@ -26,7 +26,7 @@ export default function Intro({ debug = false, ...props }) {
         {
             muted: false,
             loop: false,
-            start: step === 2
+            start: step === 3
         }
     )
 
@@ -35,7 +35,7 @@ export default function Intro({ debug = false, ...props }) {
 
     // play de la musique de fond
     useEffect(() => {
-        if (step === 2) {
+        if (step === 3) {
             // playSound.play()
             console.log('play', step)
         } else {
@@ -46,13 +46,13 @@ export default function Intro({ debug = false, ...props }) {
 
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
-        <group visible={step > 1} {...props}>
+        <group visible={step > 2} {...props}>
             {debug && <mesh position={[0, 0, 0]}>
                 <planeGeometry args={[28, 18]} />
                 <meshBasicMaterial color={"limegreen"} />
             </mesh>}
 
-            {step === 2 && (
+            {step === 3 && (
                 <mesh position={[0, 0, -1]}>
                     <planeGeometry args={[viewport.width + 1.6, viewport.height + 1]} />
                     <meshBasicMaterial map={videoTexture} />

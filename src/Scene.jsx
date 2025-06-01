@@ -73,7 +73,7 @@ export default function Scene() {
             }}
         />
 
-        <ParcheminBackground visible={step < 6} />
+        <ParcheminBackground visible={step < 7} />
 
         {/* Group avec chaque etape de l'XP */}
         <ScrollableScene>

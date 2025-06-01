@@ -60,9 +60,9 @@ export default function Rig({ modelsInfo = {} }) {
 
     // Effet 2 : Scroll horizontal (quand pas dans une scène)
     useEffect(() => {
-        if (step > 1 && (!currentScene || currentScene === 'intro')) {
+        if (step > 2 && (!currentScene || currentScene === 'intro')) {
             const scrollLength = maxWidth / totalItems
-            const targetX = scrollLength * (step - 2)
+            const targetX = scrollLength * (step - 3)
 
             scrollTarget.current.set(targetX, 0, SETTINGS.DEFAULT_ZOOM)
             scrollFocus.current.set(targetX, 0, -SETTINGS.DEFAULT_ZOOM)
