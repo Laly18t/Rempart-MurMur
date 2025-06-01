@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { useThree } from "@react-three/fiber"
 
 
-export function cameraZoom(camera, cameraRef, onComplete = () => {}, portalGroupRef) { 
+export function cameraZoom(camera, cameraRef, onComplete = () => {}, portalGroupRef, invalidate = null) { 
     
     const tl = gsap.timeline()
 
@@ -27,6 +27,12 @@ export function cameraZoom(camera, cameraRef, onComplete = () => {}, portalGroup
         z: portalGroup.position.z + worldPosition.z,
         duration: 1,
         ease: "power2.inOut",
+        onUpdate: () => {
+            // Forcer la mise à jour de la matrice de la caméra
+            camera.updateMatrixWorld(true)
+            // Invalider pour forcer le re-render des éléments Html
+            if (invalidate) invalidate()
+        }
     }, 0.5)
 
     tl.to(camera.rotation, {
@@ -35,6 +41,12 @@ export function cameraZoom(camera, cameraRef, onComplete = () => {}, portalGroup
         z: worldRotation.z,
         duration: 1,
         ease: "power2.inOut",
+        onUpdate: () => {
+            // Forcer la mise à jour de la matrice de la caméra
+            camera.updateMatrixWorld(true)
+            // Invalider pour forcer le re-render des éléments Html
+            if (invalidate) invalidate()
+        },
         onComplete
     }, 0.5)
 }
