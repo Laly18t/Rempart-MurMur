@@ -99,9 +99,9 @@ export const AUDIO_SEQUENCES = {
         ],
         [EPOQUES.MODERN]: [
             // '/audio/rempart-1789.mp3',
-            // '/audio/test-intro.mp3',
-            // '/audio/test-intro.mp3',
-            // '/audio/test-intro.mp3',
+            '/audio/test-intro.mp3',
+            '/audio/test-intro.mp3',
+            '/audio/test-intro.mp3',
             // null,
         ],
         [EPOQUES.WAR]: [

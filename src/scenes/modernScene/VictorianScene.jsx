@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo, forwardRef, useState } from 'react'
 import { useGLTF, PerspectiveCamera, Outlines } from '@react-three/drei'
-import { MeshNormalMaterial, TextureLoader } from 'three'
+import { AnimationMixer, LoopOnce, MeshNormalMaterial, TextureLoader } from 'three'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 
 import useSceneStore from '../../stores/useSceneStore'
@@ -11,7 +11,7 @@ import usePlaySound from '../../hooks/usePlaySound'
 import useFrameAnimation from '../../hooks/useFrameAnimation'
 
 function VictorianScene({ ...props }, ref) {
-    const { animations, scene } = useGLTF('/models/scene_1697.glb') // load model
+    const { animations, scene } = useGLTF('/models/scene_1697_V2.glb') // load model
     const groupRef = ref ?? useRef()
     const { set, gl, camera } = useThree()
 
@@ -34,15 +34,16 @@ function VictorianScene({ ...props }, ref) {
         '/animations/modern/1697_3.png',
         '/animations/modern/1697_2.png',
     ]
-    const { 
+    const {
         currentTexture: animatedPeopleTexture,
         startAnimation,
         stopAnimation,
-        isPlaying 
+        isPlaying
     } = useFrameAnimation(peopleFrames, 0.5, true, true)
 
-    const playRadio = usePlaySound('/audio/sounds/radio.mp3')
-    const playTrappe = usePlaySound('/audio/sounds/trappe_on.mp3')
+    const playBook = usePlaySound('/audio/sounds/book.mp3')
+    const playFlower = usePlaySound('/audio/sounds/bouquet_v1.mp3')
+    const playFire = usePlaySound('/audio/sounds/incendie_v1.mp3')
 
     // gestion des cameras
     useEffect(() => {
@@ -50,8 +51,8 @@ function VictorianScene({ ...props }, ref) {
             // console.log('child', child.name)
             if (!child.isMesh) {
                 console.log('child', child.name, child.isMesh)
-            } 
-            if (child.isMesh && child.name === "1697_groupe11") {
+            }
+            if (child.isMesh && child.name === "livre_ouverture") {
                 bookRef.current = child
                 setShowBookOutline(true)
             }
@@ -60,16 +61,12 @@ function VictorianScene({ ...props }, ref) {
                 setShowFlowerOutline(true)
             }
 
-            if (child.name === '1697_camera') { //Camera_face
-                console.log('child camera -- ', child)
-                cameraRefs.current.camera1 = child.children[0].children[0]
-                console.log('camera1', cameraRefs.current.camera1)
+            if (child.name === 'cam_ensemble') { //Camera_face
+                cameraRefs.current.camera1 = child
             } else if (child.name === 'cam_livre') { //Camera livre
                 cameraRefs.current.camera2 = child
-                console.log('camera2', cameraRefs.current.camera2)
             } else if (child.name === 'cam_bouquet') { //Camera fleurs
                 cameraRefs.current.camera3 = child
-                console.log('camera3', cameraRefs.current.camera3)
             }
         })
 
@@ -88,8 +85,8 @@ function VictorianScene({ ...props }, ref) {
         console.log('Objet cliqué:', clickedObject.name)
 
         // action 1 - ouvrir le livre
-        if (clickedObject.name === '1697_groupe11') {
-            console.log('livre cliqué')
+        if (clickedObject.name === 'dessus') {
+            console.log('livre cliqué', clickedObject)
             setShowBookOutline(false)
             console.log('cameraRefs', cameraRefs.current.camera2)
 
@@ -108,7 +105,7 @@ function VictorianScene({ ...props }, ref) {
                         action.clampWhenFinished = true
                         action.reset().play()
 
-                        // playTrappe.play() // bruitage trappe
+                        playBook.play() // bruitage livre
 
                         // Ajouter le mixer pour mise à jour via useFrame
                         mixers.current.push({ mixer, action })
@@ -118,7 +115,7 @@ function VictorianScene({ ...props }, ref) {
             )
         }
 
-        // action 2 - ouvrir la trappe
+        // action 2 - voir le bouquet
         if (clickedObject.name === '1697_groupe61') {
             console.log('bouquet cliqué')
             setShowFlowerOutline(false)
@@ -128,12 +125,36 @@ function VictorianScene({ ...props }, ref) {
                 cameraRefs.current.camera3,
                 () => {
                     voiceOver.setIndex(2)
-                    // playRadio.play() // bruitage radio
+                    playFlower.play() // bruitage bouquet
                 },
                 props.portalGroupRef.current
             )
         }
     }
+
+    // Switch de murs
+    useEffect(() => {
+        if (salleRef.current && salleDRef.current) {
+            if (currentScene === "monde-moderne" && isSceneFinished) {
+                console.log("switch", salleRef.current.visible)
+                salleRef.current.visible = false
+                salleDRef.current.visible = true
+                playFire.play() // bruitage incendie
+            }
+        }
+    }, [currentScene, isSceneFinished])
+    useEffect(() => {
+        console.log("scene -->", scene)
+        if (scene) {
+            salleRef.current = scene.children[1]
+            salleDRef.current = scene.children[0]
+            salleRef.current.visible = true
+            salleDRef.current.visible = false
+
+            console.log("salleRef", salleRef.current.children)
+
+        }
+    }, [scene])
 
 
     return <>
@@ -157,7 +178,7 @@ function VictorianScene({ ...props }, ref) {
             {/* Outline pour le lustre */}
             {flowerRef.current && (
                 <>
-                    <primitive castShadow receiveShadow  object={flowerRef.current}>
+                    <primitive castShadow receiveShadow object={flowerRef.current}>
                         <Outlines
                             visible={showFlowerOutline}
                             color="white"
@@ -200,4 +221,4 @@ function VictorianScene({ ...props }, ref) {
 
 export default forwardRef(VictorianScene)
 
-useGLTF.preload('/models/scene_1697.glb')
+useGLTF.preload('/models/scene_1697_V2.glb')
