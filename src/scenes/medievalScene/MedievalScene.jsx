@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef, forwardRef } from 'react'
-import { AnimationMixer, MeshNormalMaterial, TextureLoader } from 'three'
+import { AnimationMixer, EdgesGeometry, LineBasicMaterial, LineSegments, MeshNormalMaterial, TextureLoader } from 'three'
 import { Select } from "@react-three/postprocessing"
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
-import { useGLTF, PerspectiveCamera, Html } from '@react-three/drei'
+import { useGLTF, PerspectiveCamera, Html, Outlines } from '@react-three/drei'
 import { LoopOnce, Vector3, Quaternion, Euler } from 'three'
 
 // composants
@@ -17,7 +17,7 @@ import { cameraZoom } from '../../utils/cameraUtils'
 function MedievalScene({ ...props }, ref) {
     const { scene: sceneOn, animations } = useGLTF('/models/scene_1317_v7_a.glb')
     const { scene: sceneOff } = useGLTF('/models/scene_1317_v6_e.glb')
-    const [useSwitchBaking, setSwitchBaking] = useState(true)
+    const [useSwitchBaking, setSwitchBaking] = useState(false)
     const groupRef = ref ?? useRef()
     const mixers = useRef([])
     const cameraRefs = useRef({})
@@ -28,10 +28,12 @@ function MedievalScene({ ...props }, ref) {
     const salleRef = useRef()
     const salleDRef = useRef()
     const [visible, setVisible] = useState(false)
+    const lustreRef = useRef()
 
     const people = useLoader(TextureLoader, '/people_medieval.PNG')
     const playCandles = usePlaySound('/audio/sounds/bougie.wav')
     const playPoison = usePlaySound('/audio/sounds/fiole.mp3')
+
 
 
     // gestion des cameras
@@ -39,6 +41,16 @@ function MedievalScene({ ...props }, ref) {
         const currentScene = useSwitchBaking ? sceneOff : sceneOn
 
         currentScene.traverse((child) => {
+            if (child.isMesh && child.name === 'EXPORT_LUSTRE') {
+                lustreRef.current = child
+
+                let material = new LineBasicMaterial({ color: 0xFF0000, linewidth: 10 })
+                const edges = new EdgesGeometry(child.geometry, 30);
+                const line = new LineSegments(edges,material);
+                child.userData.outline = line
+                child.add(line);
+            }
+
             if (child.name.endsWith('_1')) { //Camera generale
                 cameraRefs.current.camera1 = child
             } else if (child.name.endsWith('_2')) { //Camera lustre
@@ -130,6 +142,8 @@ function MedievalScene({ ...props }, ref) {
         if (sceneOn) {
             salleRef.current = sceneOn.getObjectByName('EXPORT_SALLE')
             salleDRef.current = sceneOn.getObjectByName('EXPORT_SALLE_D')
+
+
         }
     }, [sceneOn])
 
@@ -180,6 +194,10 @@ function MedievalScene({ ...props }, ref) {
             {useSwitchBaking &&
                 <primitive object={sceneOff} />
             }
+
+            {/* {lustreRef.current && <mesh position={[0, 2, 0]} castShadow receiveShadow ref={lustreRef} geometry={lustreRef.current.geometry}>
+                <Outlines thickness={5.1} color="red"  angle={0} />
+            </mesh>} */}
 
             {visible &&
                 // <Html position={[2,0,2]}>Retour à la scène</Html>
