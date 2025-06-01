@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
+import { isMobile } from "react-device-detect"
+
 import Loader from './Loader'
 import SoundButton from "./SoundButton"
 import SubtitleButton from "./SubtitleButton"
@@ -29,16 +31,16 @@ export default function UIlayer() {
             setShowEndVideo(false) // reset video
             setVideoFading(false) // reset fade
         }
-        if(currentScene === 'monde-medieval'){
-                videoEpoque = 'medieval'
-                console.log('show medieval video', videoSrc)
-            } else if (currentScene === 'monde-moderne'){
-                videoEpoque = 'modern'
-                console.log('show morden video', videoSrc)
-            } else if (currentScene === 'monde-guerre'){
-                videoEpoque = 'war'
-                console.log('show war video', videoSrc)
-            }
+        if (currentScene === 'monde-medieval') {
+            videoEpoque = 'medieval'
+            console.log('show medieval video', videoSrc)
+        } else if (currentScene === 'monde-moderne') {
+            videoEpoque = 'modern'
+            console.log('show morden video', videoSrc)
+        } else if (currentScene === 'monde-guerre') {
+            videoEpoque = 'war'
+            console.log('show war video', videoSrc)
+        }
     }, [currentScene, videoEpoque])
 
     // Affichage de la video medieval
@@ -82,25 +84,36 @@ export default function UIlayer() {
     return (
         <div className="uiLayer">
             <Subtitle />
-            {step === 0 && <Loader onFinish={() => nextStep()} />}
+            {step === 0 && !isMobile && <Loader onFinish={() => nextStep()} />}
 
             {step === 1 && (
                 <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
-                    <img src="./ui/ornement_gauche.svg" alt="Logo" className="ornement_L" style={{ position: 'absolute', top: '2%', left: '2%',  width: '30%' }} />
-                    <img src="./ui/ornement_droit.svg" alt="Logo" className="ornement_D" style={{ position: 'absolute', top: '2%', right: '2%',  width: '30%' }} />
+                    <img src="./ui/ornement_gauche.svg" alt="Logo" className="ornement_L" style={{ position: 'absolute', top: '2%', left: '2%', width: '30%' }} />
+                    <img src="./ui/ornement_droit.svg" alt="Logo" className="ornement_D" style={{ position: 'absolute', top: '2%', right: '2%', width: '30%' }} />
                     <img src="./ui/logo/logo_rempart.svg" alt="Logo" className="logo_Rempart" style={{ position: 'absolute', top: '5%', right: '46%', width: '8%' }} />
-                    <img src="./ui/logo/logo_gobelins.png" alt="Logo" className="logo_Gobelins" style={{ position: 'absolute', bottom: '2%', left: '2%',  width: '6%' }} />
-                    <img src="./ui/logo/logo_CCI.png" alt="Logo" className="logo_CCI" style={{ position: 'absolute', bottom: '1%', left: '10%',  width: '6%' }} />
+                    <img src="./ui/logo/logo_gobelins.png" alt="Logo" className="logo_Gobelins" style={{ position: 'absolute', bottom: '2%', left: '2%', width: '6%' }} />
+                    <img src="./ui/logo/logo_CCI.png" alt="Logo" className="logo_CCI" style={{ position: 'absolute', bottom: '1%', left: '10%', width: '6%' }} />
 
                     <img src="./ui/logo/logo.svg" alt="Logo" className="logo" style={{ width: '15%', paddingBottom: '10px' }} />
                     <p>A la découverte de l’histoire du château Montberne</p>
-                    <button className="startButton" onClick={handleStart}>
-                        Démarrer
-                    </button>
+                    {isMobile ? (<>
+                        <div className='mobileDiv'>
+                        {/* <img src="./ui/cadre_carre.png" alt="Logo" className="logo" style={{ width: '15%', paddingBottom: '10px' }} /> */}
+                        <p>Oh non !</p>
+                        <p>Cette expérience est uniquement disponible sur un ordinateur</p>
+                        <button className="startButton">
+                            Découvrir la bande annonce
+                        </button>
+                    </div>
+                    </>) : (<>
+                        <button className="startButton" onClick={handleStart}>
+                            Démarrer
+                        </button>
+                    </>)}
                 </div>
             )}
 
-            {step > 1 && (
+            {step > 1 && !isMobile && (
                 <div className="sound fade-in">
                     <SubtitleButton />
                     <SoundButton />

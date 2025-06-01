@@ -16,7 +16,6 @@ export default function Intro({ debug = false, ...props }) {
     const voiceOver = useVoiceOverStore()
     const videoRef = useRef(null)
     const { viewport } = useThree()
-    console.log(viewport)
 
     const handleClickButton = () => {
         nextStep()

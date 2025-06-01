@@ -78,6 +78,30 @@ body {
   height: 131px;
 }
 
+@media screen and (max-width: 1200px) {
+  .startButton {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .startButton {
+    font-size: 24px;
+    width: 334px;
+    height: 101px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .startButton {
+    font-size: 20px;
+    text-transform: none;
+    height: 71px;
+    width: 254px;
+    margin-bottom: 10px;
+  }
+}
+
 .startButton:hover {
   background-image: url('/ui/icons/cta_background_hover.png');
   background-size: contain;
@@ -121,12 +145,44 @@ body {
       font-weight: bold;
       text-align: center;
       font-family: 'Alegreya';
+      font-size: 24px;
     }
 
+    @media screen and (max-width: 600px) {
+      p {
+        font-size: 18px;
+        width: 80vw;
+        margin: 3%;
+      }
+    }
+  }
+  @media screen and (max-width: 900px) {
+    .logo_Gobelins,
+    .logo_CCI,
+    .logo_Rempart {
+      width: 80px !important;
+    }
+    .logo_CCI {
+      left: 11% !important;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .logo_Gobelins,
+    .logo_CCI,
+    .logo_Rempart {
+      width: 65px !important;
+    }
+    .logo_CCI {
+      left: 16% !important;
+    }
+
+    .logo {
+      width: 150px !important;
+    }
   }
 
   div.sound {
-
     button {
       border: none;
       background-color: transparent;
@@ -146,6 +202,39 @@ body {
       padding: 5px;
       max-width: 50px;
       max-height: 50px;
+    }
+  }
+
+  .mobileDiv {
+    display: flex;
+    margin: 20px 0;
+    flex-direction: column;
+    align-items: center;
+    /* width: 26vw !important;
+    height: 50vh !important; */
+    background-color: transparent;
+    background-position: center;
+    background-image: url('/ui/cadre_horizontal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: calc(100% - 50px);
+    padding-top: 20px;
+
+    p {
+        width: 100% !important;
+        font-size: 24px !important;
+        font-weight: normal !important;
+        text-align: start !important;
+    }
+    @media screen and (max-width: 700px) {
+      /* width: 40vw !important; */
+      /* height: 35vh !important; */
+
+      p {
+        padding: 0 8px ;
+        font-size: 20px !important;
+        margin: 1% !important;
+      }
     }
   }
 
@@ -202,11 +291,12 @@ body {
   top: 2px;
   width: 80px;
   height: 50px;
-  
-  &.medievalBulle{
+
+  &.medievalBulle {
     width: 86px !important;
   }
-  &.warBulle{
+
+  &.warBulle {
     width: 77px !important;
   }
 
