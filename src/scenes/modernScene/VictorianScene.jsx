@@ -30,11 +30,11 @@ function VictorianScene({ ...props }, ref) {
     // gestion des cameras
     useEffect(() => {
         scene.traverse((child) => {
-            if (child.name.endsWith('_1')) { //Camera_face
+            if (child.name.endsWith('_ensemble')) { //Camera_face
                 cameraRefs.current.camera1 = child
-            } else if (child.name.endsWith('_2')) { //Camera_radio
+            } else if (child.name.endsWith('_livre')) { //Camera_radio
                 cameraRefs.current.camera2 = child
-            } else if (child.name.endsWith('_3')) { //Camera_trappe
+            } else if (child.name.endsWith('_bouquet')) { //Camera_trappe
                 cameraRefs.current.camera3 = child
             }
         })
