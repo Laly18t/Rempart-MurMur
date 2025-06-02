@@ -15,7 +15,7 @@ import useFrameAnimation from '../../hooks/useFrameAnimation'
 
 function WarScene({ ...props }, ref) {
     const groupRef = ref ?? useRef()
-    const { animations, scene } = useGLTF('/models/scene_1942.glb')
+    const { animations, scene } = useGLTF('/models/1942_draco.glb', true)
     const { set, gl, camera } = useThree()
 
     const voiceOver = useVoiceOverStore()
@@ -31,6 +31,7 @@ function WarScene({ ...props }, ref) {
     const [showRadioOutline, setShowRadioOutline] = useState(false)
     const [showTrappeOutline, setShowTrappeOutline] = useState(false)
     const [showPeople, setShowPeople] = useState(true)
+    const [visible, setVisible] = useState(false)
     
 
     const playRadio = usePlaySound('/audio/sounds/radio.mp3')
@@ -51,13 +52,14 @@ function WarScene({ ...props }, ref) {
     // gestion des cameras
     useEffect(() => {
         scene.traverse((child) => {
+            console.log('Child name:', child.name)
             if (child.isMesh && child.name === "radio") {
                 radioRef.current = child
                 setShowRadioOutline(true)
             }
             if (child.isMesh && child.name === "couvercle") {
                 trappeRef.current = child
-                setShowTrappeOutline(true)
+                setShowTrappeOutline(false)
             }
 
             if (child.name.endsWith('_1')) { //Camera_face
@@ -87,6 +89,7 @@ function WarScene({ ...props }, ref) {
         if (clickedObject.name === 'radio' && !isPlaying) {
             console.log('Radio cliqué')
             setShowRadioOutline(false)
+            setShowTrappeOutline(true)
 
             if (isZoom && !isPlaying) {
                 handleZoom() // on retourne sur la caméra par défaut
@@ -97,6 +100,7 @@ function WarScene({ ...props }, ref) {
                     () => {
                         voiceOver.setIndex(1)
                         playRadio.play() // bruitage radio
+                        setTimeout(handleZoom(), 5000)
                     },
                     props.portalGroupRef.current
                 )
@@ -117,8 +121,9 @@ function WarScene({ ...props }, ref) {
                     cameraRefs.current.camera3,
                     () => {
                         voiceOver.setIndex(2)
+                        setVisible(false)
 
-                        const clip = animations.find(a => a.name === 'animation_0')
+                        const clip = animations.find(a => a.name === 'Anim_0')
                         const mixer = new AnimationMixer(scene)
                         const action = mixer.clipAction(clip)
 
@@ -131,6 +136,16 @@ function WarScene({ ...props }, ref) {
 
                             // Ajouter le mixer pour mise à jour via useFrame
                             mixers.current.push({ mixer, action })
+                            const onFinished = () => {
+                                setTimeout(handleZoom(), 5000) // seconde = 5000
+                                setVisible(true)
+                            }
+
+                            mixer.addEventListener('finished', onFinished)
+
+                            return () => {
+                                mixer.removeEventListener('finished', onFinished)
+                            }
                         }
                     },
                     props.portalGroupRef.current
@@ -151,11 +166,13 @@ function WarScene({ ...props }, ref) {
             if (!isSceneFinished) {
                 salleRef.current.visible = true
                 salleDRef.current.visible = false
+                setVisible(true)
             }
 
-            if (index === 3) {
+            if (index === 2) {
                 console.log('switch', salleRef.current.visible)
                 setShowPeople(false)
+                setVisible(false)
                 salleRef.current.visible = false
                 salleDRef.current.visible = true
                 playFire.play() // bruitage explosion
@@ -178,7 +195,7 @@ function WarScene({ ...props }, ref) {
 
             {/* Outline pour la radio */}
             {radioRef.current && (<>
-                <primitive position={[-2, 1.3, 4]} object={radioRef.current}>
+                <primitive position={[-2, 1.28, 4]} object={radioRef.current}>
                     <Outlines
                         visible={showRadioOutline}
                         color="white"
@@ -213,7 +230,7 @@ function WarScene({ ...props }, ref) {
             <ambientLight intensity={1.2} />
             <spotLight position={[0, 5, 5]} intensity={0.8} />
 
-            {currentScene === 'monde-guerre' && showPeople &&
+            {currentScene === 'monde-guerre' && visible &&
                 <>
                     <InfoBulle position={[3.5, 2, 1.6]}
                         className='warBulle'
