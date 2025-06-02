@@ -7,7 +7,7 @@ import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
 import useVoiceOverStore from "../../stores/useVoiceOverStore"
 import usePlaySound from "../../hooks/usePlaySound"
-import videoSrc from '/animations/intro_v2.webm'
+import videoSrc from '/animations/intro.webm'
 
 export default function Intro({ debug = false, ...props }) {
     const step = useAppStore((state) => state.step)
@@ -52,7 +52,7 @@ export default function Intro({ debug = false, ...props }) {
             {step === 3 && (
                 <mesh position={[0, 0, -1]}>
                     <planeGeometry args={[viewport.width + 1.6, viewport.height + 1]} />
-                    <meshBasicMaterial map={videoTexture} />
+                    <meshBasicMaterial transparent={true} map={videoTexture} />
                 </mesh>
             )}
 
