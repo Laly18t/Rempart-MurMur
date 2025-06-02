@@ -15,7 +15,7 @@ import useFrameAnimation from '../../hooks/useFrameAnimation'
 
 function WarScene({ ...props }, ref) {
     const groupRef = ref ?? useRef()
-    const { animations, scene } = useGLTF('/models/scene_1942_v2.glb')
+    const { animations, scene } = useGLTF('/models/scene_1942.glb')
     const { set, gl, camera } = useThree()
 
     const voiceOver = useVoiceOverStore()
@@ -33,6 +33,7 @@ function WarScene({ ...props }, ref) {
 
     const playRadio = usePlaySound('/audio/sounds/radio.mp3')
     const playTrappe = usePlaySound('/audio/sounds/trappe_on.mp3')
+    const playFire = usePlaySound('/audio/sounds/incendie_v1.mp3')
 
     const peopleFrames = [
         '/animations/war/1942_1.png',
@@ -148,6 +149,7 @@ function WarScene({ ...props }, ref) {
                 console.log('switch', salleRef.current.visible)
                 salleRef.current.visible = false
                 salleDRef.current.visible = true
+                playFire.play() // bruitage explosion
             }
         }
     }, [currentScene, isSceneFinished])
@@ -212,4 +214,4 @@ function WarScene({ ...props }, ref) {
 
 export default forwardRef(WarScene)
 
-useGLTF.preload('/models/scene_1942_v2.glb')
+useGLTF.preload('/models/scene_1942.glb')

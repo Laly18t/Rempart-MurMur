@@ -46,6 +46,7 @@ function MedievalScene({ ...props }, ref) {
 
   const playCandles = usePlaySound("/audio/sounds/bougie.wav");
   const playPoison = usePlaySound("/audio/sounds/fiole.mp3");
+  const playFire = usePlaySound("/audio/sounds/explosion_1317_v2.mp3");
 
       const peopleFrames = [
         '/animations/medieval/1317_1.png',
@@ -168,24 +169,25 @@ function MedievalScene({ ...props }, ref) {
   useEffect(() => {
     if (salleRef.current && salleDRef.current) {
       if (currentScene === "monde-medieval" && isSceneFinished) {
-        console.log("switch", salleRef.current.visible);
-        salleRef.current.visible = false;
-        salleDRef.current.visible = true;
+        playFire.play() // bruitage explosiont
+        console.log("switch", salleRef.current.visible)
+        salleRef.current.visible = false
+        salleDRef.current.visible = true
       }
     }
-  }, [currentScene, isSceneFinished]);
+  }, [currentScene, isSceneFinished])
   useEffect(() => {
     if (salleRef.current && salleDRef.current) {
       if (!isSceneFinished) {
-        salleRef.current.visible = true;
-        salleDRef.current.visible = false;
+        salleRef.current.visible = true
+        salleDRef.current.visible = false
       }
     }
-  }, [useSwitchBaking, isSceneFinished]);
+  }, [useSwitchBaking, isSceneFinished])
   useEffect(() => {
     if (sceneOn) {
-      salleRef.current = sceneOn.getObjectByName("EXPORT_SALLE");
-      salleDRef.current = sceneOn.getObjectByName("EXPORT_SALLE_D");
+      salleRef.current = sceneOn.getObjectByName("EXPORT_SALLE")
+      salleDRef.current = sceneOn.getObjectByName("EXPORT_SALLE_D")
     }
   }, [sceneOn]);
 
