@@ -3,6 +3,7 @@ import { AnimationMixer, MeshBasicMaterial, TextureLoader } from "three";
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { useGLTF, Outlines } from "@react-three/drei";
 import { LoopOnce } from "three";
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 // composants
 import InfoBulle from "../../componants/InfoBulle";
@@ -13,8 +14,8 @@ import { cameraZoom } from "../../utils/cameraUtils";
 import useFrameAnimation from "../../hooks/useFrameAnimation";
 
 function MedievalScene({ ...props }, ref) {
-  const { scene: sceneOn, animations } = useGLTF("/models/scene_1317_v7_a.glb")
-  const { scene: sceneOff } = useGLTF("/models/scene_1317_v6_e.glb")
+  const { scene: sceneOn, animations } = useGLTF("/models/1317_a_draco.glb", true)
+  const { scene: sceneOff } = useGLTF("/models/1317_e_draco.glb", true)
   const { camera, invalidate } = useThree()
   const [useSwitchBaking, setSwitchBaking] = useState(true)
 
@@ -113,13 +114,12 @@ function MedievalScene({ ...props }, ref) {
   const handleClick = (e) => {
     const clickedObject = e.object
     console.log("Objet cliqué:", clickedObject.name)
-    setVisible(false)
 
     // action 1 - allumer la lumiere
     if (clickedObject.name === "EXPORT_LUSTRE" && !isPlaying) {
       console.log("Lustre cliqué")
       setShowLustreOutline(false)
-      setVisible(true)
+      setVisible(false)
       setIsZoom(true)
 
       if (isZoom && !isPlaying) {
@@ -136,7 +136,7 @@ function MedievalScene({ ...props }, ref) {
               playCandles.play() // bruitage bougie
               setSwitchBaking((prev) => !prev)
               voiceOver.setIndex(1)
-              setTimeout(handleZoom(), 2000)
+              setTimeout(handleZoom(), 3000)
             }
             // Force update final après l'animation
             setTimeout(forceInfoBulleUpdate, 100)
@@ -162,8 +162,8 @@ function MedievalScene({ ...props }, ref) {
           camera,
           cameraRefs.current.camera3,
           () => {
-
-            const clip = animations.find((a) => a.name === "animation_0")
+            console.log(animations)
+            const clip = animations.find((a) => a.name === "Anim_0")
             const target = sceneOn.getObjectByName("EXPORT_FIOLE")
 
             if (clip && target) {
@@ -175,7 +175,6 @@ function MedievalScene({ ...props }, ref) {
               playPoison.play() // bruitage fiole
 
               const onFinished = () => {
-                console.log('Animation terminée')
                 handleZoom()
               }
 
@@ -213,7 +212,7 @@ function MedievalScene({ ...props }, ref) {
           salleRef.current.visible = false
           salleDRef.current.visible = true
           setVisible(false)
-        }, 3000)
+        }, 4000)
       }
     }
   }, [currentScene, isSceneFinished, index, useSwitchBaking])
@@ -235,7 +234,7 @@ function MedievalScene({ ...props }, ref) {
       props.portalGroupRef.current,
       forceInfoBulleUpdate
     )
-    setVisible(true)
+    setTimeout( setVisible(true), 2000)
     setIsZoom(false)
   }
 
@@ -323,5 +322,5 @@ function MedievalScene({ ...props }, ref) {
 
 export default forwardRef(MedievalScene);
 
-useGLTF.preload("/models/scene_1317_v7_a.glb");
-useGLTF.preload("/models/scene_1317_v6_e.glb");
+useGLTF.preload("/models/1317_a_draco.glb");
+useGLTF.preload("/models/1317_e_draco.glb");
