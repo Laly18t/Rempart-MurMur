@@ -33,7 +33,7 @@ export const POSITIONS_PARCHEMIN = {
 }
 
 export const SETTINGS = {
-    DEBUG: true,
+    DEBUG: false,
     SCROLL_SPEED: 0.009, 
     MAX_TRANSLATION: 116,
     DEBUG_VOICEOVER: false,
@@ -78,36 +78,41 @@ export const AUDIO_SEQUENCES = {
     STEP: {
         1: null,
         2: null,
+        // 3: '/audio/voice/intro.mp3',
+        // 4: '/audio/voice/1317_1.mp3',
+        // 5: '/audio/voice/1697_2.mp3',
+        // 6: '/audio/voice/1942_1.mp3',
         3: null,
         4: null,
         5: null,
         6: null,
-        7: '/audio/rempart-fin.mp3'
+        7: '/audio/voice/fin.mp3'
     },
     SCENE: {
         [EPOQUES.MEDIEVAL]: [
-            // '/audio/rempart-1317.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            // '/audio/rempart-1317_4.mp3',
-            // '/audio/rempart-1317_5.mp3',
+            // '/audio/test-intro.mp3',
+            // '/audio/test-intro.mp3',
+            // '/audio/test-intro.mp3',
+            // '/audio/test-intro.mp3',
+            '/audio/voice/1317_2.mp3',
+            '/audio/voice/1317_3.mp3',
+            '/audio/voice/1317_4.mp3',
+            '/audio/voice/1697_1.mp3',
         ],
         [EPOQUES.MODERN]: [
-            // '/audio/rempart-1697.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            // null,
+            // '/audio/test-intro.mp3',
+            '/audio/voice/1697_3.mp3',
+            '/audio/voice/1697_4.mp3',
+            '/audio/voice/1697_5.mp3',
+            '/audio/voice/1697_6.mp3',
         ],
         [EPOQUES.WAR]: [
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            '/audio/test-intro.mp3',
-            // null,
+            // '/audio/test-intro.mp3',
+            '/audio/voice/1942_2.mp3',
+            '/audio/voice/1942_3.mp3',
+            '/audio/voice/1942_4.mp3',
+            '/audio/voice/1942_5.mp3',
+            '/audio/voice/1942_6.mp3',
         ]
     },
     FX: {
