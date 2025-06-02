@@ -127,8 +127,19 @@ function VictorianScene({ ...props }, ref) {
 
                             playBook.play() // bruitage livre
 
+                            const onFinished = () => {
+                                console.log('Animation terminée')
+                                handleZoom()
+                            }
+
                             // Ajouter le mixer pour mise à jour via useFrame
                             mixers.current.push({ mixer, action })
+
+                            mixer.addEventListener('finished', onFinished)
+
+                            return () => {
+                                mixer.removeEventListener('finished', onFinished)
+                            }
                         }
                     },
                     props.portalGroupRef.current
@@ -145,7 +156,6 @@ function VictorianScene({ ...props }, ref) {
             if (isZoom && !isPlaying) {
                 console.log('déjà zoomé sur le livre')
                 handleZoom()
-                voiceOver.setIndex(3)
             } else {
                 cameraZoom(
                     camera,
@@ -153,6 +163,7 @@ function VictorianScene({ ...props }, ref) {
                     () => {
                         voiceOver.setIndex(2)
                         playFlower.play() // bruitage bouquet
+                        setTimeout(() => {handleZoom()}, 3000)
                     },
                     props.portalGroupRef.current
                 )
@@ -169,13 +180,15 @@ function VictorianScene({ ...props }, ref) {
                 salleDRef.current.visible = false
             }
 
-            if (index === 3) {
-                console.log("switch", salleRef.current.visible)
-                setShowPeople(false)
-                setVisible(false)
-                salleRef.current.visible = false
-                salleDRef.current.visible = true
-                playFire.play() // bruitage incendie
+            if (index === 2) {
+                setTimeout(() => {
+                    console.log("switch", salleRef.current.visible)
+                    setShowPeople(false)
+                    setVisible(false)
+                    salleRef.current.visible = false
+                    salleDRef.current.visible = true
+                    playFire.play() // bruitage incendie
+                }, 3000)
             }
         }
     }, [currentScene, isSceneFinished, showPeople, index])
