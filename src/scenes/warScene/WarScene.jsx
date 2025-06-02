@@ -100,7 +100,7 @@ function WarScene({ ...props }, ref) {
                     () => {
                         voiceOver.setIndex(1)
                         playRadio.play() // bruitage radio
-                        setTimeout(handleZoom(), 5000)
+                        setTimeout(() => {handleZoom()}, 12000)
                     },
                     props.portalGroupRef.current
                 )
@@ -137,7 +137,7 @@ function WarScene({ ...props }, ref) {
                             // Ajouter le mixer pour mise à jour via useFrame
                             mixers.current.push({ mixer, action })
                             const onFinished = () => {
-                                setTimeout(handleZoom(), 5000) // seconde = 5000
+                                setTimeout(() => {handleZoom()}, 5000) // seconde = 5000
                                 setVisible(true)
                             }
 

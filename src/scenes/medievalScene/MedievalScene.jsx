@@ -136,7 +136,7 @@ function MedievalScene({ ...props }, ref) {
               playCandles.play() // bruitage bougie
               setSwitchBaking((prev) => !prev)
               voiceOver.setIndex(1)
-              setTimeout(handleZoom(), 3000)
+              setTimeout(() => {handleZoom()}, 3000)
             }
             // Force update final après l'animation
             setTimeout(forceInfoBulleUpdate, 100)
@@ -234,7 +234,7 @@ function MedievalScene({ ...props }, ref) {
       props.portalGroupRef.current,
       forceInfoBulleUpdate
     )
-    setTimeout( setVisible(true), 2000)
+    setTimeout(() => {setVisible(true)}, 2000)
     setIsZoom(false)
   }
 
