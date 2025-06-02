@@ -78,7 +78,7 @@ export default function Scene() {
         {/* Group avec chaque etape de l'XP */}
         <ScrollableScene>
             {/* Partie 0 - Introduction */}
-             <Intro />
+            <Intro />
 
             {/* Portail 1 - Medieval */}
             <group ref={medievalPortalRef}>
@@ -94,8 +94,10 @@ export default function Scene() {
                 >
                         <MedievalScene />
                 </Portal>
-                <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
-                <ArrowButton cote={true} position={[-2.5, 0.2, 0]} onClick={handleReturnButton} />
+                {/* {outScene &&  */}
+                    <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
+                {/* } */}
+                {/* <ArrowButton cote={true} position={[-2.5, 0.2, 0]} onClick={handleReturnButton} /> */}
             </group>
 
             {/* Portail 2 - Modern */}
@@ -112,8 +114,10 @@ export default function Scene() {
                 >
                         <VictorianScene />
                 </Portal>
-                <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
-                <ArrowButton cote={true} position={[-2.4, 0, 0]} onClick={handleReturnButton} />
+                {/* {outScene &&  */}
+                    <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
+                {/* } */}
+                {/* <ArrowButton cote={true} position={[-2.4, 0, 0]} onClick={handleReturnButton} />s */}
             </group>
 
             {/* Portail 3 - 2nd guerre mondiale */}
@@ -130,8 +134,10 @@ export default function Scene() {
                 >
                     <WarScene />
                 </Portal>
-                <ArrowButton position={[2.3, 0, 0]} onClick={handleClickButton} />
-                <ArrowButton cote={true} position={[-2.3, 0, 0]} onClick={handleReturnButton} />
+                {outScene && 
+                    <ArrowButton position={[2.3, 0, 0]} onClick={handleClickButton} /> 
+                }
+                {/* <ArrowButton cote={true} position={[-2.3, 0, 0]} onClick={handleReturnButton} /> */}
             </group>
 
             {/* Partie 4 - Conclusion */}
