@@ -28,7 +28,7 @@ export default function CTA_end({debug = false, ...props}) {
             <Text position={[0, -1, 0]} color={'red'} fontSize={0.3} anchorY="center" anchorX="center" lineHeight={0.8} >
                 CTA de fin
             </Text>
-            <ArrowButton position={[-2, -1.15, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
+            <ArrowButton cote={true} position={[-2, -1.15, 0]} onClick={handleReturnButton} />
 
         </group>
     </>

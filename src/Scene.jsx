@@ -95,7 +95,7 @@ export default function Scene() {
                         <MedievalScene />
                 </Portal>
                 <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
-                <ArrowButton position={[-2.5, 0.2, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
+                <ArrowButton cote={true} position={[-2.5, 0.2, 0]} onClick={handleReturnButton} />
             </group>
 
             {/* Portail 2 - Modern */}
@@ -113,7 +113,7 @@ export default function Scene() {
                         <VictorianScene />
                 </Portal>
                 <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
-                <ArrowButton position={[-2.4, 0, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
+                <ArrowButton cote={true} position={[-2.4, 0, 0]} onClick={handleReturnButton} />
             </group>
 
             {/* Portail 3 - 2nd guerre mondiale */}
@@ -131,7 +131,7 @@ export default function Scene() {
                     <WarScene />
                 </Portal>
                 <ArrowButton position={[2.3, 0, 0]} onClick={handleClickButton} />
-                <ArrowButton position={[-2.3, 0, 0]} scale={[-1, 1, 1]}  onClick={handleReturnButton} />
+                <ArrowButton cote={true} position={[-2.3, 0, 0]} onClick={handleReturnButton} />
             </group>
 
             {/* Partie 4 - Conclusion */}
