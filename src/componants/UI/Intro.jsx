@@ -1,7 +1,6 @@
-import { Html, Text, useVideoTexture } from "@react-three/drei"
-import { useLoader, useThree } from "@react-three/fiber"
+import { useVideoTexture } from "@react-three/drei"
+import { useThree } from "@react-three/fiber"
 import { useEffect, useRef } from "react"
-import { TextureLoader } from "three"
 
 import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
@@ -13,7 +12,6 @@ export default function Intro({ debug = false, ...props }) {
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
     const voiceOver = useVoiceOverStore()
-    const videoRef = useRef(null)
     const { viewport } = useThree()
 
     const handleClickButton = () => {
@@ -44,10 +42,6 @@ export default function Intro({ debug = false, ...props }) {
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
         <group visible={step > 2} {...props}>
-            {debug && <mesh position={[0, 0, 0]}>
-                <planeGeometry args={[28, 18]} />
-                <meshBasicMaterial color={"limegreen"} />
-            </mesh>}
 
             {step === 3 && (
                 <mesh position={[0, 0, -1]}>
