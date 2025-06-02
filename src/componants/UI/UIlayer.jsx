@@ -49,13 +49,13 @@ export default function UIlayer() {
     useEffect(() => {
         if (currentScene === 'monde-medieval' || currentScene === 'monde-moderne' || currentScene === 'monde-guerre') {
             console.log('currentScene', currentScene, index)
-            if (index === 3 && !isPlaying && !videoPlayedRef.current && videoSrc) {
-                videoPlayedRef.current = true
-                console.log('play video', videoSrc)
-                setShowEndVideo(true)
+            if (index === 2 && !isPlaying && !videoPlayedRef.current && videoSrc) {
                 setTimeout(() => {
+                    videoPlayedRef.current = true
+                    console.log('play video', videoSrc)
+                    setShowEndVideo(true)
                     videoRef.current?.play().catch(console.error)
-                }, 300)
+                }, 4000)
             }
         }
     }, [currentScene, isSceneFinished, isPlaying, videoSrc, index])
