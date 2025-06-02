@@ -23,7 +23,7 @@ export default function Intro({ debug = false, ...props }) {
     const videoTexture = useVideoTexture(
         videoSrc,
         {
-            muted: false,
+            muted: true,
             loop: false,
             start: step === 3
         }
