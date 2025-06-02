@@ -1,19 +1,67 @@
 1
-00:00:00,360 --> 00:00:02,680
-Tu veux une autre histoire ?
+00:00:00,000 --> 00:00:02,560
+Mais eux, ils sont restés, 
 
 2
-00:00:02,680 --> 00:00:03,720
-D'accord.
+00:00:02,600 --> 00:00:05,960
+pour me protéger, me réparer.
 
 3
-00:00:03,720 --> 00:00:07,560
-Mais celle qui vient, elle est moins douce.
+00:00:05,960 --> 00:00:08,960
+C'était une famille extraordinaire.
 
 4
-00:00:07,560 --> 00:00:10,560
-Moins de musique, moins de rires,
+00:00:09,840 --> 00:00:12,160
+Tu veux une autre histoire ?
 
 5
-00:00:10,640 --> 00:00:15,320
+00:00:12,160 --> 00:00:13,200
+D'accord.
+
+6
+00:00:13,200 --> 00:00:17,040
+Mais celle qui vient, elle est moins douce.
+
+7
+00:00:17,040 --> 00:00:20,040
+Moins de musique, moins de rires,
+
+8
+00:00:20,120 --> 00:00:24,800
 seulement l'attente et le vent qui souffle.
+
+9
+00:00:26,200 --> 00:00:27,560
+La guerre.
+
+10
+00:00:27,560 --> 00:00:29,520
+Elle est montée jusqu'ici, tu sais.
+
+11
+00:00:29,720 --> 00:00:32,360
+Même moi, j'ai pas pu l'arrêter.
+
+12
+00:00:32,360 --> 00:00:35,360
+Avant ça, j'étais encore habitée.
+
+13
+00:00:35,440 --> 00:00:38,880
+Une petite famille discrète, chaleureuse.
+
+14
+00:00:39,640 --> 00:00:43,200
+Quand ils sont partis, ils ont tout recouvert de drap.
+
+15
+00:00:43,200 --> 00:00:45,440
+Comme s'ils allaient revenir vite.
+
+16
+00:00:45,440 --> 00:00:48,280
+Comme s'ils me disaient “Attends, nous”.
+
+17
+00:00:48,280 --> 00:00:50,520
+Et moi, je les ai attendus.

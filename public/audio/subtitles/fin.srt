@@ -1,131 +1,79 @@
 1
-00:00:01,080 --> 00:00:05,640
-Depuis ce jour, le silence a repris sa place
+00:00:01,160 --> 00:00:06,040
+Depuis ce jour, le silence a repris sa place entre mes murs.
 
 2
-00:00:05,640 --> 00:00:07,560
-entre mes murs.
-
-3
-00:00:07,560 --> 00:00:10,200
-Les pas se sont fait rares.
-
-4
-00:00:10,200 --> 00:00:13,120
-Les rires lointains.
-
-5
-00:00:13,120 --> 00:00:16,040
-Plus personne ne m'a vraiment regardée...
-
-6
-00:00:16,040 --> 00:00:17,680
+00:00:06,160 --> 00:00:07,520
 Jusqu'à toi.
 
-7
-00:00:17,680 --> 00:00:19,720
+3
+00:00:07,520 --> 00:00:09,200
 Toi, tu m'as écoutée.
 
-8
-00:00:19,720 --> 00:00:23,000
-Tu m'as redonné une voix., l'espace d'un instant.
+4
+00:00:09,200 --> 00:00:13,240
+Tu m'as redonné une voix, et tu n’imagines pas comme ça m’fait du bien
 
-9
-00:00:23,000 --> 00:00:26,120
-Et tu n'imagines pas comme ça me fait du bien.
-
-10
-00:00:26,120 --> 00:00:28,640
+5
+00:00:13,560 --> 00:00:15,600
 Je ne suis plus tout jeune, tu sais.
 
-11
-00:00:28,640 --> 00:00:33,520
+6
+00:00:15,600 --> 00:00:19,480
 Le vent, le temps, les guerres m'ont un peu abîmée,
 
-12
-00:00:33,520 --> 00:00:35,640
+7
+00:00:19,920 --> 00:00:21,840
 mais je tiens encore.
 
-13
-00:00:35,640 --> 00:00:39,040
+8
+00:00:21,840 --> 00:00:25,080
 Et parfois, je me surprends à espérer,
 
-14
-00:00:39,040 --> 00:00:40,360
-à espérer à nouveau
-
-15
-00:00:40,360 --> 00:00:43,360
-qu'on me soigne, qu'on me fasse vivre.
-
-16
-00:00:43,920 --> 00:00:46,600
+9
+00:00:25,280 --> 00:00:27,960
 J'aimerais voir à nouveau la vie en mes murs,
 
-17
-00:00:46,600 --> 00:00:50,440
-découvrir de nouvelles familles, de nouvelles voix.
-
-18
-00:00:50,440 --> 00:00:54,320
-Je m'ennuie ici, dans ce silence trop lourd.
-
-19
-00:00:54,320 --> 00:00:56,280
+10
+00:00:28,480 --> 00:00:30,400
 Il existe des mains pour ça.
 
-20
-00:00:56,280 --> 00:00:57,840
-Des cœurs aussi.
-
-21
-00:00:57,840 --> 00:01:00,640
+11
+00:00:30,400 --> 00:00:32,840
 l'association REMPART en fait partie.
 
-22
-00:01:00,640 --> 00:01:02,800
+12
+00:00:32,840 --> 00:00:35,000
 Ils ne me voient pas comme un tas de pierres,
 
-23
-00:01:02,800 --> 00:01:04,240
+13
+00:00:35,000 --> 00:00:36,440
 mais comme un livre ouvert.
 
-24
-00:01:04,240 --> 00:01:06,800
+14
+00:00:36,560 --> 00:00:39,240
 Un témoin, un lieu à transmettre.
 
-25
-00:01:07,920 --> 00:01:09,520
+15
+00:00:39,560 --> 00:00:41,160
 Un jour peut être,
 
-26
-00:01:09,520 --> 00:01:12,440
+16
+00:00:41,160 --> 00:00:43,760
 mes pièces résonneront à nouveau de pas, de voix,
 
-27
-00:01:12,440 --> 00:01:15,520
-d'expositions, d'ateliers, de visites.
+17
+00:00:44,000 --> 00:00:47,960
+Je deviendrai un lieu ouvert au public vivant, utile.
 
-28
-00:01:16,480 --> 00:01:21,720
-Je deviendrai un lieu ouvert au public vivant, utile, accueillant.
-
-29
-00:01:21,720 --> 00:01:24,360
-Peut être qu'un jour tu reviendras.
-
-30
-00:01:24,360 --> 00:01:27,200
-Ou qu’un autre curieux passera après toi.
-
-31
-00:01:27,200 --> 00:01:29,280
+18
+00:00:48,080 --> 00:00:50,680
 Et grâce à vous, peut être que je pourrai encore 
 
-32
-00:01:29,280 --> 00:01:32,280
+19
+00:00:50,680 --> 00:00:53,160
 raconter longtemps mes histoires.
 
-33
-00:01:33,040 --> 00:01:33,680
+20
+00:00:53,680 --> 00:00:54,320
 Merci.

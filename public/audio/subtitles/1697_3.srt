@@ -1,55 +1,31 @@
-﻿1
-00:00:00,040 --> 00:00:02,200
-Ces notes glissaient entre mes murs,
+1
+00:00:01,360 --> 00:00:04,120
+C'est elle qui l'a laissé là..
 
 2
-00:00:02,200 --> 00:00:04,440
-grimpaient jusqu'à mes poutres.
+00:00:04,120 --> 00:00:07,960
+Ce poème, c’est lui qui l’avait écrit.
 
 3
-00:00:04,440 --> 00:00:05,760
-Et crois moi,
+00:00:07,960 --> 00:00:11,000
+Elle a lu en silence, puis l’a glissé
 
 4
-00:00:05,760 --> 00:00:09,200
-c'était comme si mon cœur de pierre battait à l'unisson.
+00:00:11,000 --> 00:00:13,440
+entre les pages de son livre préféré,
 
 5
-00:00:10,680 --> 00:00:13,000
-Un soir, pendant un bal,
+00:00:13,440 --> 00:00:15,760
+comme un secret précieux.
 
 6
-00:00:13,000 --> 00:00:16,000
-un jeune homme est arrivé, élégant.
+00:00:15,760 --> 00:00:18,280
+Elle ne l'a jamais retiré.
 
 7
-00:00:17,040 --> 00:00:18,560
-< color=#3D514BFF>Mais dès qu'il l'a vue
+00:00:18,280 --> 00:00:21,240
+Il restait là, caché...
 
 8
-00:00:18,600 --> 00:00:21,600
-il en est tombé fou amoureux
-
-9
-00:00:22,080 --> 00:00:24,720
-d'un seul regard.
-
-10
-00:00:24,720 --> 00:00:27,120
-Et quand elle a commencé à jouer,
-
-11
-00:00:27,120 --> 00:00:30,240
-alors là, il n'y avait plus aucun doute,
-
-12
-00:00:31,160 --> 00:00:33,960
-c'était elle.
-
-13
-00:00:33,960 --> 00:00:35,520
-La suite ?
-
-14
-00:00:35,520 --> 00:00:39,960
-Je t'avoue que mes souvenirs se brouillent un peu.
+00:00:21,240 --> 00:00:27,000
+Le début discret mais intense de leur histoire d'amour.

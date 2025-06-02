@@ -1,55 +1,83 @@
 1
-00:00:00,960 --> 00:00:03,520
-Voilà, c'était ça.
+00:00:01,080 --> 00:00:02,880
+La trappe.
 
 2
-00:00:03,520 --> 00:00:06,400
-La radio posée sur la table,
+00:00:02,880 --> 00:00:06,320
+Ils y cachaient ce qu'ils ne pouvaient pas perdre.
 
 3
-00:00:06,400 --> 00:00:10,320
-juste à côté de la carte, et d'un carnet de notes.
+00:00:06,320 --> 00:00:10,360
+Des papiers, des messages, même des armes.
 
 4
-00:00:10,320 --> 00:00:11,920
-Elle parlait doucement,
+00:00:10,360 --> 00:00:14,120
+Des objets trop précieux pour tomber entre de mauvaises mains.
 
 5
-00:00:11,920 --> 00:00:13,840
-presque à voix basse.
+00:00:14,120 --> 00:00:19,000
+Je les protégeais comme je pouvais, en silence.
 
 6
-00:00:13,840 --> 00:00:15,280
-Des messages codés,
+00:00:19,000 --> 00:00:21,760
+Je ne me souviens pas de leurs noms,
 
 7
-00:00:15,280 --> 00:00:18,280
-parfois en morse, parfois à demi mots.
+00:00:21,760 --> 00:00:23,560
+mais de leur courage, oui
 
 8
-00:00:18,920 --> 00:00:20,200
-Ils tendaient l'oreille.
+00:00:23,560 --> 00:00:26,840
+De leur calme. De leur tension.
 
 9
-00:00:20,200 --> 00:00:22,640
-Souvent, notaient des choses.
+00:00:26,840 --> 00:00:28,880
+De ces nuits passées à murmurer,
 
 10
-00:00:22,640 --> 00:00:25,040
-C'était leur lien avec le dehors,
+00:00:28,880 --> 00:00:31,560
+à tracer des lignes sur cette carte,
 
 11
-00:00:25,040 --> 00:00:28,120
-leur seul fil tendu au milieu du silence.
+00:00:31,560 --> 00:00:35,480
+à espérer que le jour suivant soit encore possible.
 
 12
-00:00:29,120 --> 00:00:32,120
-Et puis, il y avait autre chose...
+00:00:36,520 --> 00:00:39,520
+Mais un jour, ils se sont fait attaquer.
 
 13
-00:00:32,720 --> 00:00:35,720
-Quelque part, où il cachait des choses.
+00:00:40,120 --> 00:00:41,720
+Tous autour de la table,
 
 14
-00:00:37,040 --> 00:00:39,880
-Mais, je n'arrive pas à savoir où.
+00:00:41,720 --> 00:00:43,520
+penchés sur leurs plans.
+
+15
+00:00:43,520 --> 00:00:46,520
+Ils parlaient bas, griffonnaient, relisaient.
+
+16
+00:00:46,880 --> 00:00:51,640
+Et puis, un bruit sourd a résonné.
+
+17
+00:00:52,240 --> 00:00:56,280
+Mes murs ont tremblé. Je me suis figé.
+
+18
+00:00:58,280 --> 00:00:59,800
+Le sol a grondé.
+
+19
+00:00:59,800 --> 00:01:02,000
+Mes pierres se sont fendues.
+
+20
+00:01:02,000 --> 00:01:04,160
+Et avec cette déflagration,
+
+21
+00:01:04,160 --> 00:01:06,680
+c'est toutes leurs histoires qui se sont écroulées.
