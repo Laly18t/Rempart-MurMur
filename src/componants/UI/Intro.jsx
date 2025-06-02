@@ -8,7 +8,7 @@ import IntroAnimation from "../animations/IntroAnimation"
 import useVoiceOverStore from "../../stores/useVoiceOverStore"
 import { useEffect, useRef } from "react"
 import usePlaySound from "../../hooks/usePlaySound"
-import videoSrc from '/ui/intro_v1.mp4'
+import videoSrc from '/animations/intro_v2.webm'
 
 export default function Intro({ debug = false, ...props }) {
     const step = useAppStore((state) => state.step)
@@ -30,7 +30,6 @@ export default function Intro({ debug = false, ...props }) {
         }
     )
 
-    const texture = useLoader(TextureLoader, './castle_clean.PNG')
     const playSound = usePlaySound(`/audio/sounds/parchemin_v1_1.wav`)
 
     // play de la musique de fond
@@ -41,8 +40,7 @@ export default function Intro({ debug = false, ...props }) {
         } else {
             playSound.stop()
         }
-    }
-        , [step])
+    }, [step])
 
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
@@ -58,24 +56,6 @@ export default function Intro({ debug = false, ...props }) {
                     <meshBasicMaterial map={videoTexture} />
                 </mesh>
             )}
-            {/* <mesh position={[0, 0.1, 0]}> 
-                <planeGeometry args={[6.3, 2.8]} />
-                <meshBasicMaterial map={texture} transparent={true} />
-            </mesh> */}
-            {/* {step === 2 && (
-            <Html position={[-2, 2, 0]} fullscreen>
-                <video ref={videoRef} autoPlay preload="auto" playsInline className="fullscreen-video" >
-                    <source
-                        src={videoSrc}
-                        type="video/mp4"
-                    />
-                    Votre navigateur ne supporte pas la balise vidéo.
-                </video>
-            </Html>
-            )} */}
-
-            {/* TODO: avoir la bonne animation */}
-            {/* {step > 1 && <IntroAnimation />} */}
 
             {!voiceOver.isPlaying && <ArrowButton position={[2.2, -1, 0]} onClick={handleClickButton} />}
         </group>
