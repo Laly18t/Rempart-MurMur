@@ -15,7 +15,7 @@ function VictorianScene({ ...props }, ref) {
     const { set, gl, camera } = useThree()
 
     const voiceOver = useVoiceOverStore()
-    const { isSceneFinished } = useVoiceOverStore()
+    const { isSceneFinished, isPlaying, index } = useVoiceOverStore()
     const { currentScene, isZoom, setIsZoom } = useSceneStore()
 
     const groupRef = ref ?? useRef()
@@ -29,6 +29,7 @@ function VictorianScene({ ...props }, ref) {
     const [showBookOutline, setShowBookOutline] = useState(true)
     const [showFlowerOutline, setShowFlowerOutline] = useState(true)
     const [showPeople, setShowPeople] = useState(true)
+    const [visible, setVisible] = useState(false)
 
     const backButton = useLoader(TextureLoader, "/ui/icons/fleche_gauche.svg")
     const peopleFrames = [
@@ -39,9 +40,6 @@ function VictorianScene({ ...props }, ref) {
     ]
     const {
         currentTexture: animatedPeopleTexture,
-        startAnimation,
-        stopAnimation,
-        isPlaying
     } = useFrameAnimation(peopleFrames, 0.5, true, true)
 
     const playBook = usePlaySound('/audio/sounds/book.mp3')
@@ -105,13 +103,13 @@ function VictorianScene({ ...props }, ref) {
         console.log('Objet cliqué:', clickedObject.name)
 
         // action 1 - ouvrir le livre
-        if (clickedObject.name === '1697_livre_ouvert') {
+        if (clickedObject.name === '1697_livre_ouvert' && !isPlaying) {
             // console.log('livre cliqué', clickedObject)
-            if (isZoom) {
-                console.log('déjà zoomé sur le livre')
+            if (isZoom && !isPlaying) {
                 handleZoom()
             } else {
                 setIsZoom(true)
+                setShowBookOutline(false)
                 cameraZoom(
                     camera,
                     cameraRefs.current.camera2,
@@ -139,48 +137,54 @@ function VictorianScene({ ...props }, ref) {
         }
 
         // action 2 - voir le bouquet
-        if (clickedObject.name === '1697_bouquet_mot') {
+        if (clickedObject.name === '1697_bouquet_mot' && !isPlaying) {
             setIsZoom(true)
             console.log('bouquet cliqué')
             setShowFlowerOutline(false)
 
-            cameraZoom(
-                camera,
-                cameraRefs.current.camera3,
-                () => {
-                    voiceOver.setIndex(2)
-                    playFlower.play() // bruitage bouquet
-                },
-                props.portalGroupRef.current
-            )
+            if (isZoom && !isPlaying) {
+                console.log('déjà zoomé sur le livre')
+                handleZoom()
+                voiceOver.setIndex(3)
+            } else {
+                cameraZoom(
+                    camera,
+                    cameraRefs.current.camera3,
+                    () => {
+                        voiceOver.setIndex(2)
+                        playFlower.play() // bruitage bouquet
+                    },
+                    props.portalGroupRef.current
+                )
+            }
         }
     }
 
     // Switch de murs
     useEffect(() => {
         if (salleRef.current && salleDRef.current) {
-            if (currentScene === "monde-moderne" && isSceneFinished) {
+            if (!isSceneFinished) {
+                setVisible(true)
+                salleRef.current.visible = true
+                salleDRef.current.visible = false
+            }
+
+            if (index === 3) {
                 console.log("switch", salleRef.current.visible)
-                setShowFlowerOutline(false)
-                setShowBookOutline(false)
                 setShowPeople(false)
+                setVisible(false)
                 salleRef.current.visible = false
                 salleDRef.current.visible = true
                 playFire.play() // bruitage incendie
             }
         }
-    }, [currentScene, isSceneFinished, showPeople])
-    useEffect(() => {
-        if (scene && salleRef.current && salleDRef.current) {
-            salleRef.current.visible = true
-            salleDRef.current.visible = false
-        }
-    }, [scene])
+    }, [currentScene, isSceneFinished, showPeople, index])
 
     const handleZoom = () => {
         cameraZoom(
             camera,
             cameraRefs.current.camera1,
+            () => { },
             props.portalGroupRef.current,
         )
         setIsZoom(false)
@@ -228,7 +232,7 @@ function VictorianScene({ ...props }, ref) {
             {/* <ambientLight intensity={2} />
             <spotLight position={[0, 5, 5]} intensity={0.8} /> */}
 
-            {currentScene === 'monde-moderne' &&
+            {currentScene === 'monde-moderne' && showPeople &&
                 <>
                     <InfoBulle position={[3.5, 3, -3.5]}
                         className='modernBulle'

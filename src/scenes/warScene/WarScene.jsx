@@ -19,8 +19,8 @@ function WarScene({ ...props }, ref) {
     const { set, gl, camera } = useThree()
 
     const voiceOver = useVoiceOverStore()
-    const { isSceneFinished } = useVoiceOverStore()
-    const { currentScene } = useSceneStore()
+    const { isSceneFinished, isPlaying, index } = useVoiceOverStore()
+    const { currentScene, isZoom, setIsZoom } = useSceneStore()
 
     const mixers = useRef([])
     const cameraRefs = useRef({}) // Pour stocker toutes les caméras
@@ -30,6 +30,8 @@ function WarScene({ ...props }, ref) {
     const trappeRef = useRef()
     const [showRadioOutline, setShowRadioOutline] = useState(false)
     const [showTrappeOutline, setShowTrappeOutline] = useState(false)
+    const [showPeople, setShowPeople] = useState(true)
+    
 
     const playRadio = usePlaySound('/audio/sounds/radio.mp3')
     const playTrappe = usePlaySound('/audio/sounds/trappe_on.mp3')
@@ -41,11 +43,8 @@ function WarScene({ ...props }, ref) {
         '/animations/war/1942_3.png',
         '/animations/war/1942_2.png',
     ]
-    const { 
+    const {
         currentTexture: animatedPeopleTexture,
-        startAnimation,
-        stopAnimation,
-        isPlaying 
     } = useFrameAnimation(peopleFrames, 0.5, true, true)
 
 
@@ -85,49 +84,58 @@ function WarScene({ ...props }, ref) {
         console.log('Objet cliqué:', clickedObject.name)
 
         // action 1 - allumer la radio
-        if (clickedObject.name === 'radio') {
+        if (clickedObject.name === 'radio' && !isPlaying) {
             console.log('Radio cliqué')
             setShowRadioOutline(false)
 
-            cameraZoom(
-                camera,
-                cameraRefs.current.camera2,
-                () => {
-                    voiceOver.setIndex(1)
-                    playRadio.play() // bruitage radio
-                },
-                props.portalGroupRef.current
-            )
+            if (isZoom && !isPlaying) {
+                handleZoom() // on retourne sur la caméra par défaut
+            } else {
+                cameraZoom(
+                    camera,
+                    cameraRefs.current.camera2,
+                    () => {
+                        voiceOver.setIndex(1)
+                        playRadio.play() // bruitage radio
+                    },
+                    props.portalGroupRef.current
+                )
+            }
         }
 
         // action 2 - ouvrir la trappe
-        if (clickedObject.name === 'couvercle' || clickedObject.name === 'tapis') {
+        if (clickedObject.name === 'couvercle' && !isPlaying || clickedObject.name === 'tapis' && !isPlaying) {
             console.log('Trappe cliqué')
             setShowTrappeOutline(false)
 
-            cameraZoom(
-                camera,
-                cameraRefs.current.camera3,
-                () => {
-                    voiceOver.setIndex(é)
+            if (isZoom && !isPlaying) {
+                handleZoom() // on retourne sur la caméra par défaut
+                voiceOver.setIndex(3)
+            } else {
+                cameraZoom(
+                    camera,
+                    cameraRefs.current.camera3,
+                    () => {
+                        voiceOver.setIndex(2)
 
-                    const clip = animations.find(a => a.name === 'animation_0')
-                    const mixer = new AnimationMixer(scene)
-                    const action = mixer.clipAction(clip)
+                        const clip = animations.find(a => a.name === 'animation_0')
+                        const mixer = new AnimationMixer(scene)
+                        const action = mixer.clipAction(clip)
 
-                    if (clip) {
-                        action.setLoop(LoopOnce, 1)
-                        action.clampWhenFinished = true
-                        action.reset().play()
+                        if (clip) {
+                            action.setLoop(LoopOnce, 1)
+                            action.clampWhenFinished = true
+                            action.reset().play()
 
-                        playTrappe.play() // bruitage trappe
+                            playTrappe.play() // bruitage trappe
 
-                        // Ajouter le mixer pour mise à jour via useFrame
-                        mixers.current.push({ mixer, action })
-                    }
-                },
-                props.portalGroupRef.current
-            )
+                            // Ajouter le mixer pour mise à jour via useFrame
+                            mixers.current.push({ mixer, action })
+                        }
+                    },
+                    props.portalGroupRef.current
+                )
+            }
         }
     }
 
@@ -145,25 +153,36 @@ function WarScene({ ...props }, ref) {
                 salleDRef.current.visible = false
             }
 
-            if (currentScene === 'monde-guerre' && isSceneFinished) {
+            if (index === 3) {
                 console.log('switch', salleRef.current.visible)
+                setShowPeople(false)
                 salleRef.current.visible = false
                 salleDRef.current.visible = true
                 playFire.play() // bruitage explosion
             }
         }
-    }, [currentScene, isSceneFinished])
+    }, [currentScene, isSceneFinished, index])
+
+    const handleZoom = () => {
+        cameraZoom(
+            camera,
+            cameraRefs.current.camera1,
+            () => { },
+            props.portalGroupRef.current,
+        )
+        setIsZoom(false)
+    }
 
     return (
         <group position={[0, -2, -3]} rotation-y={-3.14} ref={groupRef} {...props} dispose={null} onClick={handleClick}>
 
             {/* Outline pour la radio */}
             {radioRef.current && (<>
-                <primitive castShadow receiveShadow  object={radioRef.current}>
+                <primitive position={[-2, 1.3, 4]} object={radioRef.current}>
                     <Outlines
                         visible={showRadioOutline}
                         color="white"
-                        thickness={8}
+                        thickness={4}
                         opacity={1}
                         transparent={false}
                         angle={Math.PI}
@@ -172,11 +191,11 @@ function WarScene({ ...props }, ref) {
             </>)}
             {/* Outline pour la trappe */}
             {trappeRef.current && (<>
-                <primitive castShadow receiveShadow object={trappeRef.current}>
+                <primitive position={[-2.7, 0.3, 0.55]} object={trappeRef.current}>
                     <Outlines
                         visible={showTrappeOutline}
                         color="white"
-                        thickness={8}
+                        thickness={5}
                         opacity={1}
                         transparent={false}
                         angle={Math.PI}
@@ -184,7 +203,7 @@ function WarScene({ ...props }, ref) {
                 </primitive>
             </>)}
 
-            <mesh position={[2, 1.55, 1.7]} rotation-y={-3}> {/* TODO: temporaire */}
+            <mesh visible={showPeople} position={[1, 1.75, 2.9]} rotation-y={-3}> {/* TODO: temporaire */}
                 <boxGeometry args={[1.8, 2.8, 0.00001]} />
                 <meshBasicMaterial map={animatedPeopleTexture} transparent={true} />
                 {/* <meshBasicMaterial color='red' /> */}
@@ -194,7 +213,7 @@ function WarScene({ ...props }, ref) {
             <ambientLight intensity={1.2} />
             <spotLight position={[0, 5, 5]} intensity={0.8} />
 
-            {currentScene === 'monde-guerre' &&
+            {currentScene === 'monde-guerre' && showPeople &&
                 <>
                     <InfoBulle position={[3.5, 2, 1.6]}
                         className='warBulle'

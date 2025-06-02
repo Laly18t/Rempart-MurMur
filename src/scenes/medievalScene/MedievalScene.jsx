@@ -50,6 +50,7 @@ function MedievalScene({ ...props }, ref) {
   const {
     currentTexture: animatedPeopleTexture,
   } = useFrameAnimation(peopleFrames, 0.5, true, true)
+  let firstClick = 0
 
   // Fonction pour forcer la mise à jour des InfoBulles
   const forceInfoBulleUpdate = () => {
@@ -115,29 +116,38 @@ function MedievalScene({ ...props }, ref) {
     setVisible(false)
 
     // action 1 - allumer la lumiere
-    if (clickedObject.name === "EXPORT_LUSTRE") {
+    if (clickedObject.name === "EXPORT_LUSTRE" && !isPlaying) {
       console.log("Lustre cliqué")
       setShowLustreOutline(false)
       setVisible(true)
       setIsZoom(true)
 
-      cameraZoom(
-        camera,
-        cameraRefs.current.camera2,
-        () => {
-          playCandles.play() // bruitage bougie
-          setSwitchBaking((prev) => !prev)
-          voiceOver.setIndex(1)
-          // Force update final après l'animation
-          setTimeout(forceInfoBulleUpdate, 100)
-        },
-        props.portalGroupRef.current,
-        forceInfoBulleUpdate
-      )
+      if (isZoom && !isPlaying) {
+        handleZoom()
+      } else {
+        cameraZoom(
+          camera,
+          cameraRefs.current.camera2,
+          () => {
+            if (firstClick !== 0) {
+              console.log("Lustre déjà allumé")
+            } else {
+              firstClick += 1
+              playCandles.play() // bruitage bougie
+              setSwitchBaking((prev) => !prev)
+              voiceOver.setIndex(1)
+            }
+            // Force update final après l'animation
+            setTimeout(forceInfoBulleUpdate, 100)
+          },
+          props.portalGroupRef.current,
+          forceInfoBulleUpdate
+        )
+      }
     }
 
     // action 2 - trouver le poison
-    if (clickedObject.name === "EXPORT_FIOLE") {
+    if (clickedObject.name === "EXPORT_FIOLE" && !isPlaying) {
       console.log("Fiole cliquée")
       if (isZoom && !isPlaying) {
         console.log('déjà zoomé sur le livre')
