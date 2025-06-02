@@ -47,7 +47,7 @@ export default function UIlayer() {
 
     // Affichage de la video medieval
     useEffect(() => {
-        if (currentScene === 'monde-medieval' || currentScene === 'monde-moderne' || currentScene === 'monde-guerre') {
+        if (currentScene === 'monde-medieval') {
             console.log('currentScene', currentScene, index)
             if (index === 2 && !isPlaying && !videoPlayedRef.current && videoSrc) {
                 setTimeout(() => {
@@ -55,7 +55,17 @@ export default function UIlayer() {
                     console.log('play video', videoSrc)
                     setShowEndVideo(true)
                     videoRef.current?.play().catch(console.error)
-                }, 4000)
+                }, 6000) // TODO: adapater le delai
+            }
+        } else if (currentScene === 'monde-moderne' || currentScene === 'monde-guerre') {
+            console.log('currentScene', currentScene, index)
+            if (index === 2 && !isPlaying && !videoPlayedRef.current && videoSrc) {
+                setTimeout(() => {
+                    videoPlayedRef.current = true
+                    console.log('play video', videoSrc)
+                    setShowEndVideo(true)
+                    videoRef.current?.play().catch(console.error)
+                }, 4000) // TODO: adapater le delai
             }
         }
     }, [currentScene, isSceneFinished, isPlaying, videoSrc, index])
