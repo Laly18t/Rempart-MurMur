@@ -2,14 +2,14 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { isMobile } from "react-device-detect"
 
 import Loader from './Loader'
+import Subtitle from './Subtitle'
 import SoundButton from "./SoundButton"
 import SubtitleButton from "./SubtitleButton"
+
 import useAppStore from '../../stores/useAppStore'
 import useSceneStore from '../../stores/useSceneStore'
-import useVoiceOverStore from '../../stores/useVoiceOverStore'
 import useMobileStore from '../../stores/useMobileStore'
-// import videoSrcWar from '/ui/video.mp4'
-import Subtitle from './Subtitle'
+import useVoiceOverStore from '../../stores/useVoiceOverStore'
 
 export default function UIlayer() {
     const [fadeOut, setFadeOut] = useState(false)
