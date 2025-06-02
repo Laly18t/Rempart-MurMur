@@ -1,12 +1,11 @@
 import { Html, Text, useVideoTexture } from "@react-three/drei"
 import { useLoader, useThree } from "@react-three/fiber"
+import { useEffect, useRef } from "react"
 import { TextureLoader } from "three"
 
 import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
-import IntroAnimation from "../animations/IntroAnimation"
 import useVoiceOverStore from "../../stores/useVoiceOverStore"
-import { useEffect, useRef } from "react"
 import usePlaySound from "../../hooks/usePlaySound"
 import videoSrc from '/animations/intro_v2.webm'
 

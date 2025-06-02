@@ -7,7 +7,7 @@ import useAppStore from "../../stores/useAppStore"
 export default function CTA_end({debug = false, ...props}) {
     const step = useAppStore((state) => state.step)
     const setStep = useAppStore((state) => state.setStep)
-    const texture = useLoader(TextureLoader, './intro_castle.png')
+    const texture = useLoader(TextureLoader, './castle_clean.PNG')
     const handleReturnButton = () => {
         setStep(step - 1)
     }

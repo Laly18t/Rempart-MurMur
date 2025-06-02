@@ -1,5 +1,4 @@
 import { Text } from "@react-three/drei"
-import ConclusionAnimation from "../animations/ConclusionAnimation"
 import useAppStore from "../../stores/useAppStore"
 import { useLoader } from "@react-three/fiber"
 import { TextureLoader } from "three"
@@ -93,7 +92,6 @@ export default function Conclusion({ debug = false, ...props }) {
                 </mesh>
             )}
 
-            {/* {step > 1 && <ConclusionAnimation />} */}
             {/* Navigation */}
             <ArrowButton position={[-2, -1.15, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
         </group>
