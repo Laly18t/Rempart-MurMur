@@ -317,12 +317,6 @@ function MedievalScene({ ...props }, ref) {
       {/* Salle sans lumiere */}
       {useSwitchBaking && <primitive object={sceneOff} />}
 
-      {isZoom && (<>
-        <mesh position={[1.2, 3.2, 1]} onClick={handleZoom}>
-          <boxGeometry args={[0.3, 0.3, 0.00001]} />
-          <meshBasicMaterial transparent map={backButton} />
-        </mesh>
-      </>)}
     </group>
   </>);
 }
