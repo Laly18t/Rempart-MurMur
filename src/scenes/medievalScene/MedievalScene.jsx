@@ -136,6 +136,7 @@ function MedievalScene({ ...props }, ref) {
               playCandles.play() // bruitage bougie
               setSwitchBaking((prev) => !prev)
               voiceOver.setIndex(1)
+              setTimeout(handleZoom(), 2000)
             }
             // Force update final après l'animation
             setTimeout(forceInfoBulleUpdate, 100)
@@ -151,9 +152,6 @@ function MedievalScene({ ...props }, ref) {
       console.log("Fiole cliquée")
       if (isZoom && !isPlaying) {
         console.log('déjà zoomé sur le livre')
-        handleZoom()
-        voiceOver.setIndex(3)
-
       } else {
         setShowFioleOutline(false)
         setVisible(false)
@@ -174,14 +172,24 @@ function MedievalScene({ ...props }, ref) {
               action.setLoop(LoopOnce, 1)
               action.clampWhenFinished = true
               action.reset().play()
-
               playPoison.play() // bruitage fiole
+
+              const onFinished = () => {
+                console.log('Animation terminée')
+                handleZoom()
+              }
 
               // Ajouter le mixer pour mise à jour via useFrame
               mixers.current.push({ mixer, action })
 
               // Force update final après l'animation
               setTimeout(forceInfoBulleUpdate, 100)
+
+              mixer.addEventListener('finished', onFinished)
+
+              return () => {
+                mixer.removeEventListener('finished', onFinished)
+              }
             }
           },
           props.portalGroupRef.current,
@@ -194,23 +202,21 @@ function MedievalScene({ ...props }, ref) {
   // Switch de murs
   useEffect(() => {
     if (salleRef.current && salleDRef.current) {
-      if (index === 3) {
-        playFire.play() // bruitage explosiont
-        console.log("switch", salleRef.current.visible)
-        salleRef.current.visible = false
-        salleDRef.current.visible = true
-        setVisible(false)
-      }
-    }
-  }, [currentScene, isSceneFinished, index])
-  useEffect(() => {
-    if (salleRef.current && salleDRef.current) {
       if (!isSceneFinished) {
         salleRef.current.visible = true
         salleDRef.current.visible = false
       }
+      if (index === 2) {
+        setTimeout(() => {
+          playFire.play() // bruitage explosiont
+          console.log("switch", salleRef.current.visible)
+          salleRef.current.visible = false
+          salleDRef.current.visible = true
+          setVisible(false)
+        }, 3000)
+      }
     }
-  }, [useSwitchBaking, isSceneFinished])
+  }, [currentScene, isSceneFinished, index, useSwitchBaking])
   useEffect(() => {
     if (sceneOn) {
       salleRef.current = sceneOn.getObjectByName("EXPORT_SALLE")
