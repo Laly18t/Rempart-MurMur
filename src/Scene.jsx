@@ -94,9 +94,9 @@ export default function Scene() {
                 >
                         <MedievalScene />
                 </Portal>
-                {/* {outScene &&  */}
+                {outScene && 
                     <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
-                {/* } */}
+                }
                 {/* <ArrowButton cote={true} position={[-2.5, 0.2, 0]} onClick={handleReturnButton} /> */}
             </group>
 
@@ -114,9 +114,9 @@ export default function Scene() {
                 >
                         <VictorianScene />
                 </Portal>
-                {/* {outScene &&  */}
+                {outScene && 
                     <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
-                {/* } */}
+                }
                 {/* <ArrowButton cote={true} position={[-2.4, 0, 0]} onClick={handleReturnButton} />s */}
             </group>
 
