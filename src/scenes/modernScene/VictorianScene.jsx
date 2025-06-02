@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useMemo, forwardRef, useState } from 'react'
-import { useGLTF, PerspectiveCamera, Outlines } from '@react-three/drei'
-import { AnimationMixer, LoopOnce, MeshBasicMaterial, MeshNormalMaterial, TextureLoader } from 'three'
+import React, { useRef, useEffect, forwardRef, useState } from 'react'
+import { useGLTF, Outlines } from '@react-three/drei'
+import { AnimationMixer, LoopOnce, MeshBasicMaterial, TextureLoader } from 'three'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 
 import useSceneStore from '../../stores/useSceneStore'
@@ -12,7 +12,7 @@ import useFrameAnimation from '../../hooks/useFrameAnimation'
 
 function VictorianScene({ ...props }, ref) {
     const { animations, scene } = useGLTF('/models/scene_1697_v4.glb') // load model
-    const { set, gl, camera } = useThree()
+    const { camera } = useThree()
 
     const voiceOver = useVoiceOverStore()
     const { isSceneFinished, isPlaying, index } = useVoiceOverStore()
@@ -27,11 +27,10 @@ function VictorianScene({ ...props }, ref) {
     const flowerRef = useRef()
 
     const [showBookOutline, setShowBookOutline] = useState(true)
-    const [showFlowerOutline, setShowFlowerOutline] = useState(true)
+    const [showFlowerOutline, setShowFlowerOutline] = useState(false)
     const [showPeople, setShowPeople] = useState(true)
     const [visible, setVisible] = useState(false)
 
-    const backButton = useLoader(TextureLoader, "/ui/icons/fleche_gauche.svg")
     const peopleFrames = [
         '/animations/modern/1697_1.png',
         '/animations/modern/1697_2.png',
@@ -69,14 +68,15 @@ function VictorianScene({ ...props }, ref) {
 
                 if (child.name === "1697_bouquet_mot") {
                     flowerRef.current = child
-                    setShowFlowerOutline(true)
                 }
             }
             if (child.name === "bake") {
                 salleRef.current = child
+                salleRef.current.visible = true
             }
             if (child.name === "bake_noir") {
                 salleDRef.current = child
+                salleDRef.current.visible = false
             }
 
             if (child.name === 'cam_ensemble') { //Camera_face
@@ -100,16 +100,15 @@ function VictorianScene({ ...props }, ref) {
 
     const handleClick = (e) => {
         const clickedObject = e.object
-        console.log('Objet cliqué:', clickedObject.name)
 
         // action 1 - ouvrir le livre
         if (clickedObject.name === '1697_livre_ouvert' && !isPlaying) {
-            // console.log('livre cliqué', clickedObject)
             if (isZoom && !isPlaying) {
                 handleZoom()
             } else {
                 setIsZoom(true)
                 setShowBookOutline(false)
+                setShowFlowerOutline(true)
                 cameraZoom(
                     camera,
                     cameraRefs.current.camera2,
@@ -128,8 +127,7 @@ function VictorianScene({ ...props }, ref) {
                             playBook.play() // bruitage livre
 
                             const onFinished = () => {
-                                console.log('Animation terminée')
-                                handleZoom()
+                                setTimeout(() => {handleZoom()}, 7000)
                             }
 
                             // Ajouter le mixer pour mise à jour via useFrame
@@ -163,7 +161,7 @@ function VictorianScene({ ...props }, ref) {
                     () => {
                         voiceOver.setIndex(2)
                         playFlower.play() // bruitage bouquet
-                        setTimeout(() => {handleZoom()}, 3000)
+                        setTimeout(() => {handleZoom()}, 6000)
                     },
                     props.portalGroupRef.current
                 )
@@ -174,15 +172,10 @@ function VictorianScene({ ...props }, ref) {
     // Switch de murs
     useEffect(() => {
         if (salleRef.current && salleDRef.current) {
-            if (!isSceneFinished) {
-                setVisible(true)
-                salleRef.current.visible = true
-                salleDRef.current.visible = false
-            }
+            setTimeout(() => { setVisible(true) }, 2000)
 
             if (index === 2) {
                 setTimeout(() => {
-                    console.log("switch", salleRef.current.visible)
                     setShowPeople(false)
                     setVisible(false)
                     salleRef.current.visible = false
@@ -237,15 +230,11 @@ function VictorianScene({ ...props }, ref) {
             <mesh visible={showPeople} position={[-2.7, 1.1, -1.9]} rotation-y={-3}> {/* TODO: temporaire */}
                 <boxGeometry args={[1.4, 1.8, 0.00001]} />
                 <meshBasicMaterial map={animatedPeopleTexture} transparent={true} />
-                {/* <meshBasicMaterial color='red' /> */}
             </mesh>
 
             <primitive castShadow receiveShadow object={scene} renderOrder={1} />
 
-            {/* <ambientLight intensity={2} />
-            <spotLight position={[0, 5, 5]} intensity={0.8} /> */}
-
-            {currentScene === 'monde-moderne' && showPeople &&
+            {currentScene === 'monde-moderne' && visible &&
                 <>
                     <InfoBulle position={[3.5, 3, -3.5]}
                         className='modernBulle'
@@ -260,16 +249,6 @@ function VictorianScene({ ...props }, ref) {
                 </>
             }
 
-            {isZoom && (<>
-                <mesh position={[1.2, 3.2, 1]} onClick={handleZoom}>
-                    <boxGeometry args={[0.3, 0.3, 0.00001]} />
-                    <meshBasicMaterial transparent map={backButton} />
-                </mesh>
-                <mesh position={[0.3, 1.25, -3]} rotation-y={Math.PI} rotation-x={Math.PI / 2} onClick={handleZoom}>
-                    <boxGeometry args={[0.1, 0.1, 0.00001]} />
-                    <meshBasicMaterial transparent color='red' />
-                </mesh>
-            </>)}
         </group>
     </>
 }

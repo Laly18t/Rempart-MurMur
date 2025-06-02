@@ -201,18 +201,14 @@ function MedievalScene({ ...props }, ref) {
   // Switch de murs
   useEffect(() => {
     if (salleRef.current && salleDRef.current) {
-      if (!isSceneFinished) {
-        salleRef.current.visible = true
-        salleDRef.current.visible = false
-      }
       if (index === 2) {
         setTimeout(() => {
           playFire.play() // bruitage explosiont
           console.log("switch", salleRef.current.visible)
-          salleRef.current.visible = false
-          salleDRef.current.visible = true
+          salleRef.current.visible = false // Salle normale invisible
+          salleDRef.current.visible = true // Salle détruite visible
           setVisible(false)
-        }, 4000)
+        }, 6000)
       }
     }
   }, [currentScene, isSceneFinished, index, useSwitchBaking])
@@ -220,6 +216,11 @@ function MedievalScene({ ...props }, ref) {
     if (sceneOn) {
       salleRef.current = sceneOn.getObjectByName("EXPORT_SALLE")
       salleDRef.current = sceneOn.getObjectByName("EXPORT_SALLE_D")
+      // On cache la salle détruite
+      if (salleRef.current && salleDRef.current) {
+        salleRef.current.visible = true // Salle normale visible
+        salleDRef.current.visible = false // Salle détruite invisible
+      }
     }
   }, [sceneOn])
 
