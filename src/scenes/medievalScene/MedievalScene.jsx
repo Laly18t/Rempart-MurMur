@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
-import { AnimationMixer } from "three";
-import { useFrame, useThree } from "@react-three/fiber";
+import { AnimationMixer, MeshBasicMaterial, TextureLoader } from "three";
+import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { useGLTF, Outlines } from "@react-three/drei";
 import { LoopOnce } from "three";
 
@@ -27,11 +27,12 @@ function MedievalScene({ ...props }, ref) {
   const fioleRef = useRef()
 
   const voiceOver = useVoiceOverStore()
-  const { isSceneFinished } = useVoiceOverStore()
-  const { currentScene } = useSceneStore()
+  const { isSceneFinished, index, isPlaying } = useVoiceOverStore()
+  const { currentScene, isZoom, setIsZoom } = useSceneStore()
+
 
   const [visible, setVisible] = useState(false)
-  const [forceUpdate, setForceUpdate] = useState(0) 
+  const [forceUpdate, setForceUpdate] = useState(0)
   const [showLustreOutline, setShowLustreOutline] = useState(false)
   const [showFioleOutline, setShowFioleOutline] = useState(false)
 
@@ -39,37 +40,51 @@ function MedievalScene({ ...props }, ref) {
   const playPoison = usePlaySound("/audio/sounds/fiole.mp3")
   const playFire = usePlaySound("/audio/sounds/explosion_1317_v2.mp3")
 
-      const peopleFrames = [
-        '/animations/medieval/1317_1.png',
-        '/animations/medieval/1317_2.png',
-        '/animations/medieval/1317_3.png',
-        '/animations/medieval/1317_2.png',
-    ]
-    const { 
-        currentTexture: animatedPeopleTexture,
-        startAnimation,
-        stopAnimation,
-        isPlaying 
-    } = useFrameAnimation(peopleFrames, 0.5, true, true)
+  const backButton = useLoader(TextureLoader, "/ui/icons/fleche_gauche.svg")
+  const peopleFrames = [
+    '/animations/medieval/1317_1.png',
+    '/animations/medieval/1317_2.png',
+    '/animations/medieval/1317_3.png',
+    '/animations/medieval/1317_2.png',
+  ]
+  const {
+    currentTexture: animatedPeopleTexture,
+  } = useFrameAnimation(peopleFrames, 0.5, true, true)
 
-    // Fonction pour forcer la mise à jour des InfoBulles
-    const forceInfoBulleUpdate = () => {
-        setForceUpdate(prev => prev + 1)
-        invalidate() // Forcer le re-render de Three.js
-    }
+  // Fonction pour forcer la mise à jour des InfoBulles
+  const forceInfoBulleUpdate = () => {
+    setForceUpdate(prev => prev + 1)
+    invalidate() // Forcer le re-render de Three.js
+  }
 
   // gestion des cameras
   useEffect(() => {
     const currentScene = useSwitchBaking ? sceneOff : sceneOn
 
     currentScene.traverse((child) => {
-      if (child.isMesh && child.name === "EXPORT_LUSTRE") {
-        lustreRef.current = child
-        setShowLustreOutline(true)
-      }
-      if (child.isMesh && child.name === "EXPORT_FIOLE" && useSwitchBaking) {
-        fioleRef.current = child
-        setShowFioleOutline(true)
+      if (child.isMesh) {
+        const oldMaterial = child.material
+
+        // On récupère la texture map de l'ancien matériau
+        const bakedTexture = oldMaterial.map
+
+        child.material = new MeshBasicMaterial({
+          map: bakedTexture,
+          transparent: oldMaterial.transparent,
+          opacity: oldMaterial.opacity,
+        })
+
+        child.castShadow = false
+        child.receiveShadow = false
+
+        if (child.name === "EXPORT_LUSTRE") {
+          lustreRef.current = child
+          setShowLustreOutline(true)
+        }
+        if (child.name === "EXPORT_FIOLE" && useSwitchBaking) {
+          fioleRef.current = child
+          setShowFioleOutline(true)
+        }
       }
 
       if (child.name.endsWith("_1")) {
@@ -92,7 +107,7 @@ function MedievalScene({ ...props }, ref) {
   // mixer pour animation
   useFrame((state, delta) => {
     mixers.current.forEach(({ mixer }) => mixer.update(delta))
-  });
+  })
 
   const handleClick = (e) => {
     const clickedObject = e.object
@@ -103,6 +118,9 @@ function MedievalScene({ ...props }, ref) {
     if (clickedObject.name === "EXPORT_LUSTRE") {
       console.log("Lustre cliqué")
       setShowLustreOutline(false)
+      setVisible(true)
+      setIsZoom(true)
+
       cameraZoom(
         camera,
         cameraRefs.current.camera2,
@@ -110,8 +128,8 @@ function MedievalScene({ ...props }, ref) {
           playCandles.play() // bruitage bougie
           setSwitchBaking((prev) => !prev)
           voiceOver.setIndex(1)
-            // Force update final après l'animation
-            setTimeout(forceInfoBulleUpdate, 100)
+          // Force update final après l'animation
+          setTimeout(forceInfoBulleUpdate, 100)
         },
         props.portalGroupRef.current,
         forceInfoBulleUpdate
@@ -121,50 +139,60 @@ function MedievalScene({ ...props }, ref) {
     // action 2 - trouver le poison
     if (clickedObject.name === "EXPORT_FIOLE") {
       console.log("Fiole cliquée")
-      setShowFioleOutline(false)
+      if (isZoom && !isPlaying) {
+        console.log('déjà zoomé sur le livre')
+        handleZoom()
+        voiceOver.setIndex(3)
 
-      cameraZoom(
-        camera,
-        cameraRefs.current.camera3,
-        () => {
+      } else {
+        setShowFioleOutline(false)
+        setVisible(false)
+        setIsZoom(true)
+        voiceOver.setIndex(2)
 
-          const clip = animations.find((a) => a.name === "animation_0")
-          const target = sceneOn.getObjectByName("EXPORT_FIOLE")
+        cameraZoom(
+          camera,
+          cameraRefs.current.camera3,
+          () => {
 
-          if (clip && target) {
-            const mixer = new AnimationMixer(target)
-            const action = mixer.clipAction(clip)
-            action.setLoop(LoopOnce, 1)
-            action.clampWhenFinished = true
-            action.reset().play()
-            voiceOver.setIndex(2)
+            const clip = animations.find((a) => a.name === "animation_0")
+            const target = sceneOn.getObjectByName("EXPORT_FIOLE")
 
-            playPoison.play() // bruitage fiole
+            if (clip && target) {
+              const mixer = new AnimationMixer(target)
+              const action = mixer.clipAction(clip)
+              action.setLoop(LoopOnce, 1)
+              action.clampWhenFinished = true
+              action.reset().play()
 
-            // Ajouter le mixer pour mise à jour via useFrame
-            mixers.current.push({ mixer, action })
+              playPoison.play() // bruitage fiole
 
-            // Force update final après l'animation
-            setTimeout(forceInfoBulleUpdate, 100)
-          }
-        },
-        props.portalGroupRef.current,
-        forceInfoBulleUpdate
-      )
+              // Ajouter le mixer pour mise à jour via useFrame
+              mixers.current.push({ mixer, action })
+
+              // Force update final après l'animation
+              setTimeout(forceInfoBulleUpdate, 100)
+            }
+          },
+          props.portalGroupRef.current,
+          forceInfoBulleUpdate
+        )
+      }
     }
   }
 
   // Switch de murs
   useEffect(() => {
     if (salleRef.current && salleDRef.current) {
-      if (currentScene === "monde-medieval" && isSceneFinished) {
+      if (index === 3) {
         playFire.play() // bruitage explosiont
         console.log("switch", salleRef.current.visible)
         salleRef.current.visible = false
         salleDRef.current.visible = true
+        setVisible(false)
       }
     }
-  }, [currentScene, isSceneFinished])
+  }, [currentScene, isSceneFinished, index])
   useEffect(() => {
     if (salleRef.current && salleDRef.current) {
       if (!isSceneFinished) {
@@ -191,46 +219,45 @@ function MedievalScene({ ...props }, ref) {
       props.portalGroupRef.current,
       forceInfoBulleUpdate
     )
-    setVisible(false)
+    setVisible(true)
+    setIsZoom(false)
   }
 
-  return (
-    <>
-      <ambientLight intensity={useSwitchBaking ? 1 : 1.8} />
+  return (<>
 
-      <group
-        position={[0, -2, -1]}
-        rotation-y={-3.1}
-        ref={groupRef}
-        {...props}
-        dispose={null}
-        onClick={handleClick}
-      >
-        {useSwitchBaking && (
+    <group
+      position={[0, -2, -1]}
+      rotation-y={-3.1}
+      ref={groupRef}
+      {...props}
+      dispose={null}
+      onClick={handleClick}
+    >
+      {useSwitchBaking && (
+        <>
+          {/* Outline pour le lustre */}
+          {lustreRef.current && (
             <>
-            {/* Outline pour le lustre */}
-            {lustreRef.current && (
-              <>
-                <primitive castShadow receiveShadow  object={lustreRef.current}>
-                  <Outlines
-                    visible={showLustreOutline}
-                    color="white"
-                    thickness={4}
-                    opacity={1}
-                    transparent={false}
-                    angle={Math.PI}
-                  />
-                </primitive>
-              </>
-            )}
+              <primitive castShadow receiveShadow object={lustreRef.current}>
+                <Outlines
+                  visible={showLustreOutline}
+                  color="white"
+                  thickness={4}
+                  opacity={1}
+                  transparent={false}
+                  angle={Math.PI}
+                />
+              </primitive>
             </>
-        )}
-        {!useSwitchBaking && (
-          <>
-            {/* Salle avec lumiere */}
-            <primitive object={sceneOn} />
+          )}
+        </>
+      )}
+      {!useSwitchBaking && (
+        <>
+          {/* Salle avec lumiere */}
+          <primitive object={sceneOn} />
 
-            <>
+          <>
             {/* Outline pour le poison */}
             {fioleRef.current && (
               <>
@@ -245,47 +272,43 @@ function MedievalScene({ ...props }, ref) {
                 </primitive>
               </>
             )}
-            </>
-
-            
-
-            <mesh position={[0.2, 1.2, 0.2]} rotation-y={-3.14}>
-              <boxGeometry args={[1.5, 2.2, 0.00001]} />
-              <meshBasicMaterial map={animatedPeopleTexture} transparent={true} />
-            </mesh>
-
-            {currentScene === "monde-medieval" && visible && (
-              <>
-                <InfoBulle
-                  position={[6.3, 3, 1.6]}
-                  className="medievalBulle"
-                  title="Les murs en disent long"
-                  content="À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir."
-                />
-                <InfoBulle
-                  position={[0.7, 1, 1.6]}
-                  className="medievalBulle"
-                  title="Ta chaise dit tout de toi"
-                  content="À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir."
-                />
-              </>
-            )}
           </>
-        )}
 
-        {/* Salle sans lumiere */}
-        {useSwitchBaking && <primitive object={sceneOff} />}
-
-        {visible && (
-          // <Html position={[2,0,2]}>Retour à la scène</Html>
-          <mesh position={[-2, 3, 2]} onClick={handleZoom}>
-            <boxGeometry />
-            <meshBasicMaterial color={"red"} />
+          <mesh position={[0.2, 1.2, 0.2]} rotation-y={-3.14}>
+            <boxGeometry args={[1.5, 2.2, 0.00001]} />
+            <meshBasicMaterial map={animatedPeopleTexture} transparent={true} />
           </mesh>
-        )}
-      </group>
-    </>
-  );
+
+          {currentScene === "monde-medieval" && visible && (
+            <>
+              <InfoBulle
+                position={[6.3, 3, 1.6]}
+                className="medievalBulle"
+                title="Les murs en disent long"
+                content="À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir."
+              />
+              <InfoBulle
+                position={[0.7, 1, 1.6]}
+                className="medievalBulle"
+                title="Ta chaise dit tout de toi"
+                content="À cette époque, les murs en pierre étaient recouverts de lourdes tentures pour bloquer le froid et couper les bruits. Mais attention, ce n’était pas juste pour l’isolation : chaque tapisserie était un symbole de richesse. Entre scènes religieuses, héraldiques ou épiques, elles montraient non seulement le bon goût du seigneur, mais aussi son pouvoir."
+              />
+            </>
+          )}
+        </>
+      )}
+
+      {/* Salle sans lumiere */}
+      {useSwitchBaking && <primitive object={sceneOff} />}
+
+      {isZoom && (<>
+        <mesh position={[1.2, 3.2, 1]} onClick={handleZoom}>
+          <boxGeometry args={[0.3, 0.3, 0.00001]} />
+          <meshBasicMaterial transparent map={backButton} />
+        </mesh>
+      </>)}
+    </group>
+  </>);
 }
 
 export default forwardRef(MedievalScene);

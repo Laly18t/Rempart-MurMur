@@ -8,6 +8,9 @@ const useSceneStore = create((set, get) => ({
     cameraScenes: [],
     outScene: null,
     audioIndex: 0,
+    isZoom: false,
+
+    setIsZoom: (value) => set(() => ({ isZoom: value })),
 
     setSceneInfo: (sceneName, { group, cameras }) =>
         set((state) => ({
