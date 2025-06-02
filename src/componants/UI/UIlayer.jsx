@@ -113,7 +113,7 @@ export default function UIlayer() {
                 </div>
             )}
 
-            {step === 2 && (
+            {step === 2 || isMobile &&   (
                 <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
                     <img src="./ui/ornement_gauche.svg" alt="Logo" className="ornement_L" style={{ position: 'absolute', top: '2%', left: '2%', width: '30%' }} />
                     <img src="./ui/ornement_droit.svg" alt="Logo" className="ornement_D" style={{ position: 'absolute', top: '2%', right: '2%', width: '30%' }} />
