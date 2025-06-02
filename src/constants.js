@@ -80,8 +80,8 @@ export const AUDIO_SEQUENCES = {
         2: null,
         // 3: '/audio/voice/intro.mp3',
         // 4: '/audio/voice/1317_1.mp3',
-        // 5: '/audio/voice/1697_2.mp3',
-        // 6: '/audio/voice/1942_1.mp3',
+        // 5: '/audio/voice/1697_2_1.mp3',
+        // 6: '/audio/voice/1942_1_2.mp3',
         3: null,
         4: null,
         5: null,
@@ -90,10 +90,6 @@ export const AUDIO_SEQUENCES = {
     },
     SCENE: {
         [EPOQUES.MEDIEVAL]: [
-            // '/audio/test-intro.mp3',
-            // '/audio/test-intro.mp3',
-            // '/audio/test-intro.mp3',
-            // '/audio/test-intro.mp3',
             '/audio/voice/1317_2.mp3',
             '/audio/voice/1317_3.mp3',
             '/audio/voice/1317_4.mp3',
@@ -101,18 +97,17 @@ export const AUDIO_SEQUENCES = {
         ],
         [EPOQUES.MODERN]: [
             // '/audio/test-intro.mp3',
+            '/audio/voice/1697_2_2.mp3',
             '/audio/voice/1697_3.mp3',
             '/audio/voice/1697_4.mp3',
-            '/audio/voice/1697_5.mp3',
-            '/audio/voice/1697_6.mp3',
+            '/audio/voice/1942_1_1.mp3',
         ],
         [EPOQUES.WAR]: [
-            // '/audio/test-intro.mp3',
-            '/audio/voice/1942_2.mp3',
+            '/audio/test-intro.mp3',
+            // '/audio/voice/1942_2.mp3',
             '/audio/voice/1942_3.mp3',
-            '/audio/voice/1942_4.mp3',
-            '/audio/voice/1942_5.mp3',
-            '/audio/voice/1942_6.mp3',
+            '/audio/voice/1942_4_1.mp3',
+            '/audio/voice/1942_4_2.mp3',
         ]
     },
     FX: {
