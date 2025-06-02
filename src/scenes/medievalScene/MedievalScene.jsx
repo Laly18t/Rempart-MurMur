@@ -227,10 +227,11 @@ function MedievalScene({ ...props }, ref) {
             {/* Outline pour le lustre */}
             {lustreRef.current && (
               <>
-                <primitive castShadow receiveShadow visible={showLustreOutline} object={lustreRef.current}>
+                <primitive castShadow receiveShadow  object={lustreRef.current}>
                   <Outlines
+                    visible={showLustreOutline}
                     color="white"
-                    thickness={8}
+                    thickness={4}
                     opacity={1}
                     transparent={false}
                     angle={Math.PI}
@@ -252,7 +253,7 @@ function MedievalScene({ ...props }, ref) {
                 <primitive castShadow receiveShadow visible={showFioleOutline} object={fioleRef.current}>
                   <Outlines
                     color="white"
-                    thickness={8}
+                    thickness={4}
                     opacity={1}
                     transparent={false}
                     angle={Math.PI}
