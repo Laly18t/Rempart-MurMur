@@ -28,7 +28,7 @@ export default function UIlayer() {
 
     // reset lecture de la vidéo
     useEffect(() => {
-        if (currentScene !== 'monde-medieval' || currentScene !== 'monde-guerre') {
+        if (currentScene !== 'monde-medieval' || currentScene !== 'monde-guerre' || currentScene !== 'monde-moderne') {
             videoPlayedRef.current = false
             setShowEndVideo(false) // reset video
             setVideoFading(false) // reset fade
@@ -38,7 +38,7 @@ export default function UIlayer() {
             console.log('show medieval video', videoSrc)
         } else if (currentScene === 'monde-moderne') {
             videoEpoque = 'modern'
-            console.log('show morden video', videoSrc)
+            console.log('show modern video', videoSrc)
         } else if (currentScene === 'monde-guerre') {
             videoEpoque = 'war'
             console.log('show war video', videoSrc)
