@@ -145,14 +145,14 @@ export default function UIlayer() {
                 </div>
             )}
 
-            {showEndVideo && (
+            {/* {showEndVideo && (
                 <div className={`video-container ${videoFading ? 'fade-out' : 'fade-in'}`}>
                     <video ref={handleVideoRef} width="100%" height="100%" controls={false} autoPlay playsInline>
                         <source src={videoSrc} type="video/mp4" />
                         Votre navigateur ne supporte pas la lecture vidéo.
                     </video>
                 </div>
-            )}
+            )} */}
         </div>
     )
 }
