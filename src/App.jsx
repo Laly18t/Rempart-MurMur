@@ -20,12 +20,6 @@ export default function App() {
           antialias: true,
           powerPreference: "high-performance"
         }}
-        onCreated={({ gl, scene, camera }) => {
-          // Limiter à 60 FPS
-          gl.setAnimationLoop((time) => {
-            // Logique de rendu personnalisée si nécessaire
-          })
-        }}
         flat
         camera={{ position: [0, 0, SETTINGS.DEFAULT_ZOOM], 
         fov: 50 }} dpr={[1, 1.5]}>
