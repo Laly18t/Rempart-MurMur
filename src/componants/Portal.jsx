@@ -20,7 +20,7 @@ export default function Portal({
     rotation = [0, 0, 0],
     width = SETTINGS.PORTAL_SIZE.WIDTH,
     height = SETTINGS.PORTAL_SIZE.HEIGHT,
-    bg = "#eab676",
+    bg = "#1179b0",
     textureDecoration,
     badgeDecoration,
     children,
