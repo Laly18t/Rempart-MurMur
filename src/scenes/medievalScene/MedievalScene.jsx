@@ -1,19 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef, forwardRef, use } from "react";
-import {
-  AnimationMixer,
-  EdgesGeometry,
-  LineBasicMaterial,
-  LineSegments,
-  MeshNormalMaterial,
-  TextureLoader,
-} from "three";
-import { Select } from "@react-three/postprocessing";
-import { useFrame, useLoader, useThree } from "@react-three/fiber";
-import { useGLTF, PerspectiveCamera, Html, Outlines } from "@react-three/drei";
-import { LoopOnce, Vector3, Quaternion, Euler } from "three";
+import { useState, useEffect, useRef, forwardRef } from "react";
+import { AnimationMixer } from "three";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useGLTF, Outlines } from "@react-three/drei";
+import { LoopOnce } from "three";
 
 // composants
-import Lustre from "./Lustre";
 import InfoBulle from "../../componants/InfoBulle";
 import useVoiceOverStore from "../../stores/useVoiceOverStore"; // store
 import useSceneStore from "../../stores/useSceneStore";
@@ -22,31 +13,31 @@ import { cameraZoom } from "../../utils/cameraUtils";
 import useFrameAnimation from "../../hooks/useFrameAnimation";
 
 function MedievalScene({ ...props }, ref) {
-  const { scene: sceneOn, animations } = useGLTF("/models/scene_1317_v7_a.glb");
-  const { scene: sceneOff } = useGLTF("/models/scene_1317_v6_e.glb");
-  const { set, gl, camera, invalidate } = useThree();
-  const [useSwitchBaking, setSwitchBaking] = useState(true);
+  const { scene: sceneOn, animations } = useGLTF("/models/scene_1317_v7_a.glb")
+  const { scene: sceneOff } = useGLTF("/models/scene_1317_v6_e.glb")
+  const { camera, invalidate } = useThree()
+  const [useSwitchBaking, setSwitchBaking] = useState(true)
 
-  const groupRef = ref ?? useRef();
-  const mixers = useRef([]);
-  const cameraRefs = useRef({});
-  const salleRef = useRef();
-  const salleDRef = useRef();
-  const lustreRef = useRef();
-  const fioleRef = useRef();
+  const groupRef = ref ?? useRef()
+  const mixers = useRef([])
+  const cameraRefs = useRef({})
+  const salleRef = useRef()
+  const salleDRef = useRef()
+  const lustreRef = useRef()
+  const fioleRef = useRef()
 
-  const voiceOver = useVoiceOverStore();
-  const { isSceneFinished } = useVoiceOverStore();
-  const { currentScene } = useSceneStore();
+  const voiceOver = useVoiceOverStore()
+  const { isSceneFinished } = useVoiceOverStore()
+  const { currentScene } = useSceneStore()
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
   const [forceUpdate, setForceUpdate] = useState(0) 
-  const [showLustreOutline, setShowLustreOutline] = useState(false);
-  const [showFioleOutline, setShowFioleOutline] = useState(false);
+  const [showLustreOutline, setShowLustreOutline] = useState(false)
+  const [showFioleOutline, setShowFioleOutline] = useState(false)
 
-  const playCandles = usePlaySound("/audio/sounds/bougie.wav");
-  const playPoison = usePlaySound("/audio/sounds/fiole.mp3");
-  const playFire = usePlaySound("/audio/sounds/explosion_1317_v2.mp3");
+  const playCandles = usePlaySound("/audio/sounds/bougie.wav")
+  const playPoison = usePlaySound("/audio/sounds/fiole.mp3")
+  const playFire = usePlaySound("/audio/sounds/explosion_1317_v2.mp3")
 
       const peopleFrames = [
         '/animations/medieval/1317_1.png',
@@ -69,90 +60,89 @@ function MedievalScene({ ...props }, ref) {
 
   // gestion des cameras
   useEffect(() => {
-    const currentScene = useSwitchBaking ? sceneOff : sceneOn;
+    const currentScene = useSwitchBaking ? sceneOff : sceneOn
 
     currentScene.traverse((child) => {
       if (child.isMesh && child.name === "EXPORT_LUSTRE") {
-        lustreRef.current = child;
-        setShowLustreOutline(true);
+        lustreRef.current = child
+        setShowLustreOutline(true)
       }
       if (child.isMesh && child.name === "EXPORT_FIOLE" && useSwitchBaking) {
-        fioleRef.current = child;
-        setShowFioleOutline(true);
+        fioleRef.current = child
+        setShowFioleOutline(true)
       }
 
       if (child.name.endsWith("_1")) {
         //Camera generale
-        cameraRefs.current.camera1 = child;
+        cameraRefs.current.camera1 = child
       } else if (child.name.endsWith("_2")) {
         //Camera lustre
-        cameraRefs.current.camera2 = child;
+        cameraRefs.current.camera2 = child
       } else if (child.name.endsWith("_3")) {
         //Camera fiole
-        cameraRefs.current.camera3 = child;
+        cameraRefs.current.camera3 = child
       }
-    });
+    })
 
     if (groupRef.current && cameraRefs.current.camera1) {
-      groupRef.current.mainCamera = cameraRefs.current.camera1; // camera par defaut
+      groupRef.current.mainCamera = cameraRefs.current.camera1 // camera par defaut
     }
-  }, [useSwitchBaking]);
+  }, [useSwitchBaking])
 
   // mixer pour animation
   useFrame((state, delta) => {
-    mixers.current.forEach(({ mixer }) => mixer.update(delta));
+    mixers.current.forEach(({ mixer }) => mixer.update(delta))
   });
 
   const handleClick = (e) => {
-    const clickedObject = e.object;
-    console.log("Objet cliqué:", clickedObject.name);
+    const clickedObject = e.object
+    console.log("Objet cliqué:", clickedObject.name)
+    setVisible(false)
 
     // action 1 - allumer la lumiere
     if (clickedObject.name === "EXPORT_LUSTRE") {
-      console.log("Lustre cliqué");
+      console.log("Lustre cliqué")
       setShowLustreOutline(false)
-      setVisible(!visible)
       cameraZoom(
         camera,
         cameraRefs.current.camera2,
         () => {
-          playCandles.play(); // bruitage bougie
-          setSwitchBaking((prev) => !prev);
-          voiceOver.setIndex(1);
+          playCandles.play() // bruitage bougie
+          setSwitchBaking((prev) => !prev)
+          voiceOver.setIndex(1)
             // Force update final après l'animation
             setTimeout(forceInfoBulleUpdate, 100)
         },
         props.portalGroupRef.current,
         forceInfoBulleUpdate
-      );
+      )
     }
 
     // action 2 - trouver le poison
     if (clickedObject.name === "EXPORT_FIOLE") {
-      console.log("Fiole cliquée");
+      console.log("Fiole cliquée")
       setShowFioleOutline(false)
-      setVisible(!visible)
 
       cameraZoom(
         camera,
         cameraRefs.current.camera3,
         () => {
 
-          const clip = animations.find((a) => a.name === "animation_0");
-          const target = sceneOn.getObjectByName("EXPORT_FIOLE");
+          const clip = animations.find((a) => a.name === "animation_0")
+          const target = sceneOn.getObjectByName("EXPORT_FIOLE")
 
           if (clip && target) {
-            const mixer = new AnimationMixer(target);
-            const action = mixer.clipAction(clip);
-            action.setLoop(LoopOnce, 1);
-            action.clampWhenFinished = true;
-            action.reset().play();
-            voiceOver.setIndex(2);
+            const mixer = new AnimationMixer(target)
+            const action = mixer.clipAction(clip)
+            action.setLoop(LoopOnce, 1)
+            action.clampWhenFinished = true
+            action.reset().play()
+            voiceOver.setIndex(2)
 
-            playPoison.play(); // bruitage fiole
+            playPoison.play() // bruitage fiole
 
             // Ajouter le mixer pour mise à jour via useFrame
-            mixers.current.push({ mixer, action });
+            mixers.current.push({ mixer, action })
 
             // Force update final après l'animation
             setTimeout(forceInfoBulleUpdate, 100)
@@ -160,10 +150,9 @@ function MedievalScene({ ...props }, ref) {
         },
         props.portalGroupRef.current,
         forceInfoBulleUpdate
-      );
+      )
     }
-    setVisible(true)
-  };
+  }
 
   // Switch de murs
   useEffect(() => {
@@ -189,7 +178,7 @@ function MedievalScene({ ...props }, ref) {
       salleRef.current = sceneOn.getObjectByName("EXPORT_SALLE")
       salleDRef.current = sceneOn.getObjectByName("EXPORT_SALLE_D")
     }
-  }, [sceneOn]);
+  }, [sceneOn])
 
   const handleZoom = () => {
     cameraZoom(
@@ -201,14 +190,9 @@ function MedievalScene({ ...props }, ref) {
       },
       props.portalGroupRef.current,
       forceInfoBulleUpdate
-    );
-    setVisible(!visible);
-  };
-
-  // Fonction pour gérer le hover du lustre
-  const handleLustreHover = (hovered) => {
-    setShowLustreOutline(hovered);
-  };
+    )
+    setVisible(false)
+  }
 
   return (
     <>
@@ -270,7 +254,7 @@ function MedievalScene({ ...props }, ref) {
               <meshBasicMaterial map={animatedPeopleTexture} transparent={true} />
             </mesh>
 
-            {currentScene === "monde-medieval" && (
+            {currentScene === "monde-medieval" && visible && (
               <>
                 <InfoBulle
                   position={[6.3, 3, 1.6]}
