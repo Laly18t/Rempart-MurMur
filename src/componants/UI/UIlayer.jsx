@@ -20,11 +20,11 @@ export default function UIlayer() {
 
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
-    const { currentScene } = useSceneStore()
-    const { isSceneFinished, isPlaying } = useVoiceOverStore()
+    const { audioIndex, currentScene, isZoom, setIsZoom } = useSceneStore()
+    const { isSceneFinished, isPlaying, index } = useVoiceOverStore()
     const { teaserVisible, setTeaserVisible } = useMobileStore()
-    let videoEpoque = 'war'
-    let videoSrc = `/ui/video_${videoEpoque}.mp4`
+    let videoEpoque = 'white'
+    let videoSrc = `/animations/explosion_${videoEpoque}.mp4`
 
     // reset lecture de la vidéo
     useEffect(() => {
@@ -34,13 +34,13 @@ export default function UIlayer() {
             setVideoFading(false) // reset fade
         }
         if (currentScene === 'monde-medieval') {
-            videoEpoque = 'medieval'
+            videoEpoque = 'white'
             console.log('show medieval video', videoSrc)
         } else if (currentScene === 'monde-moderne') {
-            videoEpoque = 'modern'
+            videoEpoque = 'black'
             console.log('show modern video', videoSrc)
         } else if (currentScene === 'monde-guerre') {
-            videoEpoque = 'war'
+            videoEpoque = 'white'
             console.log('show war video', videoSrc)
         }
     }, [currentScene, videoEpoque])
@@ -48,7 +48,8 @@ export default function UIlayer() {
     // Affichage de la video medieval
     useEffect(() => {
         if (currentScene === 'monde-medieval' || currentScene === 'monde-moderne' || currentScene === 'monde-guerre') {
-            if (isSceneFinished && !isPlaying && !videoPlayedRef.current && !videoFading && videoSrc) {
+            console.log('currentScene', currentScene, index)
+            if (index === 3 && !isPlaying && !videoPlayedRef.current && videoSrc) {
                 videoPlayedRef.current = true
                 console.log('play video', videoSrc)
                 setShowEndVideo(true)
@@ -57,7 +58,7 @@ export default function UIlayer() {
                 }, 300)
             }
         }
-    }, [currentScene, isSceneFinished, isPlaying, videoFading, videoSrc])
+    }, [currentScene, isSceneFinished, isPlaying, videoSrc, index])
 
     useEffect(() => {
         if(step === 1){
@@ -145,14 +146,14 @@ export default function UIlayer() {
                 </div>
             )}
 
-            {/* {showEndVideo && (
+            {showEndVideo && (
                 <div className={`video-container ${videoFading ? 'fade-out' : 'fade-in'}`}>
                     <video ref={handleVideoRef} width="100%" height="100%" controls={false} autoPlay playsInline>
                         <source src={videoSrc} type="video/mp4" />
                         Votre navigateur ne supporte pas la lecture vidéo.
                     </video>
                 </div>
-            )} */}
+            )}
         </div>
     )
 }
