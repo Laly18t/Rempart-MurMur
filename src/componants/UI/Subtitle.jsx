@@ -17,7 +17,7 @@ function Subtitle({ }) {
         .pop()             // récupère "test-intro.mp3"
         .replace('.mp3', '') // retire l'extension
 
-        const srtPath = `/subtitles/${fileName}.srt`;
+        const srtPath = `audio/subtitles/${fileName}.srt`;
 
         fetch(srtPath)
             .then((res) => res.text())
