@@ -15,9 +15,9 @@ export default function SubtitleButton() {
     }
     const getTexture = () => {
         if (currentScene === 'monde-medieval' || currentScene === 'monde-moderne' || currentScene === 'monde-guerre') {
-            return !showSubtitle ? textures.on_light : textures.off_light
+            return showSubtitle ? textures.on_light : textures.off_light
         } else {
-            return !showSubtitle ? textures.on : textures.off
+            return showSubtitle ? textures.on : textures.off
         }
     }
 

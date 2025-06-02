@@ -1,0 +1,15 @@
+1
+00:00:00,440 --> 00:00:01,960
+Le sol a grondé.
+
+2
+00:00:01,960 --> 00:00:04,160
+Mes pierres se sont fendues.
+
+3
+00:00:04,160 --> 00:00:06,320
+Et avec cette déflagration,
+
+4
+00:00:06,320 --> 00:00:08,840
+c'est toutes leurs histoires qui se sont écroulées.
