@@ -27,7 +27,6 @@ import ScrollableScene from './componants/ScrollableScene'
 import ParcheminBackground from './componants/ParcheminBackground'
 import ArrowButton from './componants/ArrowButton'
 import useAppStore from './stores/useAppStore'
-import CTA_end from './componants/UI/CTA_end'
 import usePlaySound from './hooks/usePlaySound'
 
 // scene centrale
