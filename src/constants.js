@@ -33,7 +33,7 @@ export const POSITIONS_PARCHEMIN = {
 }
 
 export const SETTINGS = {
-    DEBUG: true,
+    DEBUG: false,
     SCROLL_SPEED: 0.009, 
     MAX_TRANSLATION: 116,
     DEBUG_VOICEOVER: false,
