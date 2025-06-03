@@ -44,10 +44,10 @@ export default function Portal({
     const [originalCameraPosition, setOriginalCameraPosition] = useState(null)
 
     const texture = useLoader(TextureLoader, `.${badgeDecoration}`)
-    const playPortalEnterSound = usePlaySound('/audio/sounds/portal_enter.wav')
-    const playPortalExitSound = usePlaySound('/audio/sounds/portal_exit.wav')
+    const playPortalEnterSound = usePlaySound('/audio/sounds/portal_enter.ogg')
+    const playPortalExitSound = usePlaySound('/audio/sounds/portal_exit.ogg')
 
-    const playMusic = usePlaySound(`/audio/sounds/${playMusicName}.wav`)
+    const playMusic = usePlaySound(`/audio/sounds/${playMusicName}.ogg`)
 
     const { controls } = useThree()
 
