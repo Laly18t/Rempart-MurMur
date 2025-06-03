@@ -67,7 +67,7 @@ export default function Conclusion({ debug = false, ...props }) {
                     <planeGeometry args={[1.5, 0.5]} />
                     <meshBasicMaterial map={textureButton} transparent={true} />
                     <Text
-                        font="/fonts/IMFellEnglish-Regular.ttf"
+                        font="/fonts/IMFellEnglish-Regular.woff"
                         position={[0, 0.12, 0.01]}
                         color={'#F8EEE5'}
                         fontSize={0.3}
