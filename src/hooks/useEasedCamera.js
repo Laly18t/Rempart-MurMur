@@ -55,7 +55,6 @@ const useEasedCamera = (
 
         if (currentScene) {
             const active = scene.getObjectByName(currentScene)
-            console.log("currentScene", currentScene, active)
             
             if (active) {
                 active.parent.localToWorld(position.set(0, 0.5, 0.25))
