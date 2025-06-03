@@ -137,7 +137,7 @@ export default function UIlayer() {
                     <img src="./ui/logo/logo_CCI.png" alt="Logo" className="logo_CCI" style={{ position: 'absolute', bottom: '1%', left: '10%', width: '6%' }} />
 
                     <img src="./ui/logo/logo.svg" alt="Logo" className="logo" style={{ width: '15%', paddingBottom: '10px' }} />
-                    <p>A la découverte de l'histoire du château Montberne</p>
+                    <p>À la découverte de l'histoire du château Montberne</p>
                     {isMobile ? (<>
                         <div className='mobileDiv'>
                             <p>Oh non !</p>
