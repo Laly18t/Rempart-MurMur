@@ -201,7 +201,7 @@ function MedievalScene({ ...props }, ref) {
   // Switch de murs
   useEffect(() => {
     if (salleRef.current && salleDRef.current) {
-      if (index === 2) {
+      if (index === 2 && currentScene === 'monde-medieval') {
         setTimeout(() => {
           playFire.play() // bruitage explosiont
           console.log("switch", salleRef.current.visible)

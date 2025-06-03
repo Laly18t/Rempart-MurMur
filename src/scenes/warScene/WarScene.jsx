@@ -158,7 +158,7 @@ function WarScene({ ...props }, ref) {
                 setVisible(true)
             }
 
-            if (index === 3) {
+            if (index === 3 && currentScene === 'monde-guerre') {
                 console.log('switch', salleRef.current.visible)
                 setShowPeople(false)
                 setVisible(false)
@@ -180,7 +180,7 @@ function WarScene({ ...props }, ref) {
     }
 
     useEffect(() => {
-        if (!isPlaying) {
+        if (!isPlaying && currentScene === 'monde-guerre') {
             switch (index) {
                 case 1:
                     // La voix-off #1 vient de se terminer

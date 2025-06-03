@@ -108,7 +108,7 @@ function VictorianScene({ ...props }, ref) {
             } else {
                 setIsZoom(true)
                 setShowBookOutline(false)
-                setShowFlowerOutline(true)
+
                 cameraZoom(
                     camera,
                     cameraRefs.current.camera2,
@@ -127,7 +127,10 @@ function VictorianScene({ ...props }, ref) {
                             playBook.play() // bruitage livre
 
                             const onFinished = () => {
-                                setTimeout(() => {handleZoom()}, 7000)
+                                setTimeout(() => { 
+                                    handleZoom() 
+                                    setShowFlowerOutline(true)
+                                }, 10000)
                             }
 
                             // Ajouter le mixer pour mise à jour via useFrame
@@ -148,11 +151,11 @@ function VictorianScene({ ...props }, ref) {
         // action 2 - voir le bouquet
         if (clickedObject.name === '1697_bouquet_mot' && !isPlaying) {
             setIsZoom(true)
+            setShowBookOutline(false)
             console.log('bouquet cliqué')
             setShowFlowerOutline(false)
 
             if (isZoom && !isPlaying) {
-                console.log('déjà zoomé sur le livre')
                 handleZoom()
             } else {
                 cameraZoom(
@@ -161,7 +164,6 @@ function VictorianScene({ ...props }, ref) {
                     () => {
                         voiceOver.setIndex(2)
                         playFlower.play() // bruitage bouquet
-                        setTimeout(() => {handleZoom()}, 6000)
                     },
                     props.portalGroupRef.current
                 )
@@ -172,16 +174,17 @@ function VictorianScene({ ...props }, ref) {
     // Switch de murs
     useEffect(() => {
         if (salleRef.current && salleDRef.current) {
-            setTimeout(() => { setVisible(true) }, 2000)
-
-            if (index === 2) {
+            if (index === 2 && currentScene === 'monde-moderne') {
                 setTimeout(() => {
+                    handleZoom()
                     setShowPeople(false)
                     setVisible(false)
                     salleRef.current.visible = false
                     salleDRef.current.visible = true
                     playFire.play() // bruitage incendie
-                }, 3000)
+                }, 28000)
+            } else {
+                playFire.stop() 
             }
         }
     }, [currentScene, isSceneFinished, showPeople, index])
@@ -238,13 +241,13 @@ function VictorianScene({ ...props }, ref) {
                 <>
                     <InfoBulle position={[3.5, 3, -3.5]}
                         className='modernBulle'
-                        title="A l'abris de tous"
-                        content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
+                        title="La culture du vide"
+                        content="Dans certaines demeures, les étagères alignaient de superbes reliures en cuir… qui ne cachaient que du vide. Ces faux livres, commandés par des nobles soucieux des apparences, servaient à afficher une érudition qu’ils n’avaient pas. À cette époque, posséder une bibliothèque, même factice suffisait à briller en société."
                     />
                     <InfoBulle position={[0.7, 1.7, -3.5]}
                         className='modernBulle'
                         title="De la lumière ?"
-                        content="Les résistants cachaient souvent des documents compromettants dans des meubles du quotidien. Une commode pouvait ainsi dissimuler des tracts, des faux papiers ou des messages codés, à l'abri des regards lors des perquisitions."
+                        content="À la fin du XVIIIe siècle, posséder un piano, c’était afficher son rang autant que son goût. Dans les salons bourgeois, il incarnait l’éducation raffinée, surtout celle des jeunes filles, qui devaient savoir en jouer pour briller en société. Chaque mélodie jouée devenait un signe de vertu… et un argument discret en faveur d’un bon mariage."
                     />
                 </>
             }
