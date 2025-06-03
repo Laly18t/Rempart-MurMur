@@ -33,8 +33,9 @@ function MedievalScene({ ...props }, ref) {
   const { currentScene, isZoom, setIsZoom } = useSceneStore()
 
 
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(true)
   const [forceUpdate, setForceUpdate] = useState(0)
+  const [showPeople, setShowPeople] = useState(true)
   const [showLustreOutline, setShowLustreOutline] = useState(false)
   const [showFioleOutline, setShowFioleOutline] = useState(false)
 
@@ -119,7 +120,6 @@ function MedievalScene({ ...props }, ref) {
     if (clickedObject.name === "EXPORT_LUSTRE" && !isPlaying) {
       SETTINGS.DEBUG_VOICEOVER && console.log("Lustre cliqué")
       setShowLustreOutline(false)
-      setVisible(false)
       setIsZoom(true)
 
       if (isZoom && !isPlaying) {
@@ -202,11 +202,12 @@ function MedievalScene({ ...props }, ref) {
     if (salleRef.current && salleDRef.current) {
       if (index === 2 && currentScene === 'monde-medieval') {
         setTimeout(() => {
+          setShowPeople(false) // On cache le seigneur
           playFire.play() // bruitage explosiont
           salleRef.current.visible = false // Salle normale invisible
           salleDRef.current.visible = true // Salle détruite visible
           setVisible(false)
-        }, 6000)
+        }, 12000)
       }
     }
   }, [currentScene, isSceneFinished, index, useSwitchBaking])
@@ -233,7 +234,6 @@ function MedievalScene({ ...props }, ref) {
       props.portalGroupRef.current,
       forceInfoBulleUpdate
     )
-    setTimeout(() => {setVisible(true)}, 2000)
     setIsZoom(false)
   }
 
@@ -288,7 +288,7 @@ function MedievalScene({ ...props }, ref) {
             )}
           </>
 
-          <mesh position={[0.2, 1.2, 0.2]} rotation-y={-3.14}>
+          <mesh visible={showPeople} position={[0.2, 1.2, 0.2]} rotation-y={-3.14}>
             <boxGeometry args={[1.5, 2.2, 0.00001]} />
             <meshBasicMaterial map={animatedPeopleTexture} transparent={true} />
           </mesh>

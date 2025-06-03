@@ -67,7 +67,7 @@ export default function UIlayer() {
                 setTimeout(() => {
                     videoPlayedRef.current = true
                     playGif(videoSrc)
-                }, 6000) // TODO: adapter le délai
+                }, 12000) // TODO: adapter le délai
             }
         } else if (currentScene === 'monde-moderne') {
             if (index === 2 && !isPlaying && !videoPlayedRef.current) {
