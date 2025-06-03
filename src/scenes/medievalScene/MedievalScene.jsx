@@ -12,13 +12,17 @@ import useSceneStore from "../../stores/useSceneStore";
 import usePlaySound from "../../hooks/usePlaySound";
 import { cameraZoom } from "../../utils/cameraUtils";
 import useFrameAnimation from "../../hooks/useFrameAnimation";
-import { SETTINGS } from "../../constants";
+import { AUDIO_SEQUENCES, EPOQUES, SETTINGS } from "../../constants";
+import useMouseCursorStore, { MOUSE_CURSOR_MODES } from "../../stores/useMouseCursorStore";
+import debounce from "../../utils/debounce";
 
 function MedievalScene({ ...props }, ref) {
   const { scene: sceneOn, animations } = useGLTF("/models/1317_a_draco.glb", true)
   const { scene: sceneOff } = useGLTF("/models/1317_e_draco.glb", true)
   const { camera, invalidate } = useThree()
   const [useSwitchBaking, setSwitchBaking] = useState(true)
+
+  const { setMode } = useMouseCursorStore();
 
   const groupRef = ref ?? useRef()
   const mixers = useRef([])
@@ -30,7 +34,7 @@ function MedievalScene({ ...props }, ref) {
 
   const voiceOver = useVoiceOverStore()
   const { isSceneFinished, index, isPlaying } = useVoiceOverStore()
-  const { currentScene, isZoom, setIsZoom } = useSceneStore()
+  const { currentScene, isZoom, setIsZoom, exitPortalScene } = useSceneStore()
 
 
   const [visible, setVisible] = useState(true)
@@ -60,6 +64,29 @@ function MedievalScene({ ...props }, ref) {
     setForceUpdate(prev => prev + 1)
     invalidate() // Forcer le re-render de Three.js
   }
+
+  // gestion de l'audio
+  useEffect(() => {
+    if (currentScene !== EPOQUES.MEDIEVAL) return
+    
+
+    // Set a timeout to update debounced value after 500ms
+    const handler = setTimeout(() => {
+      const isLastIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 2  === index // -1 est pour l'outro
+      console.log("MedievalScene - useEffect - index:", index, "isPlaying:", isPlaying)
+      
+      // index et isPlaying sont independants et index peut afficher le nouvel index avant que isPlaying ne soit mis à jour
+      if (isLastIndex && !isPlaying) {
+        console.log("Fin de la scène médiévale, on passe à la scène suivante")
+        setMode(MOUSE_CURSOR_MODES.POURSUIVRE);
+      }
+    }, 500);
+
+    // Cleanup the timeout if `query` changes before 500ms
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [index, isPlaying]);
 
   // gestion des cameras
   useEffect(() => {
@@ -113,7 +140,25 @@ function MedievalScene({ ...props }, ref) {
     mixers.current.forEach(({ mixer }) => mixer.update(delta))
   })
 
+  const goNext = () => {
+
+    const isLastIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 2 === index // -1 est pour l'outro
+    if (isLastIndex && !isPlaying) {
+      exitPortalScene();
+    }
+  }
+
   const handleClick = (e) => {
+
+    console.log(e.object.name);
+    // handleCLick est trigger 3 fois il faut filtrer pour appeler la fonction goNext() une seule fois
+    if (e.stopPropagation) e.stopPropagation()
+    if (e.preventDefault) e.preventDefault()
+    if (e.nativeEvent.stopImmediatePropagation) e.nativeEvent.stopImmediatePropagation()
+
+    goNext()
+  
+
     const clickedObject = e.object
 
     // action 1 - allumer la lumiere
@@ -245,7 +290,7 @@ function MedievalScene({ ...props }, ref) {
       ref={groupRef}
       {...props}
       dispose={null}
-      onClick={handleClick}
+      onClick={ handleClick}  
     >
       {useSwitchBaking && (
         <>

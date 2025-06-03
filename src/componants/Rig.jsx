@@ -34,6 +34,7 @@ export default function Rig({ modelsInfo = {} }) {
 
     // useFrame pour une animation fluide vers la position cible
     useFrame((_, dt) => {
+        if (!controls || !scene) return
         const currentPos = controls.getPosition(new THREE.Vector3())
         const currentTarget = controls.getTarget(new THREE.Vector3())
 

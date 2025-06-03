@@ -6,20 +6,14 @@ import { AUDIO_SEQUENCES } from "../constants"
 
 // gestion du portail actif
 const useActivePortal = () => {
-    const { currentScene, resetScene } = useSceneStore()
-    const { isPlaying, setIndex } = useVoiceOverStore()
+    const { currentScene, exitPortalScene } = useSceneStore()
+    const { isPlaying } = useVoiceOverStore()
 
      // gestion du clavier (pour sortir d'un portail)
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape' && currentScene !== null) {
-                if (isPlaying) {
-                    return;
-                }
-                resetScene()
-
-                const outSceneAudioIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 1;
-                setIndex(outSceneAudioIndex);
+                exitPortalScene();
             }
         }
         window.addEventListener('keydown', handleKeyDown)

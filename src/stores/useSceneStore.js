@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import useVoiceOverStore from './useVoiceOverStore'
+import { AUDIO_SEQUENCES } from '../constants'
 
 const useSceneStore = create((set, get) => ({
     currentScene: null, // default scene
@@ -70,8 +71,22 @@ const useSceneStore = create((set, get) => ({
     },
     resetOutScene: () => {
         set(() => ({outScene: null}))
-    }
-    
+    },
+
+    exitPortalScene: () => {
+        console.warn('exitPortalScene')
+        const { isPlaying, setIndex } = useVoiceOverStore.getState()
+        const { currentScene, resetScene } = get()
+       
+        if (isPlaying) {
+            return;
+        }
+        resetScene()
+
+        const outSceneAudioIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 1;
+        setIndex(outSceneAudioIndex);
+    },
+
 }))
 
 export default useSceneStore

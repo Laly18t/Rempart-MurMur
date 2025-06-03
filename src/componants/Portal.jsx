@@ -10,6 +10,7 @@ import { TextureLoader } from 'three'
 import usePlaySound from '../hooks/usePlaySound'
 import useVoiceOverStore from '../stores/useVoiceOverStore'
 import gsap from 'gsap'
+import useMouseCursorStore, { MOUSE_CURSOR_MODES } from '../stores/useMouseCursorStore'
 
 // font chargee dynamiquement
 const bold = import('@pmndrs/assets/fonts/inter_bold.woff')
@@ -31,6 +32,7 @@ export default function Portal({
     onExit = () => {},
     portalGroupRef
 }) {
+    const { setNegative, setMode } = useMouseCursorStore();
     const { currentScene, outScene } = useSceneStore() // store
     const { step } = useAppStore() // store
     const portalRef = useRef()
@@ -88,6 +90,7 @@ export default function Portal({
                 controls.enabled = false;
             }
 
+            setNegative(true)
             setOriginalCameraPosition(controls?.camera.clone())
 
             const tl = gsap.timeline()
@@ -152,8 +155,10 @@ export default function Portal({
 
     // Detection of portal exit
     useEffect(() => {
+        
         // If we just exited this portal
         if (outScene === id && prevOutScene !== id) {
+            setMode(MOUSE_CURSOR_MODES.DEFAULT);
             const tl = gsap.timeline()
             const portalGroup = portalGroupRef?.current;
             const worldRotation = originalCameraPosition.rotation
@@ -216,8 +221,17 @@ export default function Portal({
             {/* portail cliquable */}
             <mesh
                 name={id}
-                onPointerOver={() => setHovered(true)}
-                onPointerOut={() => setHovered(false)}
+                onPointerOver={() => {
+                    setNegative(true)
+                    setHovered(true)
+                }}
+                onPointerOut={() => {
+                    if (currentScene !== id || currentScene === null) {
+                        setNegative(false)
+                    }
+
+                    setHovered(false)
+                }}
                 onClick={onClick
                 }
             >

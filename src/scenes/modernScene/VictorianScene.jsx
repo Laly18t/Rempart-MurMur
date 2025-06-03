@@ -9,6 +9,8 @@ import InfoBulle from '../../componants/InfoBulle'
 import { cameraZoom } from '../../utils/cameraUtils'
 import usePlaySound from '../../hooks/usePlaySound'
 import useFrameAnimation from '../../hooks/useFrameAnimation'
+import { AUDIO_SEQUENCES, EPOQUES } from '../../constants'
+import useMouseCursorStore, { MOUSE_CURSOR_MODES } from '../../stores/useMouseCursorStore'
 
 function VictorianScene({ ...props }, ref) {
     const { animations, scene } = useGLTF('/models/1697_v2.glb') // load model
@@ -16,7 +18,8 @@ function VictorianScene({ ...props }, ref) {
 
     const voiceOver = useVoiceOverStore()
     const { isSceneFinished, isPlaying, index } = useVoiceOverStore()
-    const { currentScene, isZoom, setIsZoom } = useSceneStore()
+    const { currentScene, isZoom, setIsZoom, exitPortalScene } = useSceneStore()
+    const { setMode } = useMouseCursorStore()
 
     const groupRef = ref ?? useRef()
     const mixers = useRef([])
@@ -92,12 +95,51 @@ function VictorianScene({ ...props }, ref) {
         }
     }, [scene])
 
+    // gestion de l'audio
+      useEffect(() => {
+        if (currentScene !== EPOQUES.MODERN) return
+        
+    
+        // Set a timeout to update debounced value after 500ms
+        const handler = setTimeout(() => {
+          const isLastIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 2  === index // -1 est pour l'outro
+          console.log("Victorian - useEffect - index:", index, "isPlaying:", isPlaying)
+          
+          // index et isPlaying sont independants et index peut afficher le nouvel index avant que isPlaying ne soit mis à jour
+          if (isLastIndex && !isPlaying) {
+            console.log("Fin de la scène victorienne, on passe à la scène suivante")
+            setMode(MOUSE_CURSOR_MODES.POURSUIVRE);
+          }
+        }, 500);
+    
+        // Cleanup the timeout if `query` changes before 500ms
+        return () => {
+          clearTimeout(handler);
+        };
+      }, [index, isPlaying]);
+
     // mixer pour animation
     useFrame((state, delta) => {
         mixers.current.forEach(({ mixer }) => mixer.update(delta))
     })
 
+     const goNext = (e) => {
+
+        const isLastIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 2 === index // -1 est pour l'outro
+        if (isLastIndex && !isPlaying) {
+            if (e.stopPropagation) e.stopPropagation()
+            if (e.preventDefault) e.preventDefault()
+            if (e.nativeEvent.stopImmediatePropagation) e.nativeEvent.stopImmediatePropagation()
+        exitPortalScene();
+        }
+    }
+
     const handleClick = (e) => {
+         console.log(e.object.name);
+        // handleCLick est trigger 3 fois il faut filtrer pour appeler la fonction goNext() une seule fois
+        
+
+        goNext(e)
         const clickedObject = e.object
 
         // action 1 - ouvrir le livre

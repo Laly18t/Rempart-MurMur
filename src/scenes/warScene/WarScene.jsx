@@ -4,13 +4,14 @@ import { AnimationMixer, MeshNormalMaterial, TextureLoader } from 'three'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { LoopOnce } from 'three'
 
-import { DATA, SETTINGS } from '../../constants'
+import { AUDIO_SEQUENCES, DATA, EPOQUES, SETTINGS } from '../../constants'
 import useSceneStore from '../../stores/useSceneStore'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 import usePlaySound from '../../hooks/usePlaySound'
 import { cameraZoom } from '../../utils/cameraUtils'
 import InfoBulle from '../../componants/InfoBulle'
 import useFrameAnimation from '../../hooks/useFrameAnimation'
+import useMouseCursorStore, { MOUSE_CURSOR_MODES } from '../../stores/useMouseCursorStore'
 
 
 function WarScene({ ...props }, ref) {
@@ -20,7 +21,8 @@ function WarScene({ ...props }, ref) {
 
     const voiceOver = useVoiceOverStore()
     const { isSceneFinished, isPlaying, index } = useVoiceOverStore()
-    const { currentScene, isZoom, setIsZoom } = useSceneStore()
+    const { currentScene, isZoom, setIsZoom, exitPortalScene } = useSceneStore()
+    const { setMode } = useMouseCursorStore()
 
     const mixers = useRef([])
     const cameraRefs = useRef({}) // Pour stocker toutes les caméras
@@ -74,12 +76,51 @@ function WarScene({ ...props }, ref) {
         }
     }, [scene])
 
+    // gestion de l'audio
+      useEffect(() => {
+        if (currentScene !== EPOQUES.WAR) return
+        
+    
+        // Set a timeout to update debounced value after 500ms
+        const handler = setTimeout(() => {
+          const isLastIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 2  === index // -1 est pour l'outro
+          console.log(EPOQUES.WAR + " - useEffect - index:", index, "isPlaying:", isPlaying)
+          
+          // index et isPlaying sont independants et index peut afficher le nouvel index avant que isPlaying ne soit mis à jour
+          if (isLastIndex && !isPlaying) {
+            console.log("Fin de la scène war, on passe à la scène suivante")
+            setMode(MOUSE_CURSOR_MODES.POURSUIVRE);
+          }
+        }, 500);
+    
+        // Cleanup the timeout if `query` changes before 500ms
+        return () => {
+          clearTimeout(handler);
+        };
+      }, [index, isPlaying]);
+
     // mixer pour animation
     useFrame((state, delta) => {
         mixers.current.forEach(({ mixer }) => mixer.update(delta))
     })
 
+     const goNext = () => {
+    
+        const isLastIndex = AUDIO_SEQUENCES.SCENE[currentScene].length - 2 === index // -1 est pour l'outro
+        if (isLastIndex && !isPlaying) {
+          exitPortalScene();
+        }
+      }
+
     const handleClick = (e) => {
+         console.log(e.object.name);
+        // handleCLick est trigger 3 fois il faut filtrer pour appeler la fonction goNext() une seule fois
+        if (e.stopPropagation) e.stopPropagation()
+        if (e.preventDefault) e.preventDefault()
+        if (e.nativeEvent.stopImmediatePropagation) e.nativeEvent.stopImmediatePropagation()
+
+        goNext()
+
         const clickedObject = e.object
 
         // action 1 - allumer la radio
