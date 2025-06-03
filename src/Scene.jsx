@@ -1,5 +1,5 @@
 import { TextureLoader } from 'three'
-import { Suspense, useCallback, useRef, useState } from 'react'
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { useLoader, useThree } from '@react-three/fiber'
 
 // composants
@@ -45,6 +45,11 @@ export default function Scene() {
     const modernFrame = useLoader(TextureLoader, ASSETS.MODERN_FRAME)
     const medievalFrame = useLoader(TextureLoader, ASSETS.MEDIEVAL_FRAME)
 
+    const playParcheminIntro = usePlaySound("/audio/sounds/parchemin/son_intro.mp3")
+    const playParcheminOutro = usePlaySound("/audio/sounds/parchemin/son_fin.mp3")
+    const playParcheminMusic1 = usePlaySound("/audio/sounds/parchemin/son_entre_1317_1697.mp3")
+    const playParcheminMusic2 = usePlaySound("/audio/sounds/parchemin/son_entre_1697_1942.mp3")
+
     // hooks
     // const scrollRef = useRef(0)
     // const scrollRef = useScrollControl()  // gestion du scroll
@@ -63,6 +68,23 @@ export default function Scene() {
         setStep(step - 1)
     }
 
+    useEffect(() => {
+        console.log("step : ", step)
+        // play de la musique de fond
+        if (step === 3 || step === 4) {
+            playParcheminIntro.play()
+        } else if (step === 7) {
+            playParcheminMusic2.stop()
+            playParcheminOutro.play()
+        } else if (step === 5) {
+            playParcheminIntro.stop()
+            playParcheminMusic1.play()
+        } else if (step === 6) {
+            playParcheminMusic1.stop()
+            playParcheminMusic2.play()
+        } 
+    }, [step])
+
     return <>
         {/* activation voix-off */}
         <VoiceOver
@@ -72,7 +94,7 @@ export default function Scene() {
             }}
         />
 
-        <ParcheminBackground visible={step < 7} />
+        <ParcheminBackground />
 
         {/* Group avec chaque etape de l'XP */}
         <ScrollableScene>
@@ -85,6 +107,7 @@ export default function Scene() {
                     id={DATA.medieval.name}
                     onClick={()=> {
                         setCurrentScene(DATA.medieval.name)
+                        playParcheminIntro.stop()
                     }}
                     textureDecoration={medievalFrame}
                     badgeDecoration={ASSETS.MEDIEVAL_BADGE}
@@ -93,9 +116,9 @@ export default function Scene() {
                 >
                         <MedievalScene />
                 </Portal>
-                {outScene && 
+                {/* {outScene &&  */}
                     <ArrowButton position={[2.5, -0.2, 0]} onClick={handleClickButton} />
-                }
+                {/* } */}
                 {/* <ArrowButton cote={true} position={[-2.5, 0.2, 0]} onClick={handleReturnButton} /> */}
             </group>
 
@@ -105,6 +128,7 @@ export default function Scene() {
                     id={DATA.moderne.name}
                     onClick={() => { 
                         setCurrentScene(DATA.moderne.name)
+                        playParcheminMusic1.stop()
                     }}
                     textureDecoration={modernFrame}
                     badgeDecoration={ASSETS.MODERN_BADGE}
@@ -113,9 +137,9 @@ export default function Scene() {
                 >
                         <VictorianScene />
                 </Portal>
-                {outScene && 
+                {/* {outScene &&  */}
                     <ArrowButton position={[2.4, 0, 0]} onClick={handleClickButton} />
-                }
+                {/* } */}
                 {/* <ArrowButton cote={true} position={[-2.4, 0, 0]} onClick={handleReturnButton} />s */}
             </group>
 
@@ -125,6 +149,7 @@ export default function Scene() {
                     id={DATA.guerre.name}
                     onClick={() => { 
                         setCurrentScene(DATA.guerre.name)
+                        playParcheminMusic2.stop()
                     }}
                     textureDecoration={warFrame}
                     badgeDecoration={ASSETS.WAR_BADGE}
@@ -133,18 +158,14 @@ export default function Scene() {
                 >
                     <WarScene />
                 </Portal>
-                {outScene && 
+                {/* {outScene &&  */}
                     <ArrowButton position={[2.3, 0, 0]} onClick={handleClickButton} /> 
-                }
+                {/* } */}
                 {/* <ArrowButton cote={true} position={[-2.3, 0, 0]} onClick={handleReturnButton} /> */}
             </group>
 
             {/* Partie 4 - Conclusion */}
             <Outro />
-
-
-            {/* Partie 5 - CTA de fin */}
-            <CTA_end />
 
         </ScrollableScene>
     </>
