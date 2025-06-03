@@ -117,7 +117,7 @@ export default function UIlayer() {
 
             {step === 1 && (
                 <div className={`soundIntro ${fadeOut ? 'fade-out' : 'fade-in'}`}>
-                    <img src="./ui/picto_casque.PNG" alt="Logo" className="casque" style={{ width: '30%' }} />
+                    <img src="./ui/icons/picto_casque.PNG" alt="Logo" className="casque" style={{ width: '30%' }} />
                     
                     <p>Il s’agit d’une expérience sonore, nous vous recommandons d’activer le son pour profiter pleinement de l’expérience.</p>
                 </div>
