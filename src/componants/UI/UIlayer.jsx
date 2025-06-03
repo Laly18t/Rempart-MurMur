@@ -53,7 +53,7 @@ export default function UIlayer() {
     // Fonction pour démarrer le GIF avec timer
     const playGif = useCallback((src) => {
         setShowEndVideo(true)
-        
+
         // Programmer la fin du GIF après 1 seconde
         gifTimeoutRef.current = setTimeout(() => {
             handleGifEnd()
@@ -78,14 +78,16 @@ export default function UIlayer() {
             }
         } else if (currentScene === 'monde-guerre') {
             if (index === 3 && !videoPlayedRef.current && videoSrc) {
-                videoPlayedRef.current = true
-                playGif(videoSrc)
+                setTimeout(() => {
+                    videoPlayedRef.current = true
+                    playGif(videoSrc)
+                }, 13000)
             }
         }
     }, [currentScene, isSceneFinished, isPlaying, videoSrc, index, playGif])
 
     useEffect(() => {
-        if(step === 1){
+        if (step === 1) {
             setTimeout(() => {
                 setFadeOut(true)
                 nextStep()
@@ -97,8 +99,8 @@ export default function UIlayer() {
 
     // Nettoyage du timeout au démontage du composant
     useEffect(() => {
-        return() => {
-            if(gifTimeoutRef.current){
+        return () => {
+            if (gifTimeoutRef.current) {
                 clearTimeout(gifTimeoutRef.current)
             }
         }
@@ -163,13 +165,13 @@ export default function UIlayer() {
 
             {showEndVideo && (
                 <div>
-                    <img 
+                    <img
                         className={`video-container ${videoFading ? 'fade-out' : 'fade-in'}`}
-                        src={currentScene === 'monde-moderne' ? videoSrc2 : videoSrc} 
-                        width="100%" 
-                        height="100%" 
+                        src={currentScene === 'monde-moderne' ? videoSrc2 : videoSrc}
+                        width="100%"
+                        height="100%"
                         alt="Animation"
-                        style={{ 
+                        style={{
                             objectFit: 'cover',
                             position: 'fixed',
                             top: 0,
