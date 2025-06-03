@@ -321,5 +321,5 @@ function MedievalScene({ ...props }, ref) {
 
 export default forwardRef(MedievalScene);
 
-useGLTF.preload("/models/1317_a_draco.glb");
-useGLTF.preload("/models/1317_e_draco.glb");
+useGLTF.preload("/models/1317_a_draco.glb", true)
+useGLTF.preload("/models/1317_e_draco.glb", true)
