@@ -56,12 +56,6 @@ export default function Portal({
 
     // TODO : composant generique 
     useFrame((state, delta) => {
-        // animation d'ouverture du portail au click
-        if (portalRef.current) {
-            // console.log('portalRef.current', currentScene)
-            // easing.damp(portalRef.current, 'blend', currentScene === id ? 1 : 0, SETTINGS.PORTAL_ENTER_DURATION, delta)
-            // playPortalSound()
-        }
 
         // effet pop du badge
         if (badgeRef.current && outScene) {
@@ -149,8 +143,6 @@ export default function Portal({
                     }
                 }, 0.5)
             } 
-            // tl.to(innerRef.current.position, { x: 3, duration: SETTINGS.PORTAL_ENTER_DURATION})
-            // console.log('Entered portal:', id, portalRef.current.blend)
             onEnter();
         }
 

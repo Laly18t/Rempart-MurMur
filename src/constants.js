@@ -33,7 +33,7 @@ export const POSITIONS_PARCHEMIN = {
 }
 
 export const SETTINGS = {
-    DEBUG: false,
+    DEBUG: true,
     SCROLL_SPEED: 0.009, 
     MAX_TRANSLATION: 116,
     DEBUG_VOICEOVER: false,
@@ -101,14 +101,14 @@ export const AUDIO_SEQUENCES = {
     STEP: {
         1: null,
         2: null,
-        3: '/audio/voice/intro.mp3',
-        4: '/audio/voice/1317_1.mp3',
-        5: '/audio/voice/1697_2_1.mp3',
-        6: '/audio/voice/1942_1_2.mp3',
-        // 3: null,
-        // 4: null,
-        // 5: null,
-        // 6: null,
+        // 3: '/audio/voice/intro.mp3',
+        // 4: '/audio/voice/1317_1.mp3',
+        // 5: '/audio/voice/1697_2_1.mp3',
+        // 6: '/audio/voice/1942_1_2.mp3',
+        3: null,
+        4: null,
+        5: null,
+        6: null,
         7: '/audio/voice/fin.mp3'
     },
     SCENE: {
@@ -135,9 +135,6 @@ export const AUDIO_SEQUENCES = {
             '/audio/voice/1942_4_2.mp3',
             '/audio/voice/vide.mp3',
         ]
-    },
-    FX: {
-
     }
 }
 

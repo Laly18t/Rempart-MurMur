@@ -69,7 +69,6 @@ export default function Scene() {
     }
 
     useEffect(() => {
-        console.log("step : ", step)
         // play de la musique de fond
         if (step === 3 || step === 4) {
             playParcheminIntro.play()
@@ -87,12 +86,7 @@ export default function Scene() {
 
     return <>
         {/* activation voix-off */}
-        <VoiceOver
-            onAudioEnd={(index) => {
-                console.log("Audio terminé:", index)
-                // TODO: enable portal
-            }}
-        />
+        <VoiceOver />
 
         <ParcheminBackground />
 

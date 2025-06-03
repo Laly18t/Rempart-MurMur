@@ -48,7 +48,6 @@ function VictorianScene({ ...props }, ref) {
     // gestion des cameras
     useEffect(() => {
         scene.traverse((child) => {
-            // console.log('child -->', child.name)
             if (child.isMesh) {
                 const oldMaterial = child.material
 
@@ -152,7 +151,6 @@ function VictorianScene({ ...props }, ref) {
         if (clickedObject.name === '1697_bouquet_mot' && !isPlaying) {
             setIsZoom(true)
             setShowBookOutline(false)
-            console.log('bouquet cliqué')
             setShowFlowerOutline(false)
 
             if (isZoom && !isPlaying) {
@@ -183,7 +181,7 @@ function VictorianScene({ ...props }, ref) {
                     salleDRef.current.visible = true
                     playFire.play() // bruitage incendie
                 }, 28000)
-            } else {
+            } else if (currentScene === null) {
                 playFire.stop() 
             }
         }

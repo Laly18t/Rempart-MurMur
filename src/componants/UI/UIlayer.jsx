@@ -52,7 +52,6 @@ export default function UIlayer() {
 
     // Fonction pour démarrer le GIF avec timer
     const playGif = useCallback((src) => {
-        console.log('play gif', src)
         setShowEndVideo(true)
         
         // Programmer la fin du GIF après 1 seconde
@@ -64,7 +63,6 @@ export default function UIlayer() {
     // Affichage de la video medieval
     useEffect(() => {
         if (currentScene === 'monde-medieval') {
-            console.log('currentScene', currentScene, index)
             if (index === 2 && !isPlaying && !videoPlayedRef.current) {
                 setTimeout(() => {
                     videoPlayedRef.current = true
@@ -72,7 +70,6 @@ export default function UIlayer() {
                 }, 6000) // TODO: adapter le délai
             }
         } else if (currentScene === 'monde-moderne') {
-            console.log('currentScene', currentScene, index)
             if (index === 2 && !isPlaying && !videoPlayedRef.current) {
                 setTimeout(() => {
                     videoPlayedRef.current = true
@@ -80,7 +77,6 @@ export default function UIlayer() {
                 }, 28000) // TODO: adapter le délai
             }
         } else if (currentScene === 'monde-guerre') {
-            console.log('currentScene', currentScene, index)
             if (index === 3 && !videoPlayedRef.current && videoSrc) {
                 videoPlayedRef.current = true
                 playGif(videoSrc)

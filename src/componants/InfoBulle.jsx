@@ -18,15 +18,9 @@ export default function InfoBulle({ position = [0, 0, 0], title = "Info", conten
     const currentScene = useSceneStore((state) => state.currentScene)
     const textureButton = useLoader(TextureLoader, './ui/bulle_info.svg')
 
-    // // zoom
-    // const CAMERA_TARGET_IN = new Vector3(900, 0, 1)
-    // const CAMERA_TARGET_OUT = new Vector3(...POSITIONS_ZOOM[currentScene])
-    // const toggleZoom = useZoom(CAMERA_TARGET_IN, CAMERA_TARGET_OUT) // hook de zoom
-
     const handleClick = () => {
         // toggleZoom()
         setVisible(prev => !prev)
-        console.log('click')
         onClick()
     }
 
@@ -42,13 +36,6 @@ export default function InfoBulle({ position = [0, 0, 0], title = "Info", conten
         {currentScene !== null && (
         <Billboard position={positionWithCameraOffset} follow={true} lockX={false} lockY={false} lockZ={false}>
 
-            {/* Point cliquable */}
-            {/* <mesh rotation-y={2.5}>
-                <sphereGeometry args={[0.2, 5, 5]} />
-                <meshBasicMaterial
-                    map={textureButton}
-                    />
-            </mesh> */}
             <Html className='popUp' style={{pointerEvents: 'none', }} center transform distanceFactor={distanceFactor} >
                 <div className='popUpTitre'>
                 <img onClick={handleClick} src="./ui/bulle_info.svg" alt="info" style={{ width: '10px', height: '10px', cursor: 'pointer', pointerEvents: 'auto', }} />

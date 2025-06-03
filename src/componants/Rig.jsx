@@ -21,43 +21,6 @@ export default function Rig({ modelsInfo = {} }) {
     const scrollTarget = useRef(new THREE.Vector3(0, 0, SETTINGS.DEFAULT_ZOOM))
     const scrollFocus = useRef(new THREE.Vector3(0, 0, -SETTINGS.DEFAULT_ZOOM))
 
-    // Gestion du focus sur une scène (portail cliqué)
-    useEffect(() => {
-        return;
-        // if (!currentScene || currentScene === 'intro') return
-
-        const modelInfo = getCurrentSceneInfo()
-        // const active = scene.getObjectByName(currentScene)
-        // console.log('modelInfo', controls.camera)
-        
-        if (currentScene ==! 'intro') {
-            if (modelInfo?.cameras?.length > 0) {
-                const modelCamera = modelInfo.cameras[2] ?? modelInfo.cameras[0]
-                modelCamera.updateMatrixWorld(true)
-
-                const worldPosition = new THREE.Vector3()
-                const worldQuaternion = new THREE.Quaternion()
-                const worldScale = new THREE.Vector3()
-
-                modelCamera.matrixWorld.decompose(worldPosition, worldQuaternion, worldScale)
-                const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(worldQuaternion)
-                const lookAt = worldPosition.clone().add(direction.multiplyScalar(10))
-
-                controls?.setLookAt(
-                    worldPosition.x, worldPosition.y, worldPosition.z,
-                    lookAt.x, lookAt.y, lookAt.z,
-                    true
-                )
-            } else {
-                const pos = new THREE.Vector3(0, 0.5, 0.25)
-                const foc = new THREE.Vector3(0, 0, -2)
-                active.parent.localToWorld(pos)
-                active.parent.localToWorld(foc)
-                controls?.setLookAt(...pos.toArray(), ...foc.toArray(), true)
-            }
-        }
-    }, [currentScene, controls, scene, step])
-
     // Effet 2 : Scroll horizontal (quand pas dans une scène)
     useEffect(() => {
         if (step > 2 && (!currentScene || currentScene === 'intro')) {
@@ -71,19 +34,17 @@ export default function Rig({ modelsInfo = {} }) {
 
     // useFrame pour une animation fluide vers la position cible
     useFrame((_, dt) => {
-        // if (step > 1 && (!currentScene || currentScene === 'intro')) {
-            const currentPos = controls.getPosition(new THREE.Vector3())
-            const currentTarget = controls.getTarget(new THREE.Vector3())
+        const currentPos = controls.getPosition(new THREE.Vector3())
+        const currentTarget = controls.getTarget(new THREE.Vector3())
 
-            easing.damp3(currentPos, scrollTarget.current, 0.1, dt)
-            easing.damp3(currentTarget, scrollFocus.current, 0.1, dt)
+        easing.damp3(currentPos, scrollTarget.current, 0.1, dt)
+        easing.damp3(currentTarget, scrollFocus.current, 0.1, dt)
 
-            controls.setLookAt(
-                currentPos.x, currentPos.y, currentPos.z,
-                currentTarget.x, currentTarget.y, currentTarget.z,
-                false
-            )
-        // }
+        controls.setLookAt(
+            currentPos.x, currentPos.y, currentPos.z,
+            currentTarget.x, currentTarget.y, currentTarget.z,
+            false
+        )
     })
 
     return (

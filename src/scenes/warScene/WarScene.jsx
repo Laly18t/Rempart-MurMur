@@ -4,7 +4,7 @@ import { AnimationMixer, MeshNormalMaterial, TextureLoader } from 'three'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { LoopOnce } from 'three'
 
-import { DATA } from '../../constants'
+import { DATA, SETTINGS } from '../../constants'
 import useSceneStore from '../../stores/useSceneStore'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
 import usePlaySound from '../../hooks/usePlaySound'
@@ -51,7 +51,6 @@ function WarScene({ ...props }, ref) {
     // gestion des cameras
     useEffect(() => {
         scene.traverse((child) => {
-            console.log('Child name:', child.name)
             if (child.isMesh && child.name === "radio") {
                 radioRef.current = child
                 setShowRadioOutline(true)
@@ -82,11 +81,10 @@ function WarScene({ ...props }, ref) {
 
     const handleClick = (e) => {
         const clickedObject = e.object
-        console.log('Objet cliqué:', clickedObject.name)
 
         // action 1 - allumer la radio
         if (clickedObject.name === 'radio' && !isPlaying) {
-            console.log('Radio cliqué')
+            SETTINGS.DEBUG_VOICEOVER && console.log('Radio cliqué')
             setShowRadioOutline(false)
             setShowTrappeOutline(true)
 
@@ -108,7 +106,7 @@ function WarScene({ ...props }, ref) {
 
         // action 2 - ouvrir la trappe
         if (clickedObject.name === 'couvercle' && !isPlaying || clickedObject.name === 'tapis' && !isPlaying) {
-            console.log('Trappe cliqué')
+            SETTINGS.DEBUG_VOICEOVER && console.log('Trappe cliqué')
             setShowTrappeOutline(false)
 
             if (isZoom && !isPlaying) {
@@ -159,7 +157,6 @@ function WarScene({ ...props }, ref) {
             }
 
             if (index === 3 && currentScene === 'monde-guerre') {
-                console.log('switch', salleRef.current.visible)
                 setShowPeople(false)
                 setVisible(false)
                 salleRef.current.visible = false
@@ -184,11 +181,9 @@ function WarScene({ ...props }, ref) {
             switch (index) {
                 case 1:
                     // La voix-off #1 vient de se terminer
-                    console.log('Voix-off 1 terminée')
                     break
                 case 2:
                     // Fin de voix-off 2, par exemple
-                    console.log('Voix-off 2 terminée')
                     handleZoom()
                     voiceOver.setIndex(3)
                     break

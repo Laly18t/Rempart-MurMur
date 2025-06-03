@@ -1,7 +1,5 @@
-import React from "react"
 import { Vector3, Quaternion, Euler } from 'three'
 import gsap from 'gsap'
-import { useThree } from "@react-three/fiber"
 
 
 export function cameraZoom(camera, cameraRef, onComplete = () => {}, portalGroupRef, invalidate = null) { 
@@ -9,7 +7,6 @@ export function cameraZoom(camera, cameraRef, onComplete = () => {}, portalGroup
     const tl = gsap.timeline()
 
     const portalGroup = portalGroupRef
-    console.log('Changement de camera')
 
     // Pour la position - utiliser getWorldPosition
     const worldPosition = new Vector3()

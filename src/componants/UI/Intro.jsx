@@ -27,18 +27,6 @@ export default function Intro({ debug = false, ...props }) {
         }
     )
 
-    const playSound = usePlaySound(`/audio/sounds/parchemin_v1_1.wav`)
-
-    // play de la musique de fond
-    useEffect(() => {
-        if (step === 3) {
-            // playSound.play()
-            console.log('play', step)
-        } else {
-            playSound.stop()
-        }
-    }, [step])
-
     return <>
         {/* bouton pour le son - TODO: refonte graphique */}
         <group visible={step > 2} {...props}>

@@ -12,6 +12,7 @@ import useSceneStore from "../../stores/useSceneStore";
 import usePlaySound from "../../hooks/usePlaySound";
 import { cameraZoom } from "../../utils/cameraUtils";
 import useFrameAnimation from "../../hooks/useFrameAnimation";
+import { SETTINGS } from "../../constants";
 
 function MedievalScene({ ...props }, ref) {
   const { scene: sceneOn, animations } = useGLTF("/models/1317_a_draco.glb", true)
@@ -113,11 +114,10 @@ function MedievalScene({ ...props }, ref) {
 
   const handleClick = (e) => {
     const clickedObject = e.object
-    console.log("Objet cliqué:", clickedObject.name)
 
     // action 1 - allumer la lumiere
     if (clickedObject.name === "EXPORT_LUSTRE" && !isPlaying) {
-      console.log("Lustre cliqué")
+      SETTINGS.DEBUG_VOICEOVER && console.log("Lustre cliqué")
       setShowLustreOutline(false)
       setVisible(false)
       setIsZoom(true)
@@ -130,7 +130,7 @@ function MedievalScene({ ...props }, ref) {
           cameraRefs.current.camera2,
           () => {
             if (firstClick !== 0) {
-              console.log("Lustre déjà allumé")
+              // console.log("Lustre déjà allumé")
             } else {
               firstClick += 1
               playCandles.play() // bruitage bougie
@@ -149,9 +149,9 @@ function MedievalScene({ ...props }, ref) {
 
     // action 2 - trouver le poison
     if (clickedObject.name === "EXPORT_FIOLE" && !isPlaying) {
-      console.log("Fiole cliquée")
+      SETTINGS.DEBUG_VOICEOVER && console.log("Fiole cliquée")
       if (isZoom && !isPlaying) {
-        console.log('déjà zoomé sur le livre')
+        // console.log('déjà zoomé sur le livre')
       } else {
         setShowFioleOutline(false)
         setVisible(false)
@@ -162,7 +162,6 @@ function MedievalScene({ ...props }, ref) {
           camera,
           cameraRefs.current.camera3,
           () => {
-            console.log(animations)
             const clip = animations.find((a) => a.name === "Anim_0")
             const target = sceneOn.getObjectByName("EXPORT_FIOLE")
 
@@ -204,7 +203,6 @@ function MedievalScene({ ...props }, ref) {
       if (index === 2 && currentScene === 'monde-medieval') {
         setTimeout(() => {
           playFire.play() // bruitage explosiont
-          console.log("switch", salleRef.current.visible)
           salleRef.current.visible = false // Salle normale invisible
           salleDRef.current.visible = true // Salle détruite visible
           setVisible(false)

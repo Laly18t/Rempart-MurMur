@@ -1,8 +1,9 @@
+import { SETTINGS } from "../constants"
 import useMobileStore from "../stores/useMobileStore"
 
 export default function MobileComponant() {
     const { teaserVisible } = useMobileStore()
-    console.log('MobileComponant', teaserVisible)
+    SETTINGS.DEBUG_VOICEOVER && console.log('MobileComponant', teaserVisible)
 
     return (
         <div className="mobileComponant">
