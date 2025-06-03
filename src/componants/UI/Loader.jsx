@@ -1,21 +1,12 @@
 import { useProgress } from '@react-three/drei'
 import { useState, useEffect } from 'react'
-import Lottie from 'react-lottie'
+import Lottie from 'lottie-react'
 
 import animationData from '../../lotties/loader_v2.json'
 
 export default function Loader({ onFinish }) {
     const { progress } = useProgress()
     const [visible, setVisible] = useState(true)
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        play: false,
-        animationData: animationData,
-        rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice"
-        }
-    }
 
     useEffect(() => {
         if (progress === 100 && visible) {
@@ -35,27 +26,32 @@ export default function Loader({ onFinish }) {
             zIndex: 10,
             top: '50%',
             left: '50%',
-            height: '40vh',
-            width: '50vh',
+            height: '100%',
+            width: '100%',
             transform: 'translate(-50%, -50%)',
             color: 'white',
             fontSize: '1.5em',
-            background: 'rgba(149, 149, 149, 0.5)',
+            background: 'rgb(247, 237, 214)',
             padding: '0.5em 1em',
             borderRadius: '10px',
             pointerEvents: 'none'
         }}>
-            <Lottie animationData={animationData} options={defaultOptions} style={{ 
-                background: 'transparent', 
-                width: '190%', 
-                height:'190%', 
-                transform: 'translate(-50%, -50%)', 
-                position: 'absolute',
-                zIndex: 10,
-                top: '50%',
-                left: '50%',
-                }} />
-            <p style={{textAlign:'center'}}>{progress.toFixed(0)} % chargé </p>
+            <Lottie 
+                animationData={animationData} 
+                loop={true}
+                autoplay={true}
+                style={{ 
+                    background: 'transparent', 
+                    width: '90%', 
+                    height:'90%', 
+                    transform: 'translate(-50%, -50%)', 
+                    position: 'absolute',
+                    zIndex: 10,
+                    top: '50%',
+                    left: '50%',
+                }} 
+            />
+            {/* <p style={{textAlign:'center'}}>{progress.toFixed(0)} % chargé </p> */}
         </div>
     )
 }
