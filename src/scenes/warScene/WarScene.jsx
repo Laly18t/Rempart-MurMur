@@ -35,7 +35,7 @@ function WarScene({ ...props }, ref) {
 
     const playRadio = usePlaySound('/audio/sounds/radio.mp3')
     const playTrappe = usePlaySound('/audio/sounds/trappe_on.mp3')
-    const playFire = usePlaySound('/audio/sounds/incendie_v1.mp3')
+    const playFire = usePlaySound('/audio/sounds/obus_1942_v1.mp3')
 
     const peopleFrames = [
         '/animations/war/1942_1.png',
@@ -157,11 +157,13 @@ function WarScene({ ...props }, ref) {
             }
 
             if (index === 3 && currentScene === 'monde-guerre') {
-                setShowPeople(false)
-                setVisible(false)
-                salleRef.current.visible = false
-                salleDRef.current.visible = true
-                playFire.play() // bruitage explosion
+                setTimeout(() => {
+                    setShowPeople(false)
+                    setVisible(false)
+                    salleRef.current.visible = false
+                    salleDRef.current.visible = true
+                    playFire.play() // bruitage explosion
+                }, 13000)
             }
         }
     }, [currentScene, isSceneFinished, index])
@@ -252,4 +254,4 @@ function WarScene({ ...props }, ref) {
 
 export default forwardRef(WarScene)
 
-useGLTF.preload('/models/1942_draco.glb')
+useGLTF.preload('/models/1942_draco.glb', true)
