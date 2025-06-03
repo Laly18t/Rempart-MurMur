@@ -62,6 +62,34 @@ export const INTERACTION = {
     ZOOM_SPEED: 0.03,
 }
 
+export const TEXTS = {
+    TEMOIGNAGE_1:{
+        NAME : 'Rémy, 20 ans',
+        TEXT: 
+        `"Mon conseil aux autres bénévoles serait 
+de profiter de leur expérience, l'humain est au 
+coeur de ce projet et les rencontres sont souvent 
+riche de sens, d'expérience et de partage. 
+Bon séjour ! "`
+    }, 
+    TEMOIGNAGE_2:{
+        NAME : 'Lucie, 27 ans',
+        TEXT: `"L'archéologie a toujours été un rêve 
+et je suis fière d'avoir pu mettre de mon 
+labeur pour aider dans la préservation 
+d'un site historique. "`
+    },
+    TEMOIGNAGE_3:{
+        NAME : 'Eve, 45 ans',
+        TEXT: `" Super expérience, j'avais fait des chantiers 
+de volontaires avec REMPART il y a 25 ans 
+(volontaire et animatrice) et j'ai retrouvé 
+cet été le même esprit d'ouverture aux autres, 
+d'échange et de partage. 
+Un vrai plaisir ! "`
+    },
+}
+
 export const SOUND_DESIGN = {
     INTRO_MUSIC: '/audio/intro-music.mp3',
     PORTAL_ENTER: '/audio/portal-enter.wav',
@@ -110,4 +138,4 @@ export const AUDIO_SEQUENCES = {
     }
 }
 
-export default { POSITIONS_ZOOM, POSITIONS_PARCHEMIN, SETTINGS, ASSETS, AUDIO_SEQUENCES, INTERACTION }
+export default { POSITIONS_ZOOM, POSITIONS_PARCHEMIN, SETTINGS, ASSETS, AUDIO_SEQUENCES, INTERACTION, TEXTS }
