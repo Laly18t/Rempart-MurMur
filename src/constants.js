@@ -126,11 +126,14 @@ export const AUDIO_SEQUENCES = {
             '/audio/voice/1942_1_1.mp3',
         ],
         [EPOQUES.WAR]: [
-            '/audio/test-intro.mp3',
-            // '/audio/voice/1942_2.mp3',
+            // '/audio/test-intro.mp3',
+            // '/audio/test-intro.mp3',
+            // '/audio/test-intro.mp3',
+            '/audio/voice/1942_2.mp3',
             '/audio/voice/1942_3.mp3',
             '/audio/voice/1942_4_1.mp3',
             '/audio/voice/1942_4_2.mp3',
+            '/audio/voice/vide.mp3',
         ]
     },
     FX: {
