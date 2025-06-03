@@ -250,4 +250,4 @@ function WarScene({ ...props }, ref) {
 
 export default forwardRef(WarScene)
 
-useGLTF.preload('/models/scene_1942.glb')
+useGLTF.preload('/models/1942_draco.glb')
