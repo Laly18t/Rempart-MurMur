@@ -45,10 +45,10 @@ export default function Scene() {
     const modernFrame = useLoader(TextureLoader, ASSETS.MODERN_FRAME)
     const medievalFrame = useLoader(TextureLoader, ASSETS.MEDIEVAL_FRAME)
 
-    const playParcheminIntro = usePlaySound("/audio/sounds/parchemin/son_intro.mp3")
-    const playParcheminOutro = usePlaySound("/audio/sounds/parchemin/son_fin.mp3")
-    const playParcheminMusic1 = usePlaySound("/audio/sounds/parchemin/son_entre_1317_1697.mp3")
-    const playParcheminMusic2 = usePlaySound("/audio/sounds/parchemin/son_entre_1697_1942.mp3")
+    const playParcheminIntro = usePlaySound("/audio/sounds/parchemin/son_intro.ogg")
+    const playParcheminOutro = usePlaySound("/audio/sounds/parchemin/son_fin.ogg")
+    const playParcheminMusic1 = usePlaySound("/audio/sounds/parchemin/son_entre_1317_1697.ogg")
+    const playParcheminMusic2 = usePlaySound("/audio/sounds/parchemin/son_entre_1697_1942.ogg")
 
     // hooks
     // const scrollRef = useRef(0)
