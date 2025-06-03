@@ -375,7 +375,7 @@ body {
 /** Curseur de souris */
 html,
 body, * {
-  /* cursor: none !important; */
+  cursor: none !important;
 }
 
 #cursor,
