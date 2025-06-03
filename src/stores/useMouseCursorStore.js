@@ -4,6 +4,7 @@ export const MOUSE_CURSOR_MODES = {
     DEFAULT: 'default',
     DECOUVRIR: 'decouvrir',
     POURSUIVRE: 'poursuivre',
+    CLICK: 'click',
 }
 
 const useMouseCursorStore = create((set) => ({

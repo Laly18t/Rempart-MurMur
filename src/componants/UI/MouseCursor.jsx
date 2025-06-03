@@ -6,6 +6,7 @@ import useMouseCursorStore from "../../stores/useMouseCursorStore";
 import CursorDefault from "./Cursors/CursorDefault";
 import CursorDecouvrir from "./Cursors/CursorDecouvrir";
 import CursorPoursuivre from "./Cursors/CursorPoursuivre";
+import CursorClick from "./Cursors/CursorClick";
 
 function MouseCursor() {
   const { mode } = useMouseCursorStore();
@@ -66,6 +67,7 @@ function MouseCursor() {
       <CursorDefault cursorRef={cursorRef} followerRef={followerRef} />
       <CursorDecouvrir cursorRef={cursorRef} followerRef={followerRef} />
       <CursorPoursuivre cursorRef={cursorRef} followerRef={followerRef} />
+      <CursorClick cursorRef={cursorRef} followerRef={followerRef} />
     </>
   );
 }
