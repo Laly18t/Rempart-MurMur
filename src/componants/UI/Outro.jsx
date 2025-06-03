@@ -15,10 +15,17 @@ export default function Conclusion({ debug = false, ...props }) {
     const [hovered, setHovered] = useState(false)
     const textureButton = useLoader(TextureLoader, './ui/icons/cta_background_defaut.png')
 
-    const gifTexture = usePreloadedVideoTexture('/animations/benevole.webm')
+    const gifTexture = useVideoTexture(
+        '/animations/benevole.webm',
+        {
+            muted: true,
+            loop: true,
+            autoplay: true,
+        }
+    )
 
     const videoTexture = useVideoTexture(
-        '/animations/intro.webm',
+        '/animations/outro_2.webm',
         {
             muted: false,
             loop: false,
@@ -32,12 +39,14 @@ export default function Conclusion({ debug = false, ...props }) {
 
     // Timer 35s une fois que ce composant est montré
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowCTA(true)
-        }, 45000) // 35000
+        if (step === 7) {
+            const timer = setTimeout(() => {
+                setShowCTA(true)
+            }, 35000) // 35s
 
-        return () => clearTimeout(timer)
-    }, [])
+            return () => clearTimeout(timer)
+        }
+    }, [step])
 
     useEffect(() => {
         if (hovered) {
@@ -79,36 +88,14 @@ export default function Conclusion({ debug = false, ...props }) {
                         Participer
                     </Text>
                 </mesh>
-                <mesh position={[0, 0, -0.9]}>
+                {/* <mesh position={[0, 0, -0.9]}>
                     <planeGeometry args={[viewport.width + 1.6, viewport.height + 1]} />
                     <meshBasicMaterial map={gifTexture} transparent={true} />
-                </mesh>
+                </mesh> */}
             </>)}
 
             {/* Navigation */}
             <ArrowButton position={[-2, -1.15, 0]} scale={[-1, 1, 1]} onClick={handleReturnButton} />
         </group>
     )
-}
-
-
-
-export function usePreloadedVideoTexture(src, { loop = true, muted = true, autoplay = true } = {}) {
-    const videoRef = useRef()
-
-    const texture = useMemo(() => {
-        const video = document.createElement('video')
-        video.src = src
-        video.crossOrigin = 'anonymous'
-        video.loop = loop
-        video.muted = muted
-        video.autoplay = autoplay
-        video.playsInline = true
-        video.preload = 'auto'
-        video.load() // 🔁 lance le préchargement
-        videoRef.current = video
-        return new VideoTexture(video)
-    }, [src])
-
-    return texture
 }
