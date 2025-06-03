@@ -2,7 +2,6 @@ import { useProgress } from '@react-three/drei'
 import { useState, useEffect } from 'react'
 import Lottie from 'react-lottie'
 
-import { TEXTS } from '../../constants'
 import animationData from '../../lotties/loader_v2.json'
 
 export default function Loader({ onFinish }) {

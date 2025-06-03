@@ -48,11 +48,6 @@ export const SETTINGS = {
     PORTAL_ENTER_DURATION: 0.5,
 }
 
-export const TEXTS = {
-    LOADER: "Le passé prend forme… juste un instant.",
-    INTRO: 'blablabla blabla'
-}
-
 export const ASSETS = {
     TEXTURE_PARCHEMIN: '/texture_parchemin.png',
     WAR_FRAME: '/cadre_1942.webp',
