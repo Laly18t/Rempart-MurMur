@@ -11,7 +11,7 @@ import usePlaySound from '../../hooks/usePlaySound'
 import useFrameAnimation from '../../hooks/useFrameAnimation'
 
 function VictorianScene({ ...props }, ref) {
-    const { animations, scene } = useGLTF('/models/scene_1697_v4.glb') // load model
+    const { animations, scene } = useGLTF('/models/1697_v2.glb') // load model
     const { camera } = useThree()
 
     const voiceOver = useVoiceOverStore()
@@ -29,7 +29,7 @@ function VictorianScene({ ...props }, ref) {
     const [showBookOutline, setShowBookOutline] = useState(true)
     const [showFlowerOutline, setShowFlowerOutline] = useState(false)
     const [showPeople, setShowPeople] = useState(true)
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState(true)
 
     const peopleFrames = [
         '/animations/modern/1697_1.png',
@@ -60,7 +60,7 @@ function VictorianScene({ ...props }, ref) {
                     opacity: oldMaterial.opacity,
                 })
 
-                if (child.name === "1697_livre_ouvert") {
+                if (child.name === "1697_livre_ouvert001") {
                     bookRef.current = child
                     setShowBookOutline(true)
                 }
@@ -69,11 +69,11 @@ function VictorianScene({ ...props }, ref) {
                     flowerRef.current = child
                 }
             }
-            if (child.name === "bake") {
+            if (child.name === "1697_scene_classique") {
                 salleRef.current = child
                 salleRef.current.visible = true
             }
-            if (child.name === "bake_noir") {
+            if (child.name === "1697_scene_noir") {
                 salleDRef.current = child
                 salleDRef.current.visible = false
             }
@@ -114,7 +114,7 @@ function VictorianScene({ ...props }, ref) {
                     () => {
                         voiceOver.setIndex(1)
 
-                        const clip = animations.find(a => a.name === 'animation_0')
+                        const clip = animations.find(a => a.name === 'Anim_0')
                         const mixer = new AnimationMixer(scene)
                         const action = mixer.clipAction(clip)
 
@@ -181,7 +181,7 @@ function VictorianScene({ ...props }, ref) {
                     salleDRef.current.visible = true
                     playFire.play() // bruitage incendie
                 }, 28000)
-            } else if (currentScene === null) {
+            } else if (index === 3) {
                 playFire.stop() 
             }
         }
@@ -237,15 +237,15 @@ function VictorianScene({ ...props }, ref) {
 
             {currentScene === 'monde-moderne' && visible &&
                 <>
-                    <InfoBulle position={[3.5, 3, -3.5]}
+                    <InfoBulle position={[5, 2.4, 0.5]}
                         className='modernBulle'
                         title="La culture du vide"
                         content="Dans certaines demeures, les étagères alignaient de superbes reliures en cuir… qui ne cachaient que du vide. Ces faux livres, commandés par des nobles soucieux des apparences, servaient à afficher une érudition qu’ils n’avaient pas. À cette époque, posséder une bibliothèque, même factice suffisait à briller en société."
                     />
-                    <InfoBulle position={[0.7, 1.7, -3.5]}
+                    <InfoBulle position={[1, 0.7, 0.9]}
                         className='modernBulle'
-                        title="De la lumière ?"
-                        content="À la fin du XVIIIe siècle, posséder un piano, c’était afficher son rang autant que son goût. Dans les salons bourgeois, il incarnait l’éducation raffinée, surtout celle des jeunes filles, qui devaient savoir en jouer pour briller en société. Chaque mélodie jouée devenait un signe de vertu… et un argument discret en faveur d’un bon mariage."
+                        title="Quand la musique est bonne..."
+                        content="À la fin du XVIIIe siècle, posséder un clavecin, c’était afficher son rang autant que son goût. Dans les salons bourgeois, il incarnait l’éducation raffinée, surtout celle des jeunes filles, qui devaient savoir en jouer pour briller en société. Chaque mélodie jouée devenait un signe de vertu… et un argument discret en faveur d’un bon mariage."
                     />
                 </>
             }
@@ -256,4 +256,4 @@ function VictorianScene({ ...props }, ref) {
 
 export default forwardRef(VictorianScene)
 
-useGLTF.preload('/models/scene_1697_v4.glb')
+useGLTF.preload('/models/1697_v2.glb')
