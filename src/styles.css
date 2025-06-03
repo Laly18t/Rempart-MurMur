@@ -370,3 +370,37 @@ body {
     opacity: 1;
   }
 }
+
+
+/** Curseur de souris */
+html,
+body, * {
+  /* cursor: none !important; */
+}
+
+#cursor,
+#follower {
+  position: fixed;
+  pointer-events: none; 
+  z-index: 9999999;
+  border-radius: 999px;
+  /* transform: translate(-50%, -50%); */
+}
+
+#cursor {
+  
+  /* height: 0.5rem;
+  width: 0.5rem;
+  background-color: black; */
+
+  &.negative{
+    /* background-color: white; */
+  }
+}
+
+#follower {
+ 
+  &.negative{
+    /* border-color: white; */
+  }
+}

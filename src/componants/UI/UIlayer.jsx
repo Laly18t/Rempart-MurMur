@@ -10,6 +10,7 @@ import useAppStore from '../../stores/useAppStore'
 import useSceneStore from '../../stores/useSceneStore'
 import useMobileStore from '../../stores/useMobileStore'
 import useVoiceOverStore from '../../stores/useVoiceOverStore'
+import MouseCursor from './MouseCursor'
 
 export default function UIlayer() {
     const [fadeOut, setFadeOut] = useState(false)
@@ -119,6 +120,7 @@ export default function UIlayer() {
 
     return (
         <div className="uiLayer">
+            <MouseCursor />
             <Subtitle />
             {step === 0 && !isMobile && <Loader onFinish={() => nextStep()} />}
 
