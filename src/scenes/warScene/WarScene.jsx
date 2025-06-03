@@ -32,7 +32,6 @@ function WarScene({ ...props }, ref) {
     const [showTrappeOutline, setShowTrappeOutline] = useState(false)
     const [showPeople, setShowPeople] = useState(true)
     const [visible, setVisible] = useState(false)
-    
 
     const playRadio = usePlaySound('/audio/sounds/radio.mp3')
     const playTrappe = usePlaySound('/audio/sounds/trappe_on.mp3')
@@ -100,7 +99,7 @@ function WarScene({ ...props }, ref) {
                     () => {
                         voiceOver.setIndex(1)
                         playRadio.play() // bruitage radio
-                        setTimeout(() => {handleZoom()}, 12000)
+                        setTimeout(() => { handleZoom() }, 12000)
                     },
                     props.portalGroupRef.current
                 )
@@ -136,16 +135,6 @@ function WarScene({ ...props }, ref) {
 
                             // Ajouter le mixer pour mise à jour via useFrame
                             mixers.current.push({ mixer, action })
-                            const onFinished = () => {
-                                setTimeout(() => {handleZoom()}, 5000) // seconde = 5000
-                                setVisible(true)
-                            }
-
-                            mixer.addEventListener('finished', onFinished)
-
-                            return () => {
-                                mixer.removeEventListener('finished', onFinished)
-                            }
                         }
                     },
                     props.portalGroupRef.current
@@ -169,7 +158,7 @@ function WarScene({ ...props }, ref) {
                 setVisible(true)
             }
 
-            if (index === 2) {
+            if (index === 3) {
                 console.log('switch', salleRef.current.visible)
                 setShowPeople(false)
                 setVisible(false)
@@ -189,6 +178,24 @@ function WarScene({ ...props }, ref) {
         )
         setIsZoom(false)
     }
+
+    useEffect(() => {
+        if (!isPlaying) {
+            switch (index) {
+                case 1:
+                    // La voix-off #1 vient de se terminer
+                    console.log('Voix-off 1 terminée')
+                    break
+                case 2:
+                    // Fin de voix-off 2, par exemple
+                    console.log('Voix-off 2 terminée')
+                    handleZoom()
+                    voiceOver.setIndex(3)
+                    break
+                // etc...
+            }
+        }
+    }, [isPlaying])
 
     return (
         <group position={[0, -2, -3]} rotation-y={-3.14} ref={groupRef} {...props} dispose={null} onClick={handleClick}>

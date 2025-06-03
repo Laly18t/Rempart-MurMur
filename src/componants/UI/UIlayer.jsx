@@ -17,14 +17,15 @@ export default function UIlayer() {
     const [videoFading, setVideoFading] = useState(false)
     const videoRef = useRef(null)
     const videoPlayedRef = useRef(false)
+    const gifTimeoutRef = useRef(null) // Ref pour le timeout du GIF
 
     const step = useAppStore((state) => state.step)
     const nextStep = useAppStore((state) => state.nextStep)
     const { audioIndex, currentScene, isZoom, setIsZoom } = useSceneStore()
     const { isSceneFinished, isPlaying, index } = useVoiceOverStore()
     const { teaserVisible, setTeaserVisible } = useMobileStore()
-    let videoEpoque = 'white'
-    let videoSrc = `/animations/explosion_${videoEpoque}.mp4`
+    let videoSrc = `/animations/explosion_1.gif`
+    let videoSrc2 = `/animations/explosion_2.gif`
 
     // reset lecture de la vidéo
     useEffect(() => {
@@ -32,43 +33,60 @@ export default function UIlayer() {
             videoPlayedRef.current = false
             setShowEndVideo(false) // reset video
             setVideoFading(false) // reset fade
+            // Nettoyer le timeout si il existe
+            if (gifTimeoutRef.current) {
+                clearTimeout(gifTimeoutRef.current)
+                gifTimeoutRef.current = null
+            }
         }
-        if (currentScene === 'monde-medieval') {
-            videoEpoque = 'white'
-            console.log('show medieval video', videoSrc)
-        } else if (currentScene === 'monde-moderne') {
-            videoEpoque = 'black'
-            console.log('show modern video', videoSrc)
-        } else if (currentScene === 'monde-guerre') {
-            videoEpoque = 'white'
-            console.log('show war video', videoSrc)
-        }
-    }, [currentScene, videoEpoque])
+    }, [currentScene])
+
+    // Fonction pour gérer la fin du GIF (simule l'événement 'ended' d'une vidéo)
+    const handleGifEnd = useCallback(() => {
+        setVideoFading(true)
+        setTimeout(() => {
+            setShowEndVideo(false)
+            setVideoFading(false)
+        }, 1000)
+    }, [])
+
+    // Fonction pour démarrer le GIF avec timer
+    const playGif = useCallback((src) => {
+        console.log('play gif', src)
+        setShowEndVideo(true)
+        
+        // Programmer la fin du GIF après 1 seconde
+        gifTimeoutRef.current = setTimeout(() => {
+            handleGifEnd()
+        }, 1000) // 1 seconde = durée du GIF
+    }, [handleGifEnd])
 
     // Affichage de la video medieval
     useEffect(() => {
         if (currentScene === 'monde-medieval') {
             console.log('currentScene', currentScene, index)
-            if (index === 2 && !isPlaying && !videoPlayedRef.current && videoSrc) {
+            if (index === 2 && !isPlaying && !videoPlayedRef.current) {
                 setTimeout(() => {
                     videoPlayedRef.current = true
-                    console.log('play video', videoSrc)
-                    setShowEndVideo(true)
-                    videoRef.current?.play().catch(console.error)
-                }, 6000) // TODO: adapater le delai
+                    playGif(videoSrc)
+                }, 6000) // TODO: adapter le délai
             }
-        } else if (currentScene === 'monde-moderne' || currentScene === 'monde-guerre') {
+        } else if (currentScene === 'monde-moderne') {
             console.log('currentScene', currentScene, index)
-            if (index === 2 && !isPlaying && !videoPlayedRef.current && videoSrc) {
+            if (index === 2 && !isPlaying && !videoPlayedRef.current) {
                 setTimeout(() => {
                     videoPlayedRef.current = true
-                    console.log('play video', videoSrc)
-                    setShowEndVideo(true)
-                    videoRef.current?.play().catch(console.error)
-                }, 4000) // TODO: adapater le delai
+                    playGif(videoSrc2)
+                }, 4000) // TODO: adapter le délai
+            }
+        } else if (currentScene === 'monde-guerre') {
+            console.log('currentScene', currentScene, index)
+            if (index === 3 && !videoPlayedRef.current && videoSrc) {
+                videoPlayedRef.current = true
+                playGif(videoSrc)
             }
         }
-    }, [currentScene, isSceneFinished, isPlaying, videoSrc, index])
+    }, [currentScene, isSceneFinished, isPlaying, videoSrc, index, playGif])
 
     useEffect(() => {
         if(step === 1){
@@ -81,23 +99,14 @@ export default function UIlayer() {
         }
     }, [step])
 
-    // Gestion de la fin de la video
-    const handleVideoEnd = useCallback(() => {
-        setVideoFading(true)
-        setTimeout(() => {
-            setShowEndVideo(false)
-            setVideoFading(false)
-        }, 1000)
-    }, [])
-
-    // Initialisation de la vidéo
-    const handleVideoRef = useCallback((element) => {
-        if (element) {
-            videoRef.current = element
-            element.loop = false
-            element.addEventListener('ended', handleVideoEnd)
+    // Nettoyage du timeout au démontage du composant
+    useEffect(() => {
+        return() => {
+            if(gifTimeoutRef.current){
+                clearTimeout(gifTimeoutRef.current)
+            }
         }
-    }, [handleVideoEnd])
+    }, [])
 
     // Animation fade-out du titre
     const handleStart = useCallback(() => {
@@ -118,12 +127,12 @@ export default function UIlayer() {
             {step === 1 && (
                 <div className={`soundIntro ${fadeOut ? 'fade-out' : 'fade-in'}`}>
                     <img src="./ui/icons/picto_casque.png" alt="Logo" className="casque" style={{ width: '30%' }} />
-                    
-                    <p>Il s’agit d’une expérience sonore, nous vous recommandons d’activer le son pour profiter pleinement de l’expérience.</p>
+
+                    <p>Il s'agit d'une expérience sonore, nous vous recommandons d'activer le son pour profiter pleinement de l'expérience.</p>
                 </div>
             )}
 
-            {(step === 2 || isMobile) &&   (
+            {(step === 2 || isMobile) && (
                 <div className={`titre ${fadeOut ? 'fade-out' : 'fade-in'}`}>
                     <img src="./ui/ornement_gauche.svg" alt="Logo" className="ornement_L" style={{ position: 'absolute', top: '2%', left: '2%', width: '30%' }} />
                     <img src="./ui/ornement_droit.svg" alt="Logo" className="ornement_D" style={{ position: 'absolute', top: '2%', right: '2%', width: '30%' }} />
@@ -132,7 +141,7 @@ export default function UIlayer() {
                     <img src="./ui/logo/logo_CCI.png" alt="Logo" className="logo_CCI" style={{ position: 'absolute', bottom: '1%', left: '10%', width: '6%' }} />
 
                     <img src="./ui/logo/logo.svg" alt="Logo" className="logo" style={{ width: '15%', paddingBottom: '10px' }} />
-                    <p>A la découverte de l’histoire du château Montberne</p>
+                    <p>A la découverte de l'histoire du château Montberne</p>
                     {isMobile ? (<>
                         <div className='mobileDiv'>
                             <p>Oh non !</p>
@@ -157,11 +166,21 @@ export default function UIlayer() {
             )}
 
             {showEndVideo && (
-                <div className={`video-container ${videoFading ? 'fade-out' : 'fade-in'}`}>
-                    <video ref={handleVideoRef} width="100%" height="100%" controls={false} autoPlay playsInline>
-                        <source src={videoSrc} type="video/mp4" />
-                        Votre navigateur ne supporte pas la lecture vidéo.
-                    </video>
+                <div>
+                    <img 
+                        className={`video-container ${videoFading ? 'fade-out' : 'fade-in'}`}
+                        src={currentScene === 'monde-moderne' ? videoSrc2 : videoSrc} 
+                        width="100%" 
+                        height="100%" 
+                        alt="Animation"
+                        style={{ 
+                            objectFit: 'cover',
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            zIndex: 1000
+                        }}
+                    />
                 </div>
             )}
         </div>
