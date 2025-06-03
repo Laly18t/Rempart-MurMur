@@ -87,7 +87,11 @@ export default function Conclusion({ debug = false, ...props }) {
                         setHovered(true)
                     }}
                     onPointerLeave={() => setHovered(false)}
+                    onClick={() => {
+                        window.open('https://www.rempart.com/fr/trouver-un-chantier', '_blank')
+                    }}
                     scale={hovered ? [1.1, 1.1, 1.1] : [1, 1, 1]}
+                    style={{ cursor: 'pointer' }}
                 >
                     <planeGeometry args={[1.2, 0.3]} />
                     <meshBasicMaterial map={textureButton} transparent={true} />
