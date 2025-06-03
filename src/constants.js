@@ -51,7 +51,7 @@ export const SETTINGS = {
 export const ASSETS = {
     TEXTURE_PARCHEMIN: '/texture_parchemin.png',
     WAR_FRAME: '/cadre_1942.webp',
-    MODERN_FRAME: '/cadre_1789.webp',
+    MODERN_FRAME: '/cadre_1697.webp',
     MEDIEVAL_FRAME: '/cadre_1317.webp',
     MEDIEVAL_BADGE: '/badge_1317.webp',
     MODERN_BADGE: '/badge_1789.webp',
