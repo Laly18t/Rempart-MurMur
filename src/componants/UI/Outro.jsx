@@ -82,20 +82,20 @@ export default function Conclusion({ debug = false, ...props }) {
             {/* CTA de fin visible après 35s */}
             {showCTA && (<>
                 <mesh
-                    position={[0, -1.35, 0]}
+                    position={[0, -1.3, 0]}
                     onPointerEnter={() => {
                         setHovered(true)
                     }}
                     onPointerLeave={() => setHovered(false)}
                     scale={hovered ? [1.1, 1.1, 1.1] : [1, 1, 1]}
                 >
-                    <planeGeometry args={[1.5, 0.4]} />
+                    <planeGeometry args={[1.2, 0.3]} />
                     <meshBasicMaterial map={textureButton} transparent={true} />
                     <Text
                         font="/fonts/IMFellEnglish-Regular.woff"
-                        position={[0, 0.1, 0.01]}
+                        position={[0, 0.05, 0.01]}
                         color={'#F8EEE5'}
-                        fontSize={0.25}
+                        fontSize={0.15}
                         anchorY="center"
                         anchorX="center"
                         lineHeight={0.8}
