@@ -19,6 +19,7 @@ export default function Conclusion({ debug = false, ...props }) {
     const [hovered, setHovered] = useState(false)
     const textureButton = useLoader(TextureLoader, './ui/icons/cta_background_defaut.png')
     const popUpTexture = useLoader(TextureLoader, './ui/cadre_horizontal.png')
+    const benevoleAlone = useLoader(TextureLoader, './benevole_alone.png')
 
     const gifTexture = useVideoTexture(
         '/animations/benevole.webm',
@@ -72,12 +73,17 @@ export default function Conclusion({ debug = false, ...props }) {
         <group {...props}>
 
             {/* Mesh interactif */}
-            {step === 7 && (
+            {step === 7 && (<>
                 <mesh position={[0, 0, -1.1]}>
                     <planeGeometry args={[viewport.width + 1.6, viewport.height + 1]} />
                     <meshBasicMaterial transparent={true} map={videoTexture} />
                 </mesh>
-            )}
+
+                <mesh position={[0.6, -0.6, -1.1]} visible={hovered}>
+                    <planeGeometry args={[4,2]} />
+                    <meshBasicMaterial transparent={true} map={benevoleAlone} />
+                </mesh>
+            </>)}
 
             {/* CTA de fin visible après 35s */}
             {showCTA && (<>
