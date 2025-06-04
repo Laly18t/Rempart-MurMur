@@ -6,7 +6,7 @@ import ArrowButton from "../ArrowButton"
 import useAppStore from "../../stores/useAppStore"
 import useVoiceOverStore from "../../stores/useVoiceOverStore"
 import usePlaySound from "../../hooks/usePlaySound"
-import videoSrc from '/animations/intro_2.webm'
+import videoSrc from '/animations/intro_v3.webm'
 
 export default function Intro({ debug = false, ...props }) {
     const step = useAppStore((state) => state.step)

@@ -31,7 +31,7 @@ export default function Conclusion({ debug = false, ...props }) {
     )
 
     const videoTexture = useVideoTexture(
-        '/animations/outro_2.webm',
+        '/animations/outro_v3.webm',
         {
             muted: false,
             loop: false,
