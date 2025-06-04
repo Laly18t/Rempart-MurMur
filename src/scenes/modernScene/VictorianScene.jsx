@@ -223,7 +223,7 @@ function VictorianScene({ ...props }, ref) {
                     salleDRef.current.visible = true
                     playFire.play() // bruitage incendie
                 }, 28000)
-            } else if (index === 3) {
+            } else if (index > 2) {
                 playFire.stop() 
             }
         }
